@@ -41,8 +41,6 @@ export const de: Copy = {
     eyebrow: 'Frankfurt · offen für Rollen als AI Engineer, ML Engineer und Data Scientist',
     title1: 'Ich baue',
     words: ['KI-Systeme', 'RAG-Pipelines', 'Prognosemodelle', 'Datenpipelines'],
-    pauseWords: 'Animationen pausieren',
-    playWords: 'Animationen fortsetzen',
     // German needs a comma before a relative clause, which reads badly after a
     // line break — so the slogan takes an apposition instead.
     title2: 'für den Betrieb, nicht für die Demo.',

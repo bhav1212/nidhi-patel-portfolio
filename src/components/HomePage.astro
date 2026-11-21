@@ -68,29 +68,10 @@ const bold = (text: string) => {
   <div class="container">
     <div class="hero-grid">
       <div class="hero-text">
-        <div class="hero-eyebrow-row">
-          <p class="hero-eyebrow">
-            <span class="pulse" aria-hidden="true"></span>
-            <span>{t.hero.eyebrow}</span>
-          </p>
-          <!-- WCAG 2.2.2: the headline swaps words on a timer, so it needs a
-               pause control. JS hides it when the rotation is not running. -->
-          <button
-            class="swap-toggle"
-            type="button"
-            aria-label={t.hero.pauseWords}
-            title={t.hero.pauseWords}
-            data-pause={t.hero.pauseWords}
-            data-play={t.hero.playWords}
-          >
-            <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M9 5v14M15 5v14" />
-            </svg>
-            <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 5l11 7-11 7z" />
-            </svg>
-          </button>
-        </div>
+        <p class="hero-eyebrow">
+          <span class="pulse" aria-hidden="true"></span>
+          <span>{t.hero.eyebrow}</span>
+        </p>
 
         <!-- One block per line, so the closing phrase balances on its own: the
              German headline runs to four lines at the desktop size, and without

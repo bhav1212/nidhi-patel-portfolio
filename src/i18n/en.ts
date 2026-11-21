@@ -40,8 +40,6 @@ export const en = {
     eyebrow: 'Frankfurt · open to AI Engineer, ML Engineer and Data Scientist roles',
     title1: 'I build',
     words: ['AI systems', 'RAG pipelines', 'forecast models', 'data pipelines'],
-    pauseWords: 'Pause animations',
-    playWords: 'Resume animations',
     title2: 'that outlast the demo.',
     leadBefore:
       'Four years across working-student, full-time and internship roles in Germany, on machine learning, retrieval and LLM systems, and the Azure Databricks pipelines behind customer analytics. I am currently at ',

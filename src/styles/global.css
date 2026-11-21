@@ -129,7 +129,9 @@ button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit
      copy and every section below it share one column. */
   --container: 1200px;
   --gutter: clamp(1.15rem, 4vw, 2rem);
-  --section-y: clamp(4rem, 9vw, 7rem);
+  /* Vertical rhythm between sections. Kept deliberately tighter than the
+     reference: stacked 7rem paddings read as empty bands on short sections. */
+  --section-y: clamp(2.75rem, 5vw, 4.75rem);
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 250ms;
@@ -554,7 +556,6 @@ p { text-wrap: pretty; }
 html:not(.js) .nav-links { display: flex; }
 html:not(.js) .nav-toggle,
 html:not(.js) .theme-toggle,
-html:not(.js) .swap-toggle,
 html:not(.js) .family-filters { display: none; }
 
 /* Below the desktop breakpoint a fixed panel would cover the page with no way
@@ -639,16 +640,11 @@ html:not(.js) .family-filters { display: none; }
   align-items: center;
 }
 
-.hero-eyebrow-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  margin-bottom: 1.4rem;
-}
 .hero-eyebrow {
   display: inline-flex;
   align-items: flex-start;
   gap: 0.55rem;
+  margin-bottom: 1.4rem;
   color: var(--text-dim);
   font-size: 0.8125rem;
   line-height: 1.5;
@@ -656,41 +652,6 @@ html:not(.js) .family-filters { display: none; }
 }
 .hero-eyebrow .pulse { flex: none; margin-top: 0.5em; }
 
-/* Pause control for the rotating headline (WCAG 2.2.2). Small disc, larger
-   hit area; hidden whenever the rotation is not running. */
-.swap-toggle {
-  position: relative;
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 1.45rem;
-  height: 1.45rem;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--text-dim);
-  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
-}
-.swap-toggle::before { content: ''; position: absolute; inset: -0.5rem; }
-.swap-toggle:hover { color: var(--text); border-color: var(--border-hi); }
-.swap-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-.swap-toggle svg {
-  width: 0.7rem;
-  height: 0.7rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-.swap-toggle .icon-play { display: none; fill: currentColor; stroke: none; }
-.swap-toggle[data-paused='true'] .icon-pause { display: none; }
-.swap-toggle[data-paused='true'] .icon-play { display: block; }
-
-/* The pause control stops every continuous motion in the hero, not only the
-   word swap: the card swings and its strap text scrolls on their own timers. */
-.motion-paused .lanyard-swing,
-.motion-paused .lanyard-strap span,
-.motion-paused .pulse { animation-play-state: paused; }
 /* Availability dot: lime in the reference, kept as a status colour rather
    than a brand accent. */
 .pulse {
@@ -1026,7 +987,7 @@ html:not(.js) .family-filters { display: none; }
   pointer-events: none;
 }
 
-.section-head { margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+.section-head { margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
 .section-num {
   display: flex;
   align-items: center;
@@ -1774,7 +1735,6 @@ html:not(.js) .family-filters { display: none; }
    stack strip all clear the fold instead of being cut by it. */
 @media (min-width: 901px) and (max-height: 820px) {
   .hero { padding-block: 0.9rem 0.7rem; }
-  .hero-eyebrow-row { margin-bottom: 0.55rem; }
   .hero h1 {
     /* The German headline runs to four lines at the full desktop size, so the
        cap follows the height that is actually available: at 600px it lands on
@@ -1836,7 +1796,6 @@ html:not(.js) .family-filters { display: none; }
   .tech-strip-items { animation: none; }
   .pulse { animation: none; }
   /* Nothing rotates here, so the pause control has nothing to do. */
-  .swap-toggle { display: none; }
   .lanyard-strap span { animation: none; }
   .id-card { transition: none; }
   .id-card:hover .id-photo img { transform: none; }

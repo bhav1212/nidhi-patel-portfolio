@@ -83,6 +83,7 @@ const persons = {
 <!doctype html>
 <html
   lang={t.htmlLang}
+  data-theme="light"
   data-home={homeHref(lang)}
   data-theme-label-light={t.nav.themeToLight}
   data-theme-label-dark={t.nav.themeToDark}
@@ -120,7 +121,7 @@ const persons = {
 
     {/* One unscoped value, kept in sync by the pre-paint script: a manual
         theme choice must also recolour the browser chrome, not just the page. */}
-    <meta name="theme-color" content="#0a0a10" />
+    <meta name="theme-color" content="#fafaf7" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -137,18 +138,18 @@ const persons = {
         d.classList.add('js');
         try {
           var t = localStorage.getItem('theme');
-          if (t !== 'light' && t !== 'dark') {
-            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-          }
+          // Light is the site's default; the OS preference does not override it.
+          // A visitor who chooses dark keeps that choice across visits.
+          if (t !== 'light' && t !== 'dark') t = 'light';
           d.dataset.theme = t;
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', t === 'light' ? '#fafaf7' : '#0a0a10');
         } catch (e) {
-          // Private mode or a blocked storage API: fall back to the OS
-          // preference rather than forcing dark on a light desktop.
-          d.dataset.theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          // Private mode or a blocked storage API: keep the light default the
+          // markup already carries.
+          d.dataset.theme = 'light';
           var meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', d.dataset.theme === 'light' ? '#fafaf7' : '#0a0a10');
+          if (meta) meta.setAttribute('content', '#fafaf7');
         }
         // If the bundled module never boots (a failed or blocked request), take
         // the class back so the no-JS fallbacks apply instead of leaving every
@@ -427,51 +428,20 @@ const persons = {
         });
       }
 
-      /* Hero word swap, with the pause control WCAG 2.2.2 requires for
-         auto-updating text. The button is removed when nothing is rotating. */
+      /* Hero word swap. Reduced-motion visitors get the first word, static. */
       const swap = $('#hero-swap');
-      const swapToggle = $('.swap-toggle') as HTMLButtonElement | null;
       if (swap) {
         const words: string[] = JSON.parse(swap.dataset.words || '[]');
         if (words.length > 1 && !reduce.matches) {
           let i = 0;
-          let timer = 0;
-          let fade = 0;
-          let paused = false;
-          const advance = () => {
+          window.setInterval(() => {
             i = (i + 1) % words.length;
             swap.style.opacity = '0';
-            fade = window.setTimeout(() => {
+            window.setTimeout(() => {
               swap.textContent = words[i] ?? '';
               swap.style.opacity = '1';
             }, 220);
-          };
-          const play = () => {
-            if (paused || timer) return;
-            timer = window.setInterval(advance, 3400);
-          };
-          const stop = () => {
-            window.clearInterval(timer);
-            window.clearTimeout(fade);
-            timer = 0;
-            swap.style.opacity = '1';
-          };
-          play();
-          swapToggle?.addEventListener('click', () => {
-            paused = !paused;
-            if (paused) stop();
-            else play();
-            swapToggle.dataset.paused = String(paused);
-            // The lanyard sway and strap marquee are continuous motion too.
-            document.documentElement.classList.toggle('motion-paused', paused);
-            const label = paused
-              ? swapToggle.dataset.play || 'Resume'
-              : swapToggle.dataset.pause || 'Pause';
-            swapToggle.setAttribute('aria-label', label);
-            swapToggle.setAttribute('title', label);
-          });
-        } else {
-          swapToggle?.remove();
+          }, 3400);
         }
       }
 
