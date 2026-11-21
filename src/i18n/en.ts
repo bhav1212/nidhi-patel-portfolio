@@ -67,7 +67,6 @@ export const en = {
     fieldDegreeValue: 'M.Sc. Data Science · expected 2026',
     // The card back is proof, not a second pitch: these four lines are the
     // only place the portfolio states them.
-    backTop: 'Proof, not claims',
     backItems: [
       '75,000+ cash-access locations, scraped into one verified database',
       'Three Azure Databricks accreditations, each verifiable',

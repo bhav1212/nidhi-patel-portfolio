@@ -623,12 +623,13 @@ html:not(.js) .family-filters { display: none; }
 
 /* The hero fills the first screen (the sticky nav is 4rem and takes its own
    space in flow), so nothing else — the stack strip included — reaches the
-   fold. Content is centred in whatever height is left. */
+   fold. Content starts just below the header rather than floating in the
+   middle: centring a tall card leaves a dead band under the nav. */
 .hero {
   display: grid;
-  align-content: center;
+  align-content: start;
   min-height: calc(100svh - 4rem);
-  padding-block: clamp(2.25rem, 5.5vw, 3.75rem) clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(1.4rem, 2.6vw, 2.25rem) clamp(2rem, 4vw, 3rem);
 }
 
 /* 1.7fr / 1fr is the reference's split: the copy column gets the extra width
@@ -637,7 +638,9 @@ html:not(.js) .family-filters { display: none; }
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
   gap: clamp(2rem, 4.2vw, 3.75rem);
-  align-items: center;
+  /* Top-align the copy and the card: centring the shorter copy column against
+     the tall card is what opened a dead band under the nav. */
+  align-items: start;
 }
 
 .hero-eyebrow {
@@ -727,30 +730,36 @@ html:not(.js) .family-filters { display: none; }
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 340px;
+  /* Wide on a normal screen, but never taller than the fold has room for:
+     the strap, clip, card and hint together must clear the viewport. */
+  max-width: min(400px, calc((100svh - 15.25rem) * 0.744));
   margin-inline: auto;
   perspective: 1100px;
+  /* Every measurement inside the card is expressed in cqw against this box,
+     so the card scales as one object instead of fixed pixels crowding a
+     narrower column. */
+  container-type: inline-size;
 }
 /* Full width, so the card's percentage width and aspect-ratio resolve. */
 .lanyard-swing { display: flex; flex-direction: column; align-items: center; width: 100%; transform-origin: 50% 0; }
 
 .lanyard-strap {
   position: relative;
-  width: 28px;
-  height: 64px;
+  width: 8.75cqw;
+  height: 20cqw;
   overflow: hidden;
-  border-radius: 3px 3px 0 0;
+  border-radius: 0.9375cqw 0.9375cqw 0 0;
   background: var(--text);
   color: var(--bg);
 }
 .lanyard-strap span {
   position: absolute;
-  left: 9px;
+  left: 2.8125cqw;
   white-space: nowrap;
   writing-mode: vertical-rl;
   font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 1px;
+  font-size: 2.5cqw;
+  letter-spacing: 0.3125cqw;
   animation: strap-scroll 14s linear infinite;
 }
 @keyframes strap-scroll {
@@ -761,30 +770,30 @@ html:not(.js) .family-filters { display: none; }
 .metal-clip {
   position: relative;
   z-index: 2;
-  width: 18px;
-  height: 27px;
-  margin-top: -2px;
-  border: 3px solid #a9a9a9;
-  border-radius: 5px;
+  width: 5.625cqw;
+  height: 8.4375cqw;
+  margin-top: -0.625cqw;
+  border: 0.9375cqw solid #a9a9a9;
+  border-radius: 1.5625cqw;
   background: #dedede;
-  box-shadow: inset 0 0 0 2px #f7f7f7;
+  box-shadow: inset 0 0 0 0.625cqw #f7f7f7;
 }
 .metal-clip::after {
   content: '';
   position: absolute;
-  top: 17px;
-  left: 2px;
-  width: 8px;
-  height: 16px;
-  border: 2px solid #8d8d8d;
-  border-radius: 3px;
+  top: 5.3125cqw;
+  left: 0.625cqw;
+  width: 2.5cqw;
+  height: 5cqw;
+  border: 0.625cqw solid #8d8d8d;
+  border-radius: 0.9375cqw;
   background: #ddd;
 }
 
 .id-card {
   position: relative;
   display: block;
-  width: min(320px, 100%);
+  width: 100%;
   height: auto;
   aspect-ratio: 320 / 430;
   margin: 0;
@@ -819,12 +828,12 @@ html:not(.js) .family-filters { display: none; }
 .id-face::before {
   content: '';
   position: absolute;
-  top: 11px;
+  top: 3.4375cqw;
   left: 50%;
   z-index: 3;
-  width: 36px;
-  height: 6px;
-  border-radius: 4px;
+  width: 11.25cqw;
+  height: 1.875cqw;
+  border-radius: 1.25cqw;
   background: var(--bg);
   translate: -50% 0;
 }
@@ -834,27 +843,27 @@ html:not(.js) .family-filters { display: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 53px;
-  padding: 16px 19px 8px;
+  height: 16.5625cqw;
+  padding: 5cqw 5.9375cqw 2.5cqw;
   /* Warm header band: the card belongs to the site's palette, not a monochrome print. */
   background: var(--grad-warm);
   color: #fff;
   font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 1.3px;
+  font-size: 2.8125cqw;
+  letter-spacing: 0.40625cqw;
   text-transform: uppercase;
 }
-.id-top > span { font-size: 12px; }
+.id-top > span { font-size: 3.75cqw; }
 
 .id-photo {
   display: block;
-  width: 140px;
-  height: 170px;
-  margin: 18px auto 12px;
+  width: 43.75cqw;
+  height: 53.125cqw;
+  margin: 5.625cqw auto 3.75cqw;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 2.5cqw;
   background: var(--bg);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1.5625cqw 6.25cqw rgba(0, 0, 0, 0.12);
 }
 .id-photo img {
   display: block;
@@ -866,41 +875,42 @@ html:not(.js) .family-filters { display: none; }
 }
 .id-card:hover .id-photo img { transform: scale(1.06); }
 
-.id-name { display: block; text-align: center; font-size: 20px; font-weight: 600; letter-spacing: -0.03em; }
-.id-role { display: block; margin-top: 3px; text-align: center; font-size: 11px; color: var(--text-faint); }
+.id-name { display: block; text-align: center; font-size: 6.25cqw; font-weight: 600; letter-spacing: -0.03em; }
+.id-role { display: block; margin-top: 0.9375cqw; text-align: center; font-size: 3.4375cqw; color: var(--text-faint); }
 
-.id-fields { display: grid; gap: 5px; padding: 14px 24px 0; }
-.id-fields > span { display: flex; justify-content: space-between; gap: 6px; font-size: 9px; }
+.id-fields { display: grid; gap: 1.5625cqw; padding: 4.375cqw 7.5cqw 0; }
+.id-fields > span { display: flex; justify-content: space-between; gap: 1.875cqw; font-size: 2.8125cqw; }
 .id-fields > span > span { color: var(--text-faint); }
 .id-fields strong { font-weight: 500; }
 
-.id-bottom { display: flex; align-items: center; justify-content: space-between; margin: 16px 24px 0; }
-.barcode { display: flex; gap: 2px; height: 24px; }
+.id-bottom { display: flex; align-items: center; justify-content: space-between; margin: 5cqw 7.5cqw 0; }
+.barcode { display: flex; gap: 0.625cqw; height: 7.5cqw; }
 .barcode i { display: block; background: var(--text); }
 .id-sticker {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--border-hi);
+  width: 10cqw;
+  height: 10cqw;
+  border: 0.3125cqw solid var(--border-hi);
   border-radius: 50%;
   background: var(--surface-2);
   color: var(--accent);
 }
+.id-sticker svg { width: 5cqw; height: 5cqw; }
 
-.id-back-lines { display: grid; padding: 18px 22px 0; }
+.id-back-lines { display: grid; padding: 7.5cqw 6.875cqw 0; }
 .id-back-lines > span {
   display: flex;
   align-items: start;
-  gap: 12px;
-  padding: 12px 0;
+  gap: 3.75cqw;
+  padding: 3.75cqw 0;
   border-bottom: 1px solid var(--border);
-  font-size: 12.5px;
+  font-size: 3.90625cqw;
   line-height: 1.5;
 }
-.id-back-lines small { padding-top: 3px; font-family: var(--mono); font-size: 8px; color: var(--text-faint); }
-.id-signature { margin: 4px 22px 0; font-family: var(--serif); font-size: 32px; font-style: italic; }
-.id-found { margin: 10px 22px; font-size: 10px; line-height: 1.6; color: var(--text-faint); overflow-wrap: anywhere; }
+.id-back-lines small { padding-top: 0.9375cqw; font-family: var(--mono); font-size: 2.5cqw; color: var(--text-faint); }
+.id-signature { margin: 1.25cqw 6.875cqw 0; font-family: var(--serif); font-size: 10cqw; font-style: italic; }
+.id-found { margin: 3.125cqw 6.875cqw; font-size: 3.125cqw; line-height: 1.6; color: var(--text-faint); overflow-wrap: anywhere; }
 
 .card-hint {
   display: flex;
@@ -1752,10 +1762,6 @@ html:not(.js) .family-filters { display: none; }
     padding-top: 0.9rem;
   }
   .hero-meta .value { font-size: 0.82rem; }
-  .lanyard-zone { max-width: 250px; }
-  .lanyard-strap { height: 44px; }
-  .metal-clip { height: 22px; margin-top: -2px; }
-  .metal-clip::after { top: 12px; height: 12px; }
 }
 
 /* The band between the two blocks above: at the full desktop size the German
@@ -1763,7 +1769,7 @@ html:not(.js) .family-filters { display: none; }
    1536x864 or 1920x866 screen. Trimming the section's own padding recovers it
    without touching the type scale. */
 @media (min-width: 901px) and (min-height: 821px) and (max-height: 940px) {
-  .hero { padding-block: 2.4rem 2rem; }
+  .hero { padding-block: 1.8rem 2rem; }
 }
 
 /* ----- Motion, contrast and print preferences ----------------------------- */

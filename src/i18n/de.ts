@@ -70,7 +70,6 @@ export const de: Copy = {
     fieldDegreeValue: 'M.Sc. Data Science · voraussichtlich 2026',
     // The card back is proof, not a second pitch: these four lines are the
     // only place the portfolio states them.
-    backTop: 'Belege statt Behauptungen',
     backItems: [
       'Über 75.000 Bargeldstandorte, zu einer geprüften Datenbank bereinigt',
       'Drei Azure-Databricks-Zertifizierungen, jede überprüfbar',
