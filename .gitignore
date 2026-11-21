@@ -15,3 +15,11 @@ dist/
 Nidhi_Patel_Resume_DataEng*.pdf
 proffessional_profile_photo.jpeg
 data/private-*.json
+
+# Working notes and local tooling — kept on disk, never published. The public
+# repository is the site itself; planning documents and one-off scripts are not
+# part of it.
+MASTER_PROMPT.md
+Thesis_Summery_STAR_method.txt
+docs/
+scripts/
