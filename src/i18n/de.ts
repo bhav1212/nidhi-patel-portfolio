@@ -210,7 +210,7 @@ export const de: Copy = {
   privacy: {
     metaTitle: 'Datenschutz — Nidhi Patel',
     metaDescription:
-      'Wie diese Website mit Daten umgeht: keine Cookies, keine Analyse, keine Anfragen an Dritte, selbst gehostete Schriften.',
+      'Wie diese Website mit Daten umgeht: keine Cookies, keine Analyse, keine Anfragen an Dritte, kein Tracking und selbst gehostete Schriften.',
     kicker: 'Datenschutzerklärung',
     title: 'Datenschutz',
     sections: [

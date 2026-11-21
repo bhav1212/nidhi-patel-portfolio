@@ -528,6 +528,13 @@ p { text-wrap: pretty; }
     background: var(--bg-2);
     border-bottom: 1px solid var(--border);
     box-shadow: var(--shadow);
+    /* Short landscape windows are shorter than the panel, and the body scroll is
+       locked while it is open — so the panel must scroll itself or its last
+       link becomes unreachable. */
+    max-height: calc(100svh - 4rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
   .nav-links.is-open { display: flex; }
   /* The panel covers the page; stop the content scrolling behind it. */

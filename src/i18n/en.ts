@@ -207,7 +207,7 @@ export const en = {
   privacy: {
     metaTitle: 'Privacy — Nidhi Patel',
     metaDescription:
-      'How this website handles data: no cookies, no analytics, no third-party requests, self-hosted fonts.',
+      'How this website handles data: no cookies, no analytics, no third-party requests, no tracking pixels, and fonts hosted on its own server.',
     kicker: 'Privacy notice',
     title: 'Privacy',
     sections: [
