@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrivacyPage from '../../components/PrivacyPage.astro';
+import { copy } from '../../i18n/content';
+
+const t = copy.de;
+---
+
+<BaseLayout title={t.privacy.metaTitle} description={t.privacy.metaDescription} path="/de/datenschutz/" lang="de">
+  <PrivacyPage lang="de" />
+</BaseLayout>

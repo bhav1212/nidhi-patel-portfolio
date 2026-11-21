@@ -1,0 +1,511 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { profile, contact, links, education, certifications, languages, experience } from '../data/profile';
+import { copy, homeHref, alternatePath, type Lang } from '../i18n/content';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path for the canonical URL, e.g. "/work/medbot/". Defaults to the current path. */
+  path?: string;
+  noindex?: boolean;
+  lang?: Lang;
+}
+
+const { title, description, noindex = false, lang = 'en' } = Astro.props;
+
+const t = copy[lang];
+const site = Astro.site ?? new URL('https://nidhipatel.de');
+const canonical = new URL(Astro.url.pathname, site).href;
+// The Person is one entity, not one per route: give it a single stable URL and
+// @id so every page points at the same profile rather than claiming the Person
+// lives on whichever case study happens to be open.
+const personUrl = new URL('./', site).href;
+const personId = new URL('#person', site).href;
+
+// Only degrees that have actually been awarded count as alumniOf. The M.Sc. is
+// still "in progress" on the page, so TU Dortmund is an affiliation for now.
+const completedEducation = education.filter((e: any) => !e.current);
+const currentEducation = education.filter((e: any) => e.current);
+
+const otherLang: Lang = lang === 'en' ? 'de' : 'en';
+const otherHref = alternatePath(lang, Astro.url.pathname);
+const otherCanonical = new URL(otherHref, site).href;
+const englishHref = lang === 'en' ? Astro.url.pathname : otherHref;
+
+const persons = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': personId,
+  name: profile.fullName,
+  jobTitle: lang === 'de' ? 'AI Engineer und Data Scientist' : 'AI Engineer & Data Scientist',
+  url: personUrl,
+  email: `mailto:${contact.email}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: profile.location.city,
+    addressCountry: profile.location.countryCode,
+  },
+  sameAs: [links.linkedin, links.github],
+  alumniOf: completedEducation.map((e: any) => ({
+    '@type': 'CollegeOrUniversity',
+    name: e.institution,
+  })),
+  affiliation: currentEducation.map((e: any) => ({
+    '@type': 'CollegeOrUniversity',
+    name: e.institution,
+  })),
+  knowsLanguage: languages.map((l: any) => l.language),
+  hasCredential: certifications.map((c: any) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: c.name,
+    credentialCategory: 'certificate',
+    recognizedBy: { '@type': 'Organization', name: c.issuer },
+  })),
+  worksFor: {
+    '@type': 'Organization',
+    name: experience.find((e: any) => e.current)?.company ?? 'Miles & More (Lufthansa Group)',
+  },
+  knowsAbout: [
+    'Machine Learning',
+    'Large Language Models',
+    'Retrieval-Augmented Generation',
+    'Azure Databricks',
+    'Data Engineering',
+    'Anomaly Detection',
+    'Explainable AI',
+  ],
+};
+---
+
+<!doctype html>
+<html
+  lang={t.htmlLang}
+  data-home={homeHref(lang)}
+  data-theme-label-light={t.nav.themeToLight}
+  data-theme-label-dark={t.nav.themeToDark}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {/* A noindex page (the 404) has no canonical of its own: pointing at
+        /404/ advertises a URL that does not exist. */}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && <link rel="alternate" hreflang={t.htmlLang} href={canonical} />}
+    {!noindex && <link rel="alternate" hreflang={otherLang} href={otherCanonical} />}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL(englishHref, site).href} />}
+    <meta name="author" content={profile.fullName} />
+
+    <meta property="og:site_name" content={profile.fullName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', site).href} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.meta.ogImageAlt} />
+    <meta property="og:locale" content={t.ogLocale} />
+    <meta property="og:locale:alternate" content={copy[otherLang].ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og.png', site).href} />
+
+    {/* One unscoped value, kept in sync by the pre-paint script: a manual
+        theme choice must also recolour the browser chrome, not just the page. */}
+    <meta name="theme-color" content="#0a0a10" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="preload" href="/assets/fonts/geist-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/fraunces-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script is:inline>
+      // Runs before paint: no theme flash, and no-JS keeps content visible.
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          d.dataset.theme = t;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', t === 'light' ? '#fafaf7' : '#0a0a10');
+        } catch (e) {
+          // Private mode or a blocked storage API: fall back to the OS
+          // preference rather than forcing dark on a light desktop.
+          d.dataset.theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', d.dataset.theme === 'light' ? '#fafaf7' : '#0a0a10');
+        }
+        // If the bundled module never boots (a failed or blocked request), take
+        // the class back so the no-JS fallbacks apply instead of leaving every
+        // revealed section hidden and the menu toggle dead. The module marks
+        // the document as booted on its first line.
+        setTimeout(function () {
+          if (d.dataset.booted !== '1') d.classList.remove('js');
+        }, 3000);
+      })();
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(persons)} />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">{t.nav.skip}</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- A noindex page (the 404) has no locale of its own and no URL to switch
+         to; without JS the language pill must still land on a real page, so
+         both sides point home. The page's inline script refines this. -->
+    <Header
+      lang={lang}
+      home={homeHref(lang)}
+      enHref={noindex ? '/' : lang === 'en' ? Astro.url.pathname : otherHref}
+      deHref={noindex ? '/de/' : lang === 'de' ? Astro.url.pathname : otherHref}
+    />
+
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+
+    <button class="to-top" type="button" aria-label={t.nav.toTop} title={t.nav.toTop}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
+
+    <script>
+      // Tell the pre-paint fallback timer that the bundled behaviour loaded.
+      document.documentElement.dataset.booted = '1';
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const $ = (sel: string, root: ParentNode = document) => root.querySelector(sel);
+
+      /* Scroll progress, back-to-top and active section */
+      const bar = $('#scroll-progress') as HTMLElement | null;
+      const toTop = $('.to-top') as HTMLButtonElement | null;
+      const rootEl = document.documentElement;
+      // `/` in English, `/de/` in German — the active-link logic is path-relative.
+      const homePath = rootEl.dataset.home || '/';
+      const casePrefix = `${homePath}work/`;
+
+      const navLinksEl = $('#nav-links');
+      const navAnchors = navLinksEl
+        ? Array.from(navLinksEl.querySelectorAll<HTMLAnchorElement>('a[href*="#"]')).filter(
+            (a) => !a.classList.contains('nav-cta')
+          )
+        : [];
+
+      const setActiveLink = (id: string | null) => {
+        for (const a of navAnchors) {
+          const active = id !== null && a.hash === `#${id}`;
+          a.classList.toggle('is-active', active);
+          if (active) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        }
+      };
+
+      const sections = ['work', 'experience', 'capabilities', 'about', 'contact']
+        .map((id) => document.getElementById(id))
+        .filter(Boolean) as HTMLElement[];
+
+      const updateActiveLink = () => {
+        if (location.pathname !== homePath || sections.length === 0) return;
+        const marker = window.scrollY + Math.min(window.innerHeight * 0.35, 260);
+        let current: string | null = null;
+        for (const section of sections) if (section.offsetTop <= marker) current = section.id;
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8) {
+          current = 'contact';
+        }
+        setActiveLink(current);
+      };
+
+      const footer = document.querySelector('.footer') as HTMLElement | null;
+
+      const onScroll = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        if (bar) bar.style.width = max > 0 ? `${(h.scrollTop / max) * 100}%` : '0%';
+        document.querySelector('.nav')?.classList.toggle('is-scrolled', h.scrollTop > 8);
+        // The button sits over the bottom-right corner, so it steps aside before the footer reaches it.
+        const overFooter = footer ? footer.getBoundingClientRect().top < window.innerHeight - 20 : false;
+        toTop?.classList.toggle('is-visible', h.scrollTop > h.clientHeight * 0.75 && !overFooter);
+        updateActiveLink();
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+
+      if (location.pathname.startsWith(casePrefix)) setActiveLink('work');
+
+      toTop?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: reduce.matches ? 'auto' : 'smooth' });
+        (document.getElementById('main') as HTMLElement | null)?.focus({ preventScroll: true });
+      });
+
+      /* Mobile navigation: the open panel is a modal state, not just a class.
+         It locks the page behind it, closes on an outside tap, and moves focus
+         into the menu so forward Tab reaches the links rather than the hero. */
+      const toggle = $('.nav-toggle');
+      const navLinks = $('#nav-links');
+      if (toggle && navLinks) {
+        const setOpen = (open: boolean, restoreFocus = false) => {
+          if (navLinks.classList.contains('is-open') === open) return;
+          navLinks.classList.toggle('is-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+          document.body.classList.toggle('nav-open', open);
+          if (open) {
+            navLinks.querySelector<HTMLAnchorElement>('a')?.focus();
+          } else if (restoreFocus) {
+            (toggle as HTMLElement).focus();
+          }
+        };
+        toggle.addEventListener('click', () => {
+          setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+        });
+        navLinks.addEventListener('click', (e) => {
+          const link = (e.target as HTMLElement).closest('a') as HTMLAnchorElement | null;
+          if (!link) return;
+          setOpen(false);
+          // The clicked link is about to be display:none, which would drop
+          // focus to body. For an in-page target, move focus to the section so
+          // the keyboard user continues from where they landed.
+          let target: URL;
+          try {
+            target = new URL(link.href, location.href);
+          } catch {
+            return;
+          }
+          if (target.pathname !== location.pathname || !target.hash) return;
+          const section = document.getElementById(decodeURIComponent(target.hash.slice(1)));
+          if (!section) return;
+          section.setAttribute('tabindex', '-1');
+          section.focus({ preventScroll: true });
+        });
+        document.addEventListener('pointerdown', (e) => {
+          if (!navLinks.classList.contains('is-open')) return;
+          const target = e.target as Node;
+          if (navLinks.contains(target) || toggle.contains(target)) return;
+          setOpen(false);
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && navLinks.classList.contains('is-open')) {
+            setOpen(false, true);
+          }
+        });
+        // The panel only exists below the desktop breakpoint; if the window
+        // grows past it, drop the class rather than leaving the body locked.
+        window.matchMedia('(min-width: 901px)').addEventListener('change', (e) => {
+          if (e.matches) setOpen(false);
+        });
+      }
+
+      /* Language switch keeps the section the visitor is reading. */
+      const langSwitch = $('.lang-switch') as HTMLAnchorElement | null;
+      if (langSwitch) {
+        const baseHref = (langSwitch.getAttribute('href') || '/').split('#')[0];
+        const syncLangHref = () => {
+          langSwitch.setAttribute('href', `${baseHref}${location.hash}`);
+        };
+        syncLangHref();
+        window.addEventListener('hashchange', syncLangHref);
+      }
+
+      /* Theme */
+      const root = document.documentElement;
+      const themeLabel = (theme: string) =>
+        (theme === 'light' ? root.dataset.themeLabelDark : root.dataset.themeLabelLight) || 'Switch theme';
+      const themeBtn = $('.theme-toggle');
+      if (themeBtn) {
+        const label = themeLabel(root.dataset.theme || 'dark');
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.setAttribute('title', label);
+      }
+      themeBtn?.addEventListener('click', () => {
+        const next = root.dataset.theme === 'light' ? 'dark' : 'light';
+        root.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch {}
+        const label = themeLabel(next);
+        themeBtn.setAttribute('aria-label', label);
+        themeBtn.setAttribute('title', label);
+        document
+          .querySelector('meta[name="theme-color"]')
+          ?.setAttribute('content', next === 'light' ? '#fafaf7' : '#0a0a10');
+      });
+
+      /* Reveal on scroll */
+      const reveals = document.querySelectorAll('[data-reveal]');
+      if (!reduce.matches && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+        );
+        reveals.forEach((el) => {
+          const parent = el.parentElement;
+          if (parent) {
+            const group = Array.from(parent.children).filter((c) => c.hasAttribute('data-reveal'));
+            const index = group.indexOf(el);
+            if (index > 0) {
+              (el as HTMLElement).style.transitionDelay = `${Math.min(index, 4) * 70}ms`;
+            }
+          }
+          io.observe(el);
+        });
+      } else {
+        reveals.forEach((el) => el.classList.add('is-in'));
+      }
+
+      /* Experience: the rail fills as the section scrolls past, and each role
+         lights up as the fill reaches its dot. Progress is measured against the
+         viewport rather than the section, so the rail moves with the scroll. */
+      const timeline = document.querySelector<HTMLElement>('[data-timeline]');
+      if (timeline) {
+        const spine = timeline.querySelector<HTMLElement>('.timeline-spine > span');
+        const rows = Array.from(timeline.querySelectorAll<HTMLElement>('.timeline-item'));
+        let ratios: number[] = [];
+        let frame = 0;
+
+        const measure = () => {
+          const height = timeline.offsetHeight || 1;
+          ratios = rows.map((row) => Math.min(1, Math.max(0, row.offsetTop / height)));
+        };
+
+        const paint = () => {
+          frame = 0;
+          const rect = timeline.getBoundingClientRect();
+          const anchor = window.innerHeight * 0.65;
+          const raw = (anchor - rect.top) / Math.max(rect.height, 1);
+          const progress = reduce.matches ? 1 : Math.min(1, Math.max(0, raw));
+          spine?.style.setProperty('--progress', progress.toFixed(4));
+          rows.forEach((row, i) => {
+            row.classList.toggle('is-reached', progress >= (ratios[i] ?? i / rows.length));
+          });
+        };
+
+        const schedule = () => {
+          if (!frame) frame = requestAnimationFrame(paint);
+        };
+
+        measure();
+        paint();
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', () => {
+          measure();
+          schedule();
+        });
+      }
+
+      /* Cursor-tracking glow on the work cards */
+      if (!reduce.matches && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll<HTMLElement>('.bento-card').forEach((card) => {
+          card.addEventListener('pointermove', (event) => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+          });
+        });
+      }
+
+      /* Hero word swap, with the pause control WCAG 2.2.2 requires for
+         auto-updating text. The button is removed when nothing is rotating. */
+      const swap = $('#hero-swap');
+      const swapToggle = $('.swap-toggle') as HTMLButtonElement | null;
+      if (swap) {
+        const words: string[] = JSON.parse(swap.dataset.words || '[]');
+        if (words.length > 1 && !reduce.matches) {
+          let i = 0;
+          let timer = 0;
+          let fade = 0;
+          let paused = false;
+          const advance = () => {
+            i = (i + 1) % words.length;
+            swap.style.opacity = '0';
+            fade = window.setTimeout(() => {
+              swap.textContent = words[i] ?? '';
+              swap.style.opacity = '1';
+            }, 220);
+          };
+          const play = () => {
+            if (paused || timer) return;
+            timer = window.setInterval(advance, 3400);
+          };
+          const stop = () => {
+            window.clearInterval(timer);
+            window.clearTimeout(fade);
+            timer = 0;
+            swap.style.opacity = '1';
+          };
+          play();
+          swapToggle?.addEventListener('click', () => {
+            paused = !paused;
+            if (paused) stop();
+            else play();
+            swapToggle.dataset.paused = String(paused);
+            // The lanyard sway and strap marquee are continuous motion too.
+            document.documentElement.classList.toggle('motion-paused', paused);
+            const label = paused
+              ? swapToggle.dataset.play || 'Resume'
+              : swapToggle.dataset.pause || 'Pause';
+            swapToggle.setAttribute('aria-label', label);
+            swapToggle.setAttribute('title', label);
+          });
+        } else {
+          swapToggle?.remove();
+        }
+      }
+
+      /* Count-up, final value already in the DOM */
+      if (!reduce.matches && 'IntersectionObserver' in window) {
+        const nums = document.querySelectorAll<HTMLElement>('[data-count]');
+        const io2 = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const el = entry.target as HTMLElement;
+              const target = Number(el.dataset.count);
+              const suffix = el.dataset.suffix || '';
+              if (!Number.isFinite(target)) { io2.unobserve(el); continue; }
+              const start = performance.now();
+              const dur = 800;
+              const tick = (now: number) => {
+                const p = Math.min(1, (now - start) / dur);
+                const eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = `${Math.round(target * eased)}${suffix}`;
+                if (p < 1) requestAnimationFrame(tick);
+              };
+              requestAnimationFrame(tick);
+              io2.unobserve(el);
+            }
+          },
+          { threshold: 0.6 }
+        );
+        nums.forEach((el) => io2.observe(el));
+      }
+
+      /* Footer year */
+      const year = document.getElementById('year');
+      if (year) year.textContent = String(new Date().getFullYear());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,559 @@
+{
+  "schemaVersion": "1.0.0",
+  "meta": {
+    "subject": "Nidhi Patel",
+    "purpose": "Single source of truth for the personal portfolio website. Consumed by the site build agent and the master prompt.",
+    "source": "Nidhi_Patel_Resume_DataEng (2).pdf",
+    "extractedAt": "2026-11-21",
+    "extractionMethod": "Text extraction plus PDF link-annotation mapping; certification URLs were matched to their certificate rows by page position.",
+    "integrity": "All facts, metrics, dates, employers and links below are transcribed from the CV. No metrics or claims were invented. Derived fields are explicitly labelled.",
+    "lastUpdated": "2026-11-21"
+  },
+
+  "profile": {
+    "fullName": "Nidhi Patel",
+    "displayName": "Nidhi Patel",
+    "pronouns": null,
+    "headline": "Data Scientist & AI Engineer | Machine Learning · LLM/RAG Systems · Azure Databricks",
+    "roleTargets": [
+      "Data Scientist",
+      "Machine Learning Engineer",
+      "AI Engineer",
+      "Data Analyst"
+    ],
+    "yearsExperience": "4+",
+    "location": {
+      "city": "Frankfurt am Main",
+      "country": "Germany",
+      "countryCode": "DE",
+      "remote": null,
+      "openToRelocation": true
+    },
+    "summary": "Data Scientist (M.Sc. Data Science, TU Dortmund) with 4+ years of experience across working-student, full-time and internship roles in machine learning, statistical analysis and data engineering, with a growing focus on production AI systems. Built Python ETL pipelines and ML-based anomaly detection at Barkow Consulting; currently applies customer journey and lifecycle analysis, segmentation, churn, pricing analytics and A/B testing at Miles & More (Lufthansa Group) on Azure Databricks. Strong expertise in Generative AI and LLM engineering, including RAG, multi-agent workflows and tool calling. Combines solid modelling foundations with engineering discipline to deliver reliable, scalable and explainable data and AI solutions."
+  },
+
+  "contact": {
+    "email": "nidhipatel18398@gmail.com",
+    "phonePublic": false,
+    "linkedin": {
+      "handle": "nidhi-patel18",
+      "url": "https://www.linkedin.com/in/nidhi-patel18"
+    },
+    "github": {
+      "username": "patelnidhi1898",
+      "url": "https://github.com/patelnidhi1898"
+    }
+  },
+
+  "skills": [
+    {
+      "category": "Data Science & ML",
+      "items": [
+        "Predictive Modelling",
+        "Anomaly Detection",
+        "Time-Series Forecasting",
+        "Feature Engineering",
+        "A/B Testing",
+        "Hypothesis Testing",
+        "Explainable AI (SHAP)",
+        "scikit-learn",
+        "XGBoost",
+        "PyTorch",
+        "TensorFlow",
+        "statsmodels"
+      ]
+    },
+    {
+      "category": "Generative AI & LLM Engineering",
+      "items": [
+        "LLMs",
+        "RAG",
+        "LangChain",
+        "LangGraph",
+        "Multi-Agent Systems",
+        "Tool Calling",
+        "Prompt Engineering",
+        "Embeddings",
+        "Vector Databases (FAISS)",
+        "Hugging Face",
+        "Guardrails",
+        "Input/Output Validation",
+        "Human-in-the-Loop Workflows",
+        "LLM Monitoring & Observability"
+      ]
+    },
+    {
+      "category": "MLOps & Deployment",
+      "items": [
+        "Docker",
+        "Jenkins",
+        "CI/CD",
+        "Trivy",
+        "MLflow",
+        "Model Deployment",
+        "Workflow Automation",
+        "Flask",
+        "FastAPI",
+        "Streamlit",
+        "Git"
+      ]
+    },
+    {
+      "category": "Cloud & Data Engineering",
+      "items": [
+        "Azure Databricks",
+        "Apache Spark",
+        "Delta Lake",
+        "Medallion Architecture",
+        "Azure Storage",
+        "ETL Pipelines",
+        "Data Modelling",
+        "Data Validation",
+        "Data Quality"
+      ]
+    },
+    {
+      "category": "Programming & Databases",
+      "items": [
+        "Python (pandas, NumPy)",
+        "SQL",
+        "R",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server",
+        "SQLite",
+        "MongoDB"
+      ]
+    },
+    {
+      "category": "BI & Visualisation",
+      "items": [
+        "Tableau",
+        "Power BI",
+        "Excel",
+        "Plotly",
+        "Matplotlib",
+        "Seaborn"
+      ]
+    }
+  ],
+
+  "skillKeywords": [
+    "Predictive Modelling",
+    "Anomaly Detection",
+    "Time-Series Forecasting",
+    "Feature Engineering",
+    "A/B Testing",
+    "Hypothesis Testing",
+    "Explainable AI (SHAP)",
+    "scikit-learn",
+    "XGBoost",
+    "PyTorch",
+    "TensorFlow",
+    "statsmodels",
+    "LLMs",
+    "RAG",
+    "LangChain",
+    "LangGraph",
+    "Multi-Agent Systems",
+    "Tool Calling",
+    "Prompt Engineering",
+    "Embeddings",
+    "Vector Databases (FAISS)",
+    "Hugging Face",
+    "Guardrails",
+    "Input/Output Validation",
+    "Human-in-the-Loop Workflows",
+    "LLM Monitoring & Observability",
+    "Docker",
+    "Jenkins",
+    "CI/CD",
+    "Trivy",
+    "MLflow",
+    "Model Deployment",
+    "Workflow Automation",
+    "Flask",
+    "FastAPI",
+    "Streamlit",
+    "Git",
+    "Azure Databricks",
+    "Apache Spark",
+    "Delta Lake",
+    "Medallion Architecture",
+    "Azure Storage",
+    "ETL Pipelines",
+    "Data Modelling",
+    "Data Validation",
+    "Data Quality",
+    "Python (pandas, NumPy)",
+    "SQL",
+    "R",
+    "PostgreSQL",
+    "MySQL",
+    "SQL Server",
+    "SQLite",
+    "MongoDB",
+    "Tableau",
+    "Power BI",
+    "Excel",
+    "Plotly",
+    "Matplotlib",
+    "Seaborn"
+  ],
+
+  "experience": [
+    {
+      "id": "miles-and-more",
+      "role": "Data Analytics Intern – Marketing, Strategy & Customer Insights",
+      "company": "Miles & More (Lufthansa Group)",
+      "companyShort": "Miles & More",
+      "location": "Frankfurt am Main, Germany",
+      "start": "2026-09",
+      "end": null,
+      "current": true,
+      "durationDisplay": "09/2026 – Present",
+      "employmentType": "Internship",
+      "highlights": [
+        "Analyse sales, customer and market data to identify customer patterns, commercial opportunities and performance drivers.",
+        "Conduct customer journey and lifecycle analysis to understand engagement, retention and churn patterns across customer segments.",
+        "Apply customer segmentation, churn analysis, pricing analytics and A/B testing, translating findings into optimisation opportunities.",
+        "Help maintain and monitor data pipelines (Omnichannel pipelines) that enable relevant offers to be sent to customers across various channels.",
+        "Improve data quality and analytical data models on Azure Databricks, supporting scalable, reliable analytics and model-ready data.",
+        "Develop and maintain KPIs, Tableau dashboards and analytical reports for operational and strategic decision-making.",
+        "Collaborate with Sales, Marketing, Customer Service and IT to translate business requirements into data-driven solutions."
+      ],
+      "stack": [
+        "Azure Databricks",
+        "Tableau",
+        "SQL",
+        "Python"
+      ],
+      "domain": "Loyalty / aviation / customer analytics",
+      "summaryForPortfolio": "Customer lifecycle, segmentation, churn and pricing analytics on Azure Databricks, with Tableau KPI reporting for marketing and strategy stakeholders.",
+      "portfolioSummary": "An internship with the marketing, strategy and customer-insights team of a loyalty programme, where the analysis underpins customer and commercial decisions.",
+      "portfolioHighlights": [
+        "Apply segmentation, churn and pricing analysis and A/B tests, turning the findings into optimisation opportunities.",
+        "Develop Tableau KPI dashboards and analytical reports for operational and strategic decisions.",
+        "Maintain the omnichannel pipelines that carry offers to customers, and prepare model-ready data on Azure Databricks."
+      ]
+    },
+    {
+      "id": "barkow-consulting",
+      "role": "Junior Research Analyst / Data Scientist",
+      "roleProgression": "Working Student, then Full-Time from 01/2026",
+      "company": "Barkow Consulting GmbH",
+      "companyShort": "Barkow Consulting",
+      "location": "Düsseldorf, Germany",
+      "start": "2024-02",
+      "end": "2026-06",
+      "current": false,
+      "durationDisplay": "02/2024 – 06/2026",
+      "employmentType": "Working student, then full-time",
+      "highlights": [
+        "Built and maintained Python-based ETL pipelines to collect, clean, transform and integrate large-scale geospatial and financial data from multiple sources.",
+        "Designed automated data-processing workflows and reusable data models that improved data quality, consistency and analytical readiness.",
+        "Designed and applied machine learning frameworks for regional cash-access anomaly detection, translating model outputs into actionable business recommendations.",
+        "Collaborated with technical teams on scalable databases and analytical models, ensuring reliable and reusable data assets.",
+        "Managed analytical sub-projects, monitored delivery and coordinated research outputs with stakeholders."
+      ],
+      "stack": [
+        "Python",
+        "SQL",
+        "ETL Pipelines",
+        "Anomaly Detection",
+        "Geospatial Data"
+      ],
+      "domain": "Consulting / geospatial & financial data",
+      "summaryForPortfolio": "Built Python ETL pipelines and reusable data models over large geospatial and financial datasets, plus ML frameworks for regional cash-access anomaly detection.",
+      "portfolioSummary": "A working-student role that became full-time, building a consulting research team’s data foundation.",
+      "portfolioHighlights": [
+        "Built Python ETL pipelines that integrated large geospatial and financial datasets from multiple sources.",
+        "Designed automated data-processing workflows and reusable data models that improved data quality, consistency and readiness for analysis.",
+        "Applied machine-learning frameworks to regional cash-access anomalies, turning the output into business recommendations."
+      ]
+    },
+    {
+      "id": "vonovia",
+      "role": "Data Scientist / Data Analyst",
+      "roleProgression": "Working Student",
+      "company": "Vonovia SE",
+      "companyShort": "Vonovia",
+      "location": "Bochum, Germany",
+      "start": "2023-02",
+      "end": "2024-01",
+      "current": false,
+      "durationDisplay": "02/2023 – 01/2024",
+      "employmentType": "Working student",
+      "highlights": [
+        "Conducted customer, market and business analyses using Python and SQL to support business decisions.",
+        "Developed Tableau, Power BI and Python dashboards to monitor performance and identify growth opportunities.",
+        "Prepared and transformed large datasets to improve data quality and analytical efficiency."
+      ],
+      "stack": [
+        "Python",
+        "SQL",
+        "Tableau",
+        "Power BI"
+      ],
+      "domain": "Real estate",
+      "summaryForPortfolio": "Customer and market analyses in Python/SQL plus Tableau, Power BI and Python dashboards for performance monitoring and growth opportunities.",
+      "portfolioSummary": "A year as a working student in a real-estate company’s analytics team.",
+      "portfolioHighlights": [
+        "Developed Tableau, Power BI and Python dashboards that tracked performance and identified growth opportunities.",
+        "Prepared and transformed large datasets to improve data quality and analytical efficiency.",
+        "Ran Python and SQL analyses of customers and markets to support business decisions."
+      ]
+    },
+    {
+      "id": "amprion",
+      "role": "Data Science / Data Analysis",
+      "roleProgression": "Working Student",
+      "company": "Amprion GmbH",
+      "companyShort": "Amprion",
+      "location": "Dortmund, Germany",
+      "start": "2022-04",
+      "end": "2022-09",
+      "current": false,
+      "durationDisplay": "04/2022 – 09/2022",
+      "employmentType": "Working student",
+      "highlights": [
+        "Conducted time-series forecasting of European fuel prices for trading applications using statistical, machine learning and deep learning models.",
+        "Translated model outputs into decision-support insights; developed a customised Power BI map visualisation for market data."
+      ],
+      "stack": [
+        "Time-Series Forecasting",
+        "Statistical Modelling",
+        "Machine Learning",
+        "Deep Learning",
+        "Power BI"
+      ],
+      "domain": "Energy / trading",
+      "summaryForPortfolio": "Time-series forecasting of European fuel prices for trading applications, and a custom Power BI map visualisation for market data.",
+      "portfolioSummary": "A six-month working-student placement in an energy company’s data team, where the forecasts fed trading applications.",
+      "portfolioHighlights": [
+        "Modelled European fuel prices as time series using statistical, machine-learning and deep-learning methods.",
+        "Turned model outputs into decision-support insights rather than raw results.",
+        "Created a customised Power BI map visualisation for market data."
+      ]
+    }
+  ],
+
+  "education": [
+    {
+      "id": "msc-data-science",
+      "degree": "M.Sc. Data Science",
+      "institution": "Technical University Dortmund",
+      "institutionShort": "TU Dortmund",
+      "location": "Dortmund, Germany",
+      "start": "2020-10",
+      "end": "2026-12",
+      "current": true,
+      "endStatus": "expected",
+      "durationDisplay": "10/2020 – 12/2026 (expected)",
+      "details": [
+        "All coursework completed; degree award pending final credit registration."
+      ],
+      "coursework": [
+        "Statistical Modelling",
+        "Machine Learning",
+        "Deep Learning",
+        "Databases",
+        "Big Data",
+        "Data Engineering",
+        "NLP",
+        "AI"
+      ]
+    },
+    {
+      "id": "be-computer-engineering",
+      "degree": "B.E. Computer Engineering",
+      "institution": "Gujarat Technological University",
+      "institutionShort": "GTU",
+      "location": "Ahmedabad, India",
+      "start": "2015-07",
+      "end": "2019-05",
+      "current": false,
+      "endStatus": "completed",
+      "durationDisplay": "07/2015 – 05/2019",
+      "details": [],
+      "coursework": [
+        "Data Structures & Algorithms",
+        "Databases",
+        "Data Mining & BI",
+        "Big Data",
+        "AI",
+        "Software Engineering"
+      ]
+    }
+  ],
+
+  "certifications": [
+    {
+      "id": "databricks-data-engineering",
+      "name": "Get Started with Databricks for Data Engineering",
+      "issuer": "Databricks",
+      "issued": "2026-07",
+      "credentialId": null,
+      "verificationUrl": "https://credentials.databricks.com/8ad6ef4d-f385-428f-8a69-3194ab0b0ca1#acc.pWrvPXFI"
+    },
+    {
+      "id": "databricks-azure-platform-architect",
+      "name": "Academy Accreditation - Azure Databricks Platform Architect",
+      "issuer": "Databricks",
+      "issued": "2026-07",
+      "credentialId": "189213182",
+      "verificationUrl": "https://credentials.databricks.com/fddc2f4d-8c62-4032-8c5a-5a3e19a12809#acc.Nygh3Umo"
+    },
+    {
+      "id": "databricks-generative-ai-fundamentals",
+      "name": "Academy Accreditation - Generative AI Fundamentals",
+      "issuer": "Databricks",
+      "issued": "2026-05",
+      "credentialId": "183902279",
+      "verificationUrl": "https://credentials.databricks.com/fdecab02-ef17-4e2f-a271-ae22cdb7edcc#acc.JDL4zTOS"
+    }
+  ],
+
+  "projects": [
+    {
+      "id": "medbot",
+      "name": "MedBot",
+      "subtitle": "Production RAG & LLM Application",
+      "role": "Personal project",
+      "featured": true,
+      "status": "completed",
+      "stack": [
+        "LangChain",
+        "FAISS",
+        "Flask",
+        "Docker",
+        "Jenkins",
+        "Trivy"
+      ],
+      "highlights": [
+        "Built an end-to-end RAG application using LangChain, FAISS and LLMs for document-based question answering, with a Flask backend and HTML/CSS frontend.",
+        "Implemented Jenkins CI/CD pipelines to automate testing, container builds and deployment workflows; integrated Trivy for container vulnerability scanning.",
+        "Applied containerised (Docker) practices to package the application as a scalable AI service."
+      ],
+      "links": {},
+      "summaryForPortfolio": "End-to-end RAG application with a Flask frontend, containerised and shipped through Jenkins CI/CD with Trivy vulnerability scanning.",
+      "themes": [
+        "Retrieval-augmented generation",
+        "LLM application engineering",
+        "MLOps & CI/CD",
+        "Container security"
+      ]
+    },
+    {
+      "id": "ai-financial-analyst-agent",
+      "name": "AI Financial Analyst Agent",
+      "subtitle": "LLM Orchestration · RAG · Tool Calling · Structured Outputs",
+      "role": "Personal project",
+      "featured": true,
+      "status": "completed",
+      "stack": [
+        "LLM Orchestration",
+        "RAG",
+        "Tool Calling",
+        "Structured Outputs"
+      ],
+      "highlights": [
+        "Built an end-to-end LLM-powered agent that converts natural-language questions into structured investment analyses and recommendations.",
+        "Implemented RAG-style grounding and tool calling with live financial and web data via APIs to reduce hallucination of financial figures.",
+        "Designed a multi-step orchestration pipeline with model routing, prompt chaining, structured JSON outputs and automated report generation."
+      ],
+      "links": {
+        "github": "https://github.com/patelnidhi1898/AI-Financial-Analyst-Assistant"
+      },
+      "summaryForPortfolio": "An LLM agent that turns natural-language questions into grounded, structured investment analyses using tool calling, model routing and structured JSON outputs.",
+      "themes": [
+        "LLM agents",
+        "Tool calling",
+        "Grounding & hallucination reduction",
+        "Structured outputs"
+      ]
+    },
+    {
+      "id": "contextual-anomaly-detection",
+      "name": "Contextual Anomaly Detection in Cash Withdrawal Distribution Network",
+      "subtitle": "Master's Thesis, TU Dortmund × Barkow Consulting GmbH",
+      "role": "Master's thesis",
+      "featured": true,
+      "status": "completed",
+      "stack": [
+        "Python",
+        "Anomaly Detection",
+        "Explainable AI (XAI)",
+        "Statistical Analysis",
+        "Geospatial Data"
+      ],
+      "highlights": [
+        "Developed a context-aware anomaly detection framework identifying cash-access gaps across Germany, integrating geographic, socioeconomic and financial data.",
+        "Applied Explainable AI (XAI) and statistical analysis to identify anomalous regions and quantify socioeconomic and regional drivers of deviations.",
+        "Translated findings into recommendations for equitable financial access, highlighting structural deficiencies in Thüringen and Brandenburg."
+      ],
+      "links": {
+        "github": "https://github.com/patelnidhi1898/Contextual-Anomaly-Detection-in-Cash-Withdrawal-Resource-Distribution",
+        "report": "https://github.com/patelnidhi1898/Contextual-Anomaly-Detection-in-Cash-Withdrawal-Resource-Distribution/blob/main/Thesis_report_Contextual%20Anomaly%20Detection.pdf"
+      },
+      "summaryForPortfolio": "A context-aware anomaly detection framework mapping cash-access gaps across Germany, combining geospatial, socioeconomic and financial data with explainable AI.",
+      "themes": [
+        "Explainable AI",
+        "Anomaly detection",
+        "Geospatial analytics",
+        "Financial inclusion"
+      ]
+    }
+  ],
+
+  "languages": [
+    {
+      "language": "English",
+      "level": "Business Fluent",
+      "cefr": null
+    },
+    {
+      "language": "German",
+      "level": "Intermediate",
+      "cefr": null
+    },
+    {
+      "language": "Gujarati",
+      "level": "Native",
+      "cefr": null
+    },
+    {
+      "language": "Hindi",
+      "level": "Native",
+      "cefr": null
+    }
+  ],
+
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/nidhi-patel18",
+    "github": "https://github.com/patelnidhi1898",
+    "email": "mailto:nidhipatel18398@gmail.com",
+    "resumePdf": "Nidhi_Patel_Resume_DataEng (2).pdf"
+  },
+
+  "portfolioContentHints": {
+    "note": "Derived guidance for the site build agent; not part of the CV. All underlying facts are above.",
+    "differentiators": [
+      "Combine statistical modelling with production data engineering (ETL, Spark, Delta Lake, Medallion architecture).",
+      "Hands-on production LLM work: RAG, multi-agent orchestration, tool calling, guardrails and observability.",
+      "Customer-analytics experience at Lufthansa Group on Azure Databricks.",
+      "Explainable ML applied to a real geospatial/socioeconomic problem (master's thesis with public report)."
+    ],
+    "proofPoints": [
+      "4+ years across four employers in Germany",
+      "3 Databricks certifications, including Azure Databricks Platform Architect",
+      "2 public GitHub projects plus a published thesis report",
+      "M.Sc. Data Science, TU Dortmund"
+    ],
+    "privacyNotes": [
+      "Do not publish the phone number unless the owner explicitly asks.",
+      "Do not publish the home address; city-level location is sufficient.",
+      "Do not invent metrics, employers, dates or credentials."
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+---
+import { profile, cvUrl } from '../data/profile';
+import { copy, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+  home: string;
+  enHref: string;
+  deHref: string;
+}
+
+const { lang, home, enHref, deHref } = Astro.props;
+const t = copy[lang];
+const href = (hash: string) => `${home}${hash}`;
+
+// One control, two positions: the whole pill switches language rather than
+// offering two separate links. The link points at this same page in the other
+// locale, and its accessible name describes the action, not the current state.
+const otherLang = lang === 'en' ? 'de' : 'en';
+const otherHref = lang === 'en' ? deHref : enHref;
+---
+
+<header class="nav">
+  <a href={home} class="nav-logo" aria-label={t.nav.home}>
+    <span class="logo-mark" aria-hidden="true">NP</span>
+    <span>{profile.fullName}</span>
+  </a>
+
+  <nav class="nav-links" id="nav-links" aria-label={t.nav.primary}>
+    <a href={href('#work')}>{t.nav.work}</a>
+    <a href={href('#experience')}>{t.nav.experience}</a>
+    <a href={href('#capabilities')}>{t.nav.skills}</a>
+    <a href={href('#about')}>{t.nav.about}</a>
+    <a href={href('#contact')} class="nav-cta">{t.nav.contact}</a>
+  </nav>
+
+  <div class="nav-tools">
+    <a
+      class="lang-switch"
+      href={otherHref}
+      hreflang={otherLang}
+      lang={otherLang}
+      data-active={lang}
+      aria-label={t.nav.langSwitch}
+      title={t.nav.langSwitch}
+    >
+      <span class="lang-thumb" aria-hidden="true"></span>
+      <span class="lang-opt" aria-hidden="true">EN</span>
+      <span class="lang-opt" aria-hidden="true">DE</span>
+    </a>
+
+    <button class="icon-btn theme-toggle" aria-label={t.nav.themeGeneric} title={t.nav.themeGeneric}>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </svg>
+    </button>
+
+    <a class="icon-btn" href={cvUrl} download aria-label={t.nav.cv} title={t.nav.cv}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+      </svg>
+    </a>
+
+    <button class="icon-btn nav-toggle" aria-label={t.nav.menu} aria-expanded="false" aria-controls="nav-links">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+    </button>
+  </div>
+</header>

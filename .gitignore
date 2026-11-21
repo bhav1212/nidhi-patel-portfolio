@@ -1,0 +1,17 @@
+# Dependencies and build output (CI builds its own copy)
+node_modules/
+dist/
+.astro/
+
+# Local tooling
+.DS_Store
+*.log
+.env
+.env.*
+
+# Private originals — never publish these.
+# The CV PDF that ships in public/ is the redacted copy; the source resume and
+# the untouched profile photo stay local (the photo also carries camera EXIF).
+Nidhi_Patel_Resume_DataEng*.pdf
+proffessional_profile_photo.jpeg
+data/private-*.json

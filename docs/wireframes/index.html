@@ -1,0 +1,1596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nidhi Patel — portfolio wireframe — Gate 2</title>
+<style>
+/* ============================================================
+   WIREFRAME DOCUMENT CHROME
+   Greyscale only. No external fonts, images, scripts or requests.
+   Type substitutes: Fraunces -> ui-serif/Georgia; Geist -> system-ui;
+   JetBrains Mono -> ui-monospace. Recorded in docs/wireframes/notes.md.
+   ============================================================ */
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body {
+  margin: 0;
+  background: #e3e3e3;
+  color: #111;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.mono { font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; }
+.vh {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+a { color: inherit; }
+img, svg { max-width: 100%; }
+:focus-visible { outline: 3px solid #111; outline-offset: 2px; }
+.demo-focus { outline: 3px solid #111; outline-offset: 2px; }
+
+.doc-skip {
+  position: fixed; top: 8px; left: 8px; z-index: 999;
+  transform: translateY(-220%);
+  background: #fff; border: 2px solid #111; border-radius: 4px;
+  padding: 10px 16px; font-size: 13px; text-decoration: none;
+}
+.doc-skip:focus { transform: translateY(0); }
+
+.doc-head { background: #fff; border-bottom: 1px solid #111; padding: 22px 28px 18px; }
+.doc-head h1 { margin: 0 0 6px; font-size: 21px; letter-spacing: -0.01em; font-weight: 600; }
+.doc-head .sub { margin: 0; font-size: 13.5px; color: #3d3d3d; max-width: 110ch; }
+.doc-meta {
+  display: flex; flex-wrap: wrap; gap: 6px 24px; margin-top: 14px;
+  font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: #333;
+}
+.doc-meta b { font-weight: 600; color: #111; }
+
+.toolbar {
+  position: sticky; top: 0; z-index: 60;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px;
+  padding: 10px 28px; background: #f1f1f1; border-bottom: 1px solid #a9a9a9;
+}
+.toolbar .group { display: flex; align-items: center; gap: 6px; }
+.toolbar .tb-label { font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #444; }
+.toolbar label {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 34px; padding: 0 13px; border: 1px solid #777; border-radius: 999px;
+  background: #fff; font-size: 12px; cursor: pointer; user-select: none;
+}
+.toolbar input:checked + label { background: #111; color: #fff; border-color: #111; }
+.toolbar input:focus-visible + label { outline: 3px solid #111; outline-offset: 2px; }
+.toolbar .hint { font-size: 11px; color: #444; max-width: 62ch; }
+
+.frames { display: flex; align-items: flex-start; gap: 28px; padding: 28px; overflow-x: auto; }
+.frame-wrap { flex: 0 0 auto; }
+.frame-cap {
+  margin: 0 0 8px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #222;
+}
+.frame-cap span { color: #555; letter-spacing: 0.04em; text-transform: none; }
+.frame {
+  position: relative; background: #fff; border: 1px solid #111; flex: 0 0 auto;
+}
+.frame--desktop { width: 1440px; }
+.frame--mobile {
+  width: 390px; box-sizing: content-box;
+  border: 8px solid #151515; border-radius: 30px; overflow: hidden;
+}
+.frame-chrome {
+  height: 36px; display: flex; align-items: center; gap: 8px;
+  padding: 0 12px; background: #f2f2f2; border-bottom: 1px solid #b9b9b9;
+}
+.frame-chrome .dot { width: 9px; height: 9px; border-radius: 50%; border: 1px solid #555; }
+.frame-chrome .url {
+  margin-left: 10px; flex: 1; height: 20px; border: 1px solid #b3b3b3; border-radius: 999px;
+  background: #fff; font-size: 9.5px; color: #444; display: flex; align-items: center; padding: 0 10px;
+}
+.frame-chrome .vp { font-size: 9px; letter-spacing: 0.06em; color: #444; }
+.m-chrome {
+  height: 26px; background: #151515; color: #fff; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 14px; font-size: 9px; letter-spacing: 0.04em;
+}
+.m-chrome .notch { width: 96px; height: 12px; background: #151515; border: 1px solid #3a3a3a; border-radius: 999px; }
+.fold {
+  position: absolute; left: 0; right: 0; height: 0; border-top: 2px dashed #4a4a4a;
+  z-index: 30; pointer-events: none;
+}
+.fold b {
+  position: absolute; right: 10px; top: -9px; background: #fff; border: 1px solid #555;
+  padding: 0 6px; font-size: 9px; letter-spacing: 0.04em; white-space: nowrap;
+}
+body:has(#view-desktop:checked) .frame-wrap--mobile { display: none; }
+body:has(#view-mobile:checked) .frame-wrap--desktop { display: none; }
+body:has(#anno-toggle:not(:checked)) .anno { display: none; }
+body:has(#anno-toggle:not(:checked)) .wfsec { grid-template-columns: 0 minmax(0, 1fr); }
+body:has(#anno-toggle:not(:checked)) .m-anno { display: none; }
+
+/* ============================================================
+   HOME PAGE — DESKTOP 1440
+   The annotation rail is 200px; the design column is 1240px with a
+   1200px container, so the approved 1440 / 1200 / 120 grid is intact.
+   ============================================================ */
+.page { width: 100%; background: #fff; }
+.wfsec { display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+.anno {
+  background: #ededed; border-right: 1px dashed #8f8f8f; border-bottom: 1px dashed #bcbcbc;
+  padding: 12px 12px 16px; font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 9px; line-height: 1.42; color: #2e2e2e;
+}
+.anno .an-name { display: block; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+.anno .an-c { display: block; margin: 1px 0 6px; color: #111; }
+.anno .pri {
+  display: inline-block; border: 1px solid #333; padding: 0 4px; font-size: 9px;
+  letter-spacing: 0.04em; margin: 0 0 5px;
+}
+.anno .an-ref, .anno .an-note, .anno .an-links { display: block; margin-top: 4px; }
+.anno .an-ref { color: #3d3d3d; }
+.anno .an-note { color: #222; }
+.anno .an-links { color: #3d3d3d; }
+.anno .an-flag {
+  display: inline-block; margin-top: 6px; border: 1px dashed #444; padding: 0 4px; font-size: 8.5px;
+}
+.sec-body { padding: 44px 0 48px; border-bottom: 1px solid #d2d2d2; }
+.anno .an-sep { display: block; border-top: 1px solid #bcbcbc; margin: 11px 0 9px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* header */
+.site-header { border-bottom: 1px solid #c8c8c8; }
+.site-header .bar { min-height: 64px; display: flex; align-items: center; gap: 28px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
+.brand .mark {
+  width: 28px; height: 28px; border: 1px solid #111; border-radius: 4px;
+  display: grid; place-items: center; font: 600 11px ui-monospace, Menlo, monospace; letter-spacing: 0.02em;
+}
+.brand .name { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; }
+.primary-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.primary-nav a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px;
+  text-decoration: none; font-size: 14px; border-radius: 6px;
+}
+.primary-nav a:hover { background: #f0f0f0; }
+.primary-nav a[aria-current="page"] { border-bottom: 2px solid #111; border-radius: 0; }
+.nav-tools { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  min-width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  gap: 6px; border: 1px solid #8f8f8f; border-radius: 8px; background: #fff;
+  font-size: 12px; padding: 0 10px; cursor: default;
+}
+.lang-deferred {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 10px;
+  border: 1px dashed #777; border-radius: 8px; font-size: 12px; color: #444;
+}
+.lang-deferred em { font-style: normal; font-size: 8.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid #111;
+  background: #fff; color: #111; font-size: 14.5px; font-weight: 500; text-decoration: none;
+  white-space: nowrap;
+}
+.btn--primary { background: #111; color: #fff; }
+.btn--small { min-height: 44px; padding: 0 18px; font-size: 13px; }
+
+/* tech strip */
+.tech-strip { border-top: 1px solid #c8c8c8; border-bottom: 1px solid #c8c8c8; background: #fafafa; }
+.tech-strip .row { display: flex; align-items: center; gap: 24px; padding: 14px 0; flex-wrap: wrap; }
+.tech-strip .label { font: 10px ui-monospace, Menlo, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #333; }
+.tech-strip ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.tech-strip li { font-size: 13px; color: #222; }
+
+/* hero */
+.hero { padding: 20px 0 22px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 48px; align-items: start; }
+.eyebrow { font: 11px ui-monospace, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; color: #333; margin: 0 0 10px; }
+.hero h2 {
+  font-family: ui-serif, Georgia, "Times New Roman", serif; font-weight: 400;
+  font-size: 64px; line-height: 1; letter-spacing: -0.03em; margin: 0 0 16px;
+  text-wrap: balance;
+}
+.hero h2 .name { display: block; }
+.hero h2 .statement { display: block; font-size: 38px; line-height: 1.12; letter-spacing: -0.02em; margin-top: 2px; }
+.slot {
+  position: relative; display: inline-block; border: 1px dashed #555; background: #f1f1f1;
+  padding: 0 6px; font-style: italic;
+}
+.slot sup { font: 9px ui-monospace, Menlo, monospace; font-style: normal; vertical-align: super; letter-spacing: 0; }
+.lead { font-size: 17.5px; line-height: 1.55; color: #2f2f2f; max-width: 52ch; margin: 0 0 22px; }
+.lead a { text-decoration: underline; text-underline-offset: 3px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.social-row { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; font-size: 12px; }
+.social-row a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; text-decoration: underline; text-underline-offset: 3px; }
+.social-row .sep { color: #777; }
+.hero-meta {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: #c8c8c8;
+  border: 1px solid #c8c8c8; margin-top: 18px;
+}
+.hero-meta div { background: #fff; padding: 10px 13px; }
+.hero-meta dt { font: 9.5px ui-monospace, Menlo, monospace; letter-spacing: 0.09em; text-transform: uppercase; color: #444; }
+.hero-meta dd { margin: 3px 0 0; font-size: 12.5px; line-height: 1.45; }
+
+.portrait-col { display: flex; flex-direction: column; gap: 8px; }
+.portrait-slot {
+  width: 100%; height: 144px; border: 1px dashed #6f6f6f; background: #f4f4f4;
+  display: grid; place-items: center; text-align: center; padding: 8px;
+  font: 9px/1.4 ui-monospace, Menlo, monospace; color: #444;
+}
+.portrait-cap { font: 9.5px/1.45 ui-monospace, Menlo, monospace; color: #3d3d3d; margin: 0; }
+
+/* section head */
+.sec-label {
+  display: flex; align-items: center; gap: 10px; font: 10px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #333; margin-bottom: 8px;
+}
+.sec-label .num { font-size: 13px; letter-spacing: 0; color: #111; }
+.sec-label .rule { width: 32px; height: 1px; background: #111; }
+.sec-title {
+  font-family: ui-serif, Georgia, "Times New Roman", serif; font-weight: 400;
+  font-size: 36px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 8px;
+}
+.sec-dek { max-width: 62ch; color: #3f3f3f; font-size: 15.5px; margin: 0 0 16px; }
+#work .sec-body { padding-top: 18px; }
+
+/* badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid #444; background: #fff; font: 9.5px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+}
+.badge--public { border-width: 2px; }
+.badge--method { border-style: dashed; }
+.badge--request { border-style: dotted; border-width: 2px; }
+.badge--private { border-style: double; border-width: 3px; padding: 1px 7px; }
+.badge .glyph { font-size: 8px; }
+
+/* ledger */
+.ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid #111; }
+.ledger-head {
+  display: grid; grid-template-columns: 2fr 3fr 4fr 2fr 1fr; gap: 16px; padding: 8px 12px;
+  border-bottom: 1px solid #111; font: 9.5px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #333;
+}
+.ledger li { border-bottom: 1px solid #c8c8c8; }
+.ledger-row {
+  display: grid; grid-template-columns: 2fr 3fr 4fr 2fr 1fr; gap: 16px;
+  padding: 20px 12px; text-decoration: none; color: inherit; min-height: 44px;
+}
+.ledger-row:hover { background: #f1f1f1; }
+.ledger-row:focus-visible { outline: 3px solid #111; outline-offset: -3px; background: #f1f1f1; }
+.ledger .period { font: 11.5px ui-monospace, Menlo, monospace; color: #333; line-height: 1.5; }
+.ledger .sys { font-family: ui-serif, Georgia, serif; font-size: 19px; line-height: 1.25; letter-spacing: -0.01em; }
+.ledger .sys small { display: block; font-family: system-ui, sans-serif; font-size: 11px; letter-spacing: 0; color: #555; margin-top: 4px; }
+.ledger .decision { font-size: 13.5px; line-height: 1.5; color: #222; }
+.ledger .evidence { font-size: 12px; }
+.ledger .route { font: 10.5px ui-monospace, Menlo, monospace; text-align: right; white-space: nowrap; }
+
+/* experience */
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #c8c8c8; border: 1px solid #c8c8c8; margin-bottom: 26px; }
+.fact { background: #fff; padding: 14px 16px; }
+.fact .n { font-family: ui-serif, Georgia, serif; font-size: 34px; line-height: 1; letter-spacing: -0.02em; }
+.fact .l { font: 9.5px ui-monospace, Menlo, monospace; letter-spacing: 0.07em; text-transform: uppercase; color: #333; margin-top: 6px; }
+.fact .s { font-size: 11.5px; color: #555; margin-top: 2px; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.role { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 24px; padding: 22px 0; border-top: 1px solid #c8c8c8; }
+.timeline .role:first-child { border-top: 1px solid #111; }
+.role .dates { font: 11.5px ui-monospace, Menlo, monospace; color: #333; padding-top: 4px; }
+.role h4 { font-size: 21px; line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 4px; font-weight: 500; }
+.role .emp { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 14.5px; color: #222; margin-bottom: 4px; }
+.role .prog { font: 10px ui-monospace, Menlo, monospace; color: #444; margin: 0 0 6px; }
+.role .domain { display: inline-block; font: 9.5px ui-monospace, Menlo, monospace; letter-spacing: 0.07em; text-transform: uppercase; color: #444; border: 1px solid #bbb; border-radius: 2px; padding: 1px 6px; }
+.role ul { margin: 10px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.55; color: #222; max-width: 70ch; }
+.role li { margin-bottom: 4px; }
+
+/* credential rail */
+.rail-group { font: 10px ui-monospace, Menlo, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: #333; margin: 0 0 2px; padding-top: 6px; }
+.rail { list-style: none; margin: 0 0 22px; padding: 0; }
+.rail li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 24px; padding: 14px 0; border-top: 1px solid #c8c8c8; }
+.rail li:first-of-type { border-top: 1px solid #111; }
+.rail .date { font: 11.5px ui-monospace, Menlo, monospace; color: #333; padding-top: 3px; }
+.rail h4 { font-size: 16.5px; margin: 0 0 3px; font-weight: 500; letter-spacing: -0.005em; }
+.rail .meta { font-size: 13px; color: #444; margin: 0; }
+.rail .cid { font: 10.5px ui-monospace, Menlo, monospace; color: #222; margin: 5px 0 0; }
+.rail .verify { display: inline-flex; align-items: center; min-height: 24px; font: 10.5px ui-monospace, Menlo, monospace; text-decoration: underline; text-underline-offset: 2px; margin-top: 4px; }
+.rail .verify span.ext { font-size: 9px; margin-left: 4px; }
+
+/* capabilities */
+.cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #c8c8c8; border: 1px solid #c8c8c8; }
+.cap { background: #fff; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.cap h4 { font-size: 15px; margin: 0; font-weight: 600; letter-spacing: -0.005em; }
+.cap .items { list-style: none; margin: 0; padding: 0; font-size: 12.5px; line-height: 1.65; }
+.cap .items li { display: inline; }
+.cap .items li::after { content: " · "; color: #888; }
+.cap .items li:last-child::after { content: ""; }
+.cap .also { margin: 0; font-size: 11px; line-height: 1.5; color: #555; }
+.cap .also b { font-weight: 600; color: #444; }
+.cap .ev { margin-top: auto; padding-top: 6px; font: 9.5px ui-monospace, Menlo, monospace; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 2px; min-height: 24px; display: inline-flex; align-items: center; }
+.cap dl { margin: 0; }
+.cap dl div { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; border-bottom: 1px solid #e2e2e2; font-size: 12.5px; }
+.cap dl div:last-child { border-bottom: 0; }
+.cap dt { color: #333; }
+.cap dd { margin: 0; color: #111; }
+
+/* about */
+.prose { max-width: 65ch; font-size: 17px; line-height: 1.65; color: #1d1d1d; margin: 0 0 26px; }
+.how { margin: 0; padding: 0; max-width: 78ch; }
+.how div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 24px; padding: 12px 0; border-top: 1px solid #d2d2d2; }
+.how dt { font: 9.5px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #333; padding-top: 3px; }
+.how dd { margin: 0; font-size: 14px; line-height: 1.55; }
+.lang-sentence { margin: 20px 0 0; font-size: 14px; color: #333; }
+
+/* contact */
+.contact-band { border: 1px solid #a3a3a3; border-radius: 12px; background: #f4f4f4; padding: 38px 40px; }
+.contact-band .accent-rule { width: 48px; height: 2px; background: #111; margin-bottom: 20px; }
+.contact-band .eyebrow { margin-bottom: 8px; }
+.contact-band h3 { font-family: ui-serif, Georgia, serif; font-weight: 400; font-size: 34px; line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 12px; }
+.contact-band p.body { max-width: 60ch; font-size: 15.5px; color: #2c2c2c; margin: 0 0 24px; }
+.contact-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.chip { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 1px solid #999; border-radius: 999px; background: #fff; font: 10.5px ui-monospace, Menlo, monospace; color: #333; }
+
+/* footer */
+.site-footer { border-top: 1px solid #111; padding: 30px 0 34px; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; }
+.foot-grid h3 { font: 9.5px ui-monospace, Menlo, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: #333; margin: 0 0 8px; }
+.foot-grid p { margin: 0; font-size: 12.5px; color: #333; }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; }
+.foot-grid li { margin-bottom: 2px; }
+.foot-grid a { display: inline-flex; align-items: center; min-height: 28px; font-size: 12.5px; text-decoration: none; }
+.foot-grid a:hover { text-decoration: underline; }
+.foot-legal { margin-top: 22px; padding-top: 14px; border-top: 1px solid #d2d2d2; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 11px; color: #444; }
+
+/* ============================================================
+   HOME PAGE — MOBILE 390 (real reflow, not a scaled desktop)
+   ============================================================ */
+.m-page { width: 100%; max-width: 390px; background: #fff; font-size: 16px; line-height: 1.6; }
+.m-sec { padding: 26px 20px; border-bottom: 1px solid #d2d2d2; }
+.m-anno {
+  margin: 0 0 14px; padding: 6px 8px; border: 1px dashed #8f8f8f; background: #efefef;
+  font: 8.5px/1.45 ui-monospace, Menlo, monospace; color: #2e2e2e;
+}
+.m-anno b { display: block; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+.m-header { min-height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid #c8c8c8; }
+.m-header .brand { gap: 8px; }
+.m-header .brand .name { font-size: 13.5px; }
+.m-tools { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.m-icon { width: 44px; height: 44px; border: 1px solid #8f8f8f; border-radius: 8px; display: grid; place-items: center; background: #fff; font-size: 13px; padding: 0; cursor: pointer; }
+.m-menu { width: 44px; height: 44px; border: 1px solid #111; border-radius: 8px; display: grid; place-items: center; background: #fff; }
+.m-menu .bars { display: block; width: 16px; height: 10px; border-top: 2px solid #111; border-bottom: 2px solid #111; }
+.m-eyebrow { font: 10px ui-monospace, Menlo, monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #333; margin: 0 0 8px; }
+.m-h1 { font-family: ui-serif, Georgia, serif; font-weight: 400; font-size: 31px; line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 14px; }
+.m-h1 .name { display: block; }
+.m-lead { font-size: 15.5px; line-height: 1.6; color: #333; margin: 0 0 18px; }
+.m-cta { display: grid; gap: 10px; margin: 0 0 14px; }
+.m-cta .btn { width: 100%; }
+.m-social { display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; margin: 0 0 2px; font: 10px ui-monospace, Menlo, monospace; color: #444; }
+.m-social a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 2px; }
+.m-social .sep { color: #777; }
+.m-meta { margin: 0; border-top: 1px solid #c8c8c8; }
+.m-meta div { padding: 10px 0; border-bottom: 1px solid #d8d8d8; }
+.m-meta dt { font: 9px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #555; }
+.m-meta dd { margin: 2px 0 0; font-size: 13px; }
+.m-portrait-wrap { display: flex; align-items: flex-start; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #c8c8c8; }
+.m-portrait {
+  flex: none; width: 96px; height: 115px; border: 1px dashed #6f6f6f; background: #f4f4f4; display: grid; place-items: center;
+  text-align: center; font: 8px/1.35 ui-monospace, Menlo, monospace; color: #444; padding: 6px;
+}
+.m-strip { border-top: 1px solid #c8c8c8; border-bottom: 1px solid #c8c8c8; background: #fafafa; padding: 12px 20px; }
+.m-strip .label { font: 9px ui-monospace, Menlo, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: #333; }
+.m-strip ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 0; padding: 0; font-size: 12px; }
+.m-sec-label { font: 9px ui-monospace, Menlo, monospace; letter-spacing: 0.1em; text-transform: uppercase; color: #333; margin: 0 0 6px; }
+.m-sec-label .num { font-size: 11px; }
+.m-h2 { font-family: ui-serif, Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 6px; }
+.m-dek { font-size: 13px; color: #444; margin: 0 0 18px; }
+.m-facts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #c8c8c8; border: 1px solid #c8c8c8; margin-bottom: 16px; }
+.m-facts div { background: #fff; padding: 8px; }
+.m-facts .n { font-family: ui-serif, Georgia, serif; font-size: 20px; line-height: 1; }
+.m-facts .l { font: 8px ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.05em; color: #444; margin-top: 4px; line-height: 1.3; }
+.m-ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid #111; }
+.m-ledger > li { border-bottom: 1px solid #c8c8c8; }
+.m-ledger a { display: block; padding: 14px 0; text-decoration: none; color: inherit; }
+.m-ledger dl { margin: 0; }
+.m-ledger dt { font: 8.5px ui-monospace, Menlo, monospace; letter-spacing: 0.07em; text-transform: uppercase; color: #555; }
+.m-ledger dd { margin: 2px 0 9px; font-size: 13px; }
+.m-ledger dd.sys { font-family: ui-serif, Georgia, serif; font-size: 18px; line-height: 1.25; }
+.m-ledger dd:last-child { margin-bottom: 0; }
+.m-role { border-top: 1px solid #c8c8c8; padding: 16px 0; }
+.m-role:first-of-type { border-top: 1px solid #111; }
+.m-role .dates { font: 10px ui-monospace, Menlo, monospace; color: #444; }
+.m-role h4 { font-size: 17px; line-height: 1.3; margin: 4px 0 4px; font-weight: 500; }
+.m-role .emp { font-size: 12.5px; color: #333; margin: 0 0 6px; }
+.m-role .emp .badge { margin-top: 4px; }
+.m-role ul { margin: 8px 0 0; padding-left: 16px; font-size: 12.5px; line-height: 1.5; color: #222; }
+.m-role li { margin-bottom: 3px; }
+.m-rail { list-style: none; margin: 0; padding: 0; }
+.m-rail li { padding: 12px 0; border-top: 1px solid #d2d2d2; }
+.m-rail li:first-child { border-top: 1px solid #111; }
+.m-rail .date { font: 9.5px ui-monospace, Menlo, monospace; color: #444; display: block; margin-bottom: 2px; }
+.m-rail h4 { font-size: 14px; line-height: 1.35; margin: 0 0 2px; font-weight: 500; }
+.m-rail .meta { font-size: 11.5px; color: #444; margin: 0; }
+.m-rail .cid { font: 9.5px ui-monospace, Menlo, monospace; margin: 3px 0 0; }
+.m-rail .verify { display: inline-flex; min-height: 24px; align-items: center; font: 9.5px ui-monospace, Menlo, monospace; text-decoration: underline; }
+.m-cap { border-top: 1px solid #d2d2d2; padding: 12px 0; }
+.m-cap:first-of-type { border-top: 1px solid #111; }
+.m-cap h4 { font-size: 13.5px; margin: 0 0 4px; font-weight: 600; }
+.m-cap .items { margin: 0; font-size: 12px; line-height: 1.6; }
+.m-cap .also { margin: 4px 0 0; font-size: 10.5px; color: #555; }
+.m-cap .ev { display: inline-flex; align-items: center; min-height: 24px; font: 9px ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.04em; text-decoration: underline; }
+.m-prose { font-size: 14px; line-height: 1.65; margin: 0 0 14px; }
+.m-how { margin: 0; }
+.m-how div { padding: 10px 0; border-top: 1px solid #d2d2d2; }
+.m-how dt { font: 8.5px ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.07em; color: #444; }
+.m-how dd { margin: 2px 0 0; font-size: 12.5px; line-height: 1.5; }
+.m-contact { border: 1px solid #a3a3a3; border-radius: 10px; background: #f4f4f4; padding: 20px 18px; }
+.m-contact .accent-rule { width: 40px; height: 2px; background: #111; margin-bottom: 14px; }
+.m-contact h3 { font-family: ui-serif, Georgia, serif; font-weight: 400; font-size: 24px; line-height: 1.2; margin: 0 0 10px; }
+.m-contact p { font-size: 13px; margin: 0 0 16px; color: #2c2c2c; }
+.m-contact .m-cta .btn { width: 100%; }
+.m-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.m-footer { padding: 20px; border-top: 1px solid #111; }
+.m-footer .grp { margin-bottom: 14px; }
+.m-footer h3 { font: 9px ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: 0.09em; color: #444; margin: 0 0 4px; }
+.m-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.m-footer a { display: inline-flex; align-items: center; min-height: 28px; font-size: 12px; text-decoration: none; }
+.m-footer .legal { font-size: 10.5px; color: #444; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-top: 1px solid #d2d2d2; padding-top: 12px; }
+
+/* ============================================================
+   CASE STUDY TEMPLATE (desktop 1440)
+   ============================================================ */
+.cs-crumb { font: 10.5px ui-monospace, Menlo, monospace; letter-spacing: 0.05em; color: #333; margin: 0 0 18px; }
+.cs-crumb a { display: inline-flex; align-items: center; min-height: 24px; text-decoration: underline; text-underline-offset: 2px; }
+.cs-metarow { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; font: 10px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #333; }
+.cs-h1 { font-family: ui-serif, Georgia, serif; font-weight: 400; font-size: 54px; line-height: 1.06; letter-spacing: -0.03em; margin: 14px 0 16px; max-width: 20ch; }
+.cs-standfirst { font-size: 20px; line-height: 1.45; color: #333; max-width: 46ch; margin: 0 0 28px; }
+.cs-glance { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #c8c8c8; border: 1px solid #c8c8c8; }
+.cs-glance div { background: #fff; padding: 13px 14px; }
+.cs-glance dt { font: 8.5px ui-monospace, Menlo, monospace; letter-spacing: 0.09em; text-transform: uppercase; color: #444; }
+.cs-glance dd { margin: 3px 0 0; font-size: 12.5px; line-height: 1.45; }
+.cs-layout { display: grid; grid-template-columns: minmax(0, 800px) 220px; gap: 64px; align-items: start; margin-top: 34px; }
+.cs-body h3 { font-family: ui-serif, Georgia, serif; font-weight: 400; font-size: 27px; line-height: 1.25; letter-spacing: -0.015em; margin: 30px 0 10px; }
+.cs-body h3:first-child { margin-top: 0; }
+.cs-body p { max-width: 68ch; font-size: 15px; line-height: 1.65; color: #222; margin: 0 0 10px; }
+.cs-todo { font: 10px ui-monospace, Menlo, monospace; color: #333; border: 1px dashed #777; background: #f5f5f5; padding: 3px 7px; display: inline-block; }
+.cs-toc { border: 1px solid #c8c8c8; border-radius: 8px; padding: 14px; }
+.cs-toc p { font: 9px ui-monospace, Menlo, monospace; letter-spacing: 0.09em; text-transform: uppercase; color: #333; margin: 0 0 8px; }
+.cs-toc ol { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.7; }
+.cs-toc a { display: inline-flex; align-items: center; min-height: 24px; text-decoration: none; }
+.cs-toc a:hover, .cs-toc a:focus-visible { text-decoration: underline; }
+.figure { margin: 26px 0; border: 1px dashed #6f6f6f; background: #f6f6f6; }
+.figure .box { aspect-ratio: 16 / 9; display: grid; place-items: center; text-align: center; padding: 20px; font: 10px/1.6 ui-monospace, Menlo, monospace; color: #444; }
+.figure figcaption { border-top: 1px dashed #b5b5b5; padding: 8px 12px; font: 9.5px/1.5 ui-monospace, Menlo, monospace; color: #333; background: #fff; }
+.figure figcaption .concept { display: inline-block; border: 1px solid #777; padding: 0 5px; margin-right: 6px; }
+.cs-sources { border-top: 1px solid #c8c8c8; margin-top: 30px; padding-top: 14px; }
+.cs-sources h3 { font: 10px ui-monospace, Menlo, monospace; letter-spacing: 0.09em; text-transform: uppercase; margin: 0 0 8px; }
+.cs-sources ul { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.7; }
+.cs-limits { border: 1px solid #8f8f8f; background: #f4f4f4; border-radius: 8px; padding: 16px 18px; margin-top: 26px; }
+.cs-limits h3 { margin-top: 0; font-size: 20px; }
+.cs-postnav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 34px; }
+.cs-postnav a { display: block; border: 1px solid #a3a3a3; border-radius: 8px; padding: 14px 16px; text-decoration: none; min-height: 44px; }
+.cs-postnav .dir { font: 9px ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; color: #444; display: block; margin-bottom: 3px; }
+.cs-postnav .t { font-size: 14px; }
+.cs-postnav .next { text-align: right; }
+.cs-back { display: inline-flex; align-items: center; min-height: 44px; margin-top: 20px; font: 11px ui-monospace, Menlo, monospace; text-decoration: underline; text-underline-offset: 2px; }
+.cs-footer { border-top: 1px solid #111; padding: 22px 0; font-size: 11.5px; color: #444; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.cs-footer a { min-height: 24px; display: inline-flex; align-items: center; margin-left: 14px; }
+
+/* ============================================================
+   ANNOTATION APPENDIX (document level, not part of any frame)
+   ============================================================ */
+.doc-sec { background: #fff; border-top: 1px solid #111; padding: 30px 28px 36px; }
+.doc-sec h2 { font-size: 18px; margin: 0 0 6px; letter-spacing: -0.01em; }
+.doc-sec > p { margin: 0 0 18px; font-size: 13px; color: #3d3d3d; max-width: 100ch; }
+.doc-sec h3 { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 24px 0 8px; color: #222; }
+table.wf-table { border-collapse: collapse; width: 100%; font-size: 12px; }
+table.wf-table th, table.wf-table td { text-align: left; vertical-align: top; border: 1px solid #c8c8c8; padding: 7px 9px; }
+table.wf-table th { background: #efefef; font-weight: 600; font-size: 10.5px; letter-spacing: 0.05em; text-transform: uppercase; color: #222; }
+table.wf-table td.mono { font-size: 11px; }
+.legend-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.legend-grid div { border: 1px solid #c8c8c8; padding: 12px 14px; font-size: 12.5px; }
+.legend-grid h3 { margin-top: 0; }
+.legend-grid ul { margin: 0; padding-left: 18px; }
+.doc-foot { background: #111; color: #e6e6e6; padding: 20px 28px; font-size: 11.5px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<a class="doc-skip" href="#doc-main">Skip to wireframe</a>
+
+<header class="doc-head">
+  <h1>Nidhi Patel — portfolio wireframe · Gate 2</h1>
+  <p class="sub">Greyscale box-model approval artefact. Direction C as the structural base, with A’s typographic discipline and B’s metadata handling (<span class="mono">MASTER_PROMPT.md</span> §5.3). All copy is real draft copy from <span class="mono">docs/plan.md</span> and <span class="mono">docs/reference/content-map.md</span>; empty slots read <span class="mono">[TODO: …]</span>. No brand colour, photography, gradient or animation is present.</p>
+  <div class="doc-meta">
+    <span><b>Deliverable</b> docs/wireframes/index.html</span>
+    <span><b>Date</b> 21 November 2026</span>
+    <span><b>Frames</b> 1440 × 900 · 390 × 844</span>
+    <span><b>Status</b> awaiting explicit Gate 2 approval</span>
+    <span><b>Annotations</b> docs/wireframes/notes.md</span>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="group">
+    <span class="tb-label mono">View</span>
+    <input type="radio" name="view" id="view-both" class="vh" checked>
+    <label for="view-both">Both</label>
+    <input type="radio" name="view" id="view-desktop" class="vh">
+    <label for="view-desktop">Desktop 1440</label>
+    <input type="radio" name="view" id="view-mobile" class="vh">
+    <label for="view-mobile">Mobile 390</label>
+  </div>
+  <div class="group">
+    <span class="tb-label mono">Margin notes</span>
+    <input type="checkbox" id="anno-toggle" class="vh" checked>
+    <label for="anno-toggle">Show annotations</label>
+  </div>
+  <p class="hint">Frames render at true CSS width. Turn annotations off to see the pure 1440 design; scroll horizontally if your window is narrower than the frame. Links are inert in this file — destinations are listed in each margin note and in <span class="mono">notes.md</span>.</p>
+</div>
+
+<main id="doc-main" tabindex="-1">
+
+<!-- ============================================================
+     HOME PAGE — DESKTOP FRAME
+     ============================================================ -->
+<section class="frames" aria-label="Home page wireframes">
+
+  <div class="frame-wrap frame-wrap--desktop">
+    <p class="frame-cap mono">Home · desktop <span>— 1440 × 900 viewport, full page below the fold</span></p>
+    <div class="frame frame--desktop" role="group" aria-label="Home page wireframe, desktop 1440 by 900">
+
+      <div class="frame-chrome" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url mono">patelnidhi1898.github.io/</span>
+        <span class="vp mono">1440 × 900</span>
+      </div>
+
+      <div class="page">
+        <div class="fold" style="top:936px;"><b class="mono">FOLD · 900px</b></div>
+
+        <!-- HEADER + TECH STRIP + HERO -------------------------------------
+             These three share one annotation row on purpose: the rail notes
+             are taller than a 64px header, and a rail-driven grid row would
+             add phantom space above the hero and fake the vertical rhythm.
+             ------------------------------------------------------------------ -->
+        <div class="wfsec" id="top">
+          <aside class="anno">
+            <span class="an-name">Site header</span>
+            <span class="an-c">SiteHeader</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.nav</span> / <span class="mono">.nav-tools</span> / <span class="mono">.nav-toggle</span></span>
+            <span class="an-note">64px sticky. Theme is a three-state control. Focus: “Work” is shown with the 3px ring.</span>
+            <span class="an-flag">LANGUAGE — DEFERRED: no /de/ tree, no hreflang; the EN chip is not a control.</span>
+            <span class="an-links">Links → #work · #experience · #about · #contact · CV PDF</span>
+
+            <span class="an-sep"></span>
+            <span class="an-name">Tech strip</span>
+            <span class="an-c">TechStrip</span>
+            <span class="pri">P1</span>
+            <span class="an-ref">ref: <span class="mono">.tech-strip</span> marquee — static, not animated</span>
+            <span class="an-note">Six tools only (plan App. S3). No scroll loop, no <span class="mono">tabindex</span> non-control.</span>
+
+            <span class="an-sep"></span>
+            <span class="an-name">Hero</span>
+            <span class="an-c">Hero + HeroMeta + portrait</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.hero</span> + <span class="mono">.hero-meta</span> + portrait column</span>
+            <span class="an-note">85–110 words. One <span class="mono">h1</span> in the built page (shown here as <span class="mono">h2</span>), never animated. 60–70vh, no full-height hero.</span>
+            <span class="an-flag">① ROTATING SLOT — ref <span class="mono">#hero-swap</span>. Plan §2 drops the rotator; phrase 1 of 4 is static here.</span>
+            <span class="an-flag">PORTRAIT — none supplied (§11.8). 120 × 144 slot in column 2; collapses if no headshot arrives.</span>
+            <span class="an-flag">EVIDENCE PANEL DROPPED at Gate 2 — duplicated #credentials/#work and broke the fold; the meta row carries the proof.</span>
+            <span class="an-note">Focus: primary CTA is shown with the 3px ring.</span>
+          </aside>
+          <div class="sec-body" style="padding:0;">
+
+            <header class="site-header">
+              <div class="container">
+                <div class="bar">
+                  <a class="brand" href="#top">
+                    <span class="mark" aria-hidden="true">NP</span>
+                    <span class="name">Nidhi Patel</span>
+                  </a>
+                  <nav class="primary-nav" aria-label="Primary">
+                    <a href="#work" class="demo-focus" aria-current="page">Work</a>
+                    <a href="#experience">Experience</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                  </nav>
+                  <div class="nav-tools">
+                    <span class="lang-deferred" aria-disabled="true">EN <em>deferred</em></span>
+                    <button class="icon-btn" type="button" aria-label="Theme: system. Change theme">◐ System</button>
+                    <a class="btn btn--primary btn--small" href="/Nidhi_Patel_CV.pdf">Download CV</a>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <div class="tech-strip">
+              <div class="container">
+                <div class="row">
+                  <span class="label">Core stack</span>
+                  <ul>
+                    <li>Python</li><li>SQL</li><li>Azure Databricks</li><li>LangChain</li><li>PyTorch</li><li>Tableau</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero">
+              <div class="container">
+                <p class="eyebrow">Data Scientist &amp; AI Engineer · Frankfurt am Main</p>
+                <h2>
+                  <span class="name">Nidhi Patel</span>
+                  <span class="statement">Data Scientist &amp; AI Engineer building
+                    <span class="slot">[RAG systems]<sup>1</sup></span>
+                    that hold up outside a notebook.</span>
+                </h2>
+                <div class="hero-grid">
+                  <div class="hero-copy">
+                    <p class="lead">I’m a data scientist with 4+ years across working-student, internship and full-time roles in Germany. I build retrieval-augmented LLM systems, explainable models and Databricks pipelines — and the public repositories and thesis report are linked below.</p>
+                    <div class="cta-row">
+                      <a class="btn btn--primary demo-focus" href="#work">View selected work</a>
+                      <a class="btn" href="/Nidhi_Patel_CV.pdf">Download CV</a>
+                    </div>
+                    <div class="social-row">
+                      <a href="https://www.linkedin.com/in/nidhi-patel18">LinkedIn</a><span class="sep">·</span>
+                      <a href="https://github.com/patelnidhi1898">GitHub</a><span class="sep">·</span>
+                      <a href="mailto:nidhipatel18398@gmail.com?subject=Data%20Scientist%20role%20%E2%80%94%20Nidhi%20Patel">Email</a>
+                    </div>
+                  </div>
+                  <div class="portrait-col">
+                    <div class="portrait-slot" aria-hidden="true">PORTRAIT<br>120 × 144<br>none supplied</div>
+                    <p class="portrait-cap">Placeholder. No photograph supplied (plan §11.8).</p>
+                  </div>
+                </div>
+                <dl class="hero-meta">
+                  <div><dt>Based in</dt><dd>Frankfurt am Main</dd></div>
+                  <div><dt>Relocation</dt><dd>Open to relocation</dd></div>
+                  <div><dt>Focus</dt><dd>LLM/RAG systems · explainable ML · Azure Databricks</dd></div>
+                  <div><dt>Languages</dt><dd>English business fluent · German intermediate</dd></div>
+                </dl>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 01 SELECTED WORK -->
+        <div class="wfsec" id="work">
+          <aside class="anno">
+            <span class="an-name">01 Selected work</span>
+            <span class="an-c">ProjectLedger + LedgerRow + Badge</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.bento-card</span> anatomy + <span class="mono">.pubs li</span> row rhythm (bento rejected)</span>
+            <span class="an-note">170–210 words. Five equal columns 2 / 3 / 4 / 2 / 1. One link per row; link name carries system + decision.</span>
+            <span class="an-note">Order: public repository → public report → method only. No card width encodes importance.</span>
+            <span class="an-flag">Row 1 is shown with the focus ring (outline inside, never clipped).</span>
+            <span class="an-links">Routes → /work/ai-financial-analyst/ · /work/cash-access-germany/ · /work/medbot/</span>
+            <span class="an-note">Badge states: Public (solid), Method only (dashed), On request (dotted), Private (double). Text + border style, never colour alone.</span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <div class="sec-label"><span class="num" aria-hidden="true">01</span><span class="rule"></span><span>Selected work</span></div>
+              <h3 class="sec-title">Three systems, each with a decision behind it.</h3>
+              <p class="sec-dek">One public repository, one public report, and one method-only case.</p>
+
+              <div class="ledger-head" aria-hidden="true">
+                <span>Period</span><span>System</span><span>Decision it encodes</span><span>Evidence</span><span style="text-align:right;">Route</span>
+              </div>
+              <ol class="ledger">
+                <li>
+                  <a class="ledger-row demo-focus" href="/work/ai-financial-analyst/" aria-label="AI Financial Analyst Agent case study — an LLM agent that turns questions into structured investment analyses">
+                    <span class="period">[TODO: project dates — not recorded in the CV]</span>
+                    <span class="sys">AI Financial Analyst Agent<small>LLM orchestration · RAG · tool calling</small></span>
+                    <span class="decision">Model routing, tool calling and structured JSON outputs, so the report is assembled from retrieved inputs rather than one free-text answer.</span>
+                    <span class="evidence"><span class="badge badge--public"><span class="glyph" aria-hidden="true">●</span>Public</span><br><span class="mono" style="font-size:10px;color:#444;">GitHub repository</span></span>
+                    <span class="route">Case study →</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="ledger-row" href="/work/cash-access-germany/" aria-label="Master's thesis case study — contextual anomaly detection that names structurally underserved regions">
+                    <span class="period">[TODO: thesis period — not recorded in the CV]</span>
+                    <span class="sys">Contextual Anomaly Detection in Cash Withdrawal Distribution Network<small>Master’s thesis · TU Dortmund × Barkow Consulting</small></span>
+                    <span class="decision">A context-aware framework names Thüringen and Brandenburg as structurally underserved, and attributes the gap to regional and socioeconomic drivers rather than a black-box score.</span>
+                    <span class="evidence"><span class="badge badge--public"><span class="glyph" aria-hidden="true">●</span>Public</span><br><span class="mono" style="font-size:10px;color:#444;">Report (PDF) + repo</span></span>
+                    <span class="route">Case study →</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="ledger-row" href="/work/medbot/" aria-label="MedBot case study — a RAG service where build, test, scan and deploy are one pipeline">
+                    <span class="period">[TODO: project dates — not recorded in the CV]</span>
+                    <span class="sys">MedBot<small>Retrieval-augmented question answering</small></span>
+                    <span class="decision">Jenkins automates test, container build and deploy, with Trivy scanning the built image.</span>
+                    <span class="evidence"><span class="badge badge--method"><span class="glyph" aria-hidden="true">◐</span>Method only</span><br><span class="mono" style="font-size:10px;color:#444;">No public repository</span></span>
+                    <span class="route">Case study →</span>
+                  </a>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 EXPERIENCE -->
+        <div class="wfsec" id="experience">
+          <aside class="anno">
+            <span class="an-name">02 Experience</span>
+            <span class="an-c">ExperienceTimeline + ExperienceRow</span>
+            <span class="pri">P1 · ADDED</span>
+            <span class="an-ref">ref: <span class="mono">.about-grid</span> aside rhythm + <span class="mono">.pubs</span> rows; the facts row adapts <span class="mono">.record</span></span>
+            <span class="an-note">220–260 words. Fixed 5.5rem date column until 768. Exact titles, never shortened. <span class="mono">time</span> elements carry the dates.</span>
+            <span class="an-note">Track-record facts sit in the header, replacing the deleted proof strip: 4+ years · 4 employers · 3 public artefacts. Static values in the DOM; no count-up.</span>
+            <span class="an-note">Badge sits beside the employer. Barkow = On request; employer work = Private. <span class="mono">[ASSUMPTION for Gate 2: Vonovia and Amprion badge state]</span></span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <div class="sec-label"><span class="num" aria-hidden="true">02</span><span class="rule"></span><span>Experience</span></div>
+              <h3 class="sec-title">Where the four years went.</h3>
+              <p class="sec-dek">Four employers in Germany since 2022.</p>
+
+              <div class="facts">
+                <div class="fact"><div class="n">4+</div><div class="l">Years across role types</div><div class="s">Working student, intern, full-time</div></div>
+                <div class="fact"><div class="n">4</div><div class="l">Employers in Germany</div><div class="s">Energy, real estate, consulting, loyalty</div></div>
+                <div class="fact"><div class="n">3</div><div class="l">Public artefacts</div><div class="s">Two repositories and one report</div></div>
+              </div>
+
+              <ol class="timeline">
+                <li class="role">
+                  <span class="dates"><time datetime="2026-09">09/2026</time> –<br>Present</span>
+                  <div>
+                    <h4>Data Analytics Intern – Marketing, Strategy &amp; Customer Insights</h4>
+                    <div class="emp">Miles &amp; More (Lufthansa Group) · Frankfurt am Main <span class="badge badge--private"><span class="glyph" aria-hidden="true">▣</span>Private</span></div>
+                    <p class="prog">Internship</p>
+                    <span class="domain">Loyalty · aviation · customer analytics</span>
+                    <ul>
+                      <li>Apply customer segmentation, churn analysis, pricing analytics and A/B testing, translating findings into optimisation opportunities.</li>
+                      <li>Improve data quality and analytical data models on Azure Databricks, supporting scalable, reliable analytics and model-ready data.</li>
+                      <li>Develop and maintain KPIs, Tableau dashboards and analytical reports for operational and strategic decision-making.</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="role">
+                  <span class="dates"><time datetime="2024-02">02/2024</time> –<br><time datetime="2026-06">06/2026</time></span>
+                  <div>
+                    <h4>Junior Research Analyst / Data Scientist</h4>
+                    <div class="emp">Barkow Consulting GmbH · Düsseldorf <span class="badge badge--request"><span class="glyph" aria-hidden="true">○</span>On request</span></div>
+                    <p class="prog">Working student, then full-time from 01/2026</p>
+                    <span class="domain">Consulting · geospatial &amp; financial data</span>
+                    <ul>
+                      <li>Built and maintained Python-based ETL pipelines over large-scale geospatial and financial data from multiple sources.</li>
+                      <li>Designed ML frameworks for regional cash-access anomaly detection, translating model outputs into business recommendations.</li>
+                      <li>Designed reusable data models that improved data quality, consistency and analytical readiness.</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="role">
+                  <span class="dates"><time datetime="2023-02">02/2023</time> –<br><time datetime="2024-01">01/2024</time></span>
+                  <div>
+                    <h4>Data Scientist / Data Analyst</h4>
+                    <div class="emp">Vonovia SE · Bochum <span class="badge badge--private"><span class="glyph" aria-hidden="true">▣</span>Private</span></div>
+                    <p class="prog">Working student</p>
+                    <span class="domain">Real estate</span>
+                    <ul>
+                      <li>Conducted customer, market and business analyses using Python and SQL to support business decisions.</li>
+                      <li>Developed Tableau, Power BI and Python dashboards to monitor performance and identify growth opportunities.</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="role">
+                  <span class="dates"><time datetime="2022-04">04/2022</time> –<br><time datetime="2022-09">09/2022</time></span>
+                  <div>
+                    <h4>Data Science / Data Analysis</h4>
+                    <div class="emp">Amprion GmbH · Dortmund <span class="badge badge--private"><span class="glyph" aria-hidden="true">▣</span>Private</span></div>
+                    <p class="prog">Working student</p>
+                    <span class="domain">Energy · trading</span>
+                    <ul>
+                      <li>Conducted time-series forecasting of European fuel prices for trading applications using statistical, machine learning and deep learning models.</li>
+                      <li>Decision-support insights and a custom Power BI map for market data.</li>
+                    </ul>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 CREDENTIALS -->
+        <div class="wfsec" id="credentials">
+          <aside class="anno">
+            <span class="an-name">03 Credentials</span>
+            <span class="an-c">CredentialRail</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.pubs</span> year rail, adapted (no publications exist)</span>
+            <span class="an-note">90–120 words. 5.5rem date rail; stacks above the title at ≤640. Two degrees, three certifications, newest first.</span>
+            <span class="an-note">Credential IDs are text, not images. The certification without an ID reads “No credential ID issued”, never a blank cell.</span>
+            <span class="an-links">Verify links → credentials.databricks.com (external, <span class="mono">rel="noopener"</span>, labelled new tab)</span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <div class="sec-label"><span class="num" aria-hidden="true">03</span><span class="rule"></span><span>Credentials</span></div>
+              <h3 class="sec-title">Degrees and certifications.</h3>
+              <p class="sec-dek">Two degrees, three Databricks credentials, and a verification link for every one of them.</p>
+
+              <p class="rail-group">Degrees</p>
+              <ol class="rail">
+                <li>
+                  <span class="date">10/2020 –<br>12/2026<br>(expected)</span>
+                  <div>
+                    <h4>M.Sc. Data Science — Technical University Dortmund</h4>
+                    <p class="meta">Coursework complete; degree award pending final credit registration.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="date">07/2015 –<br>05/2019</span>
+                  <div>
+                    <h4>B.E. Computer Engineering — Gujarat Technological University, Ahmedabad</h4>
+                  </div>
+                </li>
+              </ol>
+
+              <p class="rail-group">Certifications — newest first</p>
+              <ol class="rail">
+                <li>
+                  <span class="date">07/2026</span>
+                  <div>
+                    <h4>Academy Accreditation - Azure Databricks Platform Architect</h4>
+                    <p class="meta">Databricks</p>
+                    <p class="cid">Credential ID 189213182</p>
+                    <a class="verify" href="https://credentials.databricks.com/fddc2f4d-8c62-4032-8c5a-5a3e19a12809#acc.Nygh3Umo">Verify credential<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>
+                  </div>
+                </li>
+                <li>
+                  <span class="date">07/2026</span>
+                  <div>
+                    <h4>Get Started with Databricks for Data Engineering</h4>
+                    <p class="meta">Databricks</p>
+                    <p class="cid">No credential ID issued</p>
+                    <a class="verify" href="https://credentials.databricks.com/8ad6ef4d-f385-428f-8a69-3194ab0b0ca1#acc.pWrvPXFI">Verify credential<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>
+                  </div>
+                </li>
+                <li>
+                  <span class="date">05/2026</span>
+                  <div>
+                    <h4>Academy Accreditation - Generative AI Fundamentals</h4>
+                    <p class="meta">Databricks</p>
+                    <p class="cid">Credential ID 183902279</p>
+                    <a class="verify" href="https://credentials.databricks.com/fdecab02-ef17-4e2f-a271-ae22cdb7edcc#acc.JDL4zTOS">Verify credential<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 CAPABILITIES -->
+        <div class="wfsec" id="capabilities">
+          <aside class="anno">
+            <span class="an-name">04 Capabilities</span>
+            <span class="an-c">CapabilityGrid + CapabilityCluster</span>
+            <span class="pri">P1</span>
+            <span class="an-ref">occupies the slot of <span class="mono">.thinking-wrap</span> (writing block dropped — no posts exist)</span>
+            <span class="an-note">150–190 words. 2 × 3. Up to five visible items plus an inline “also used” line. Languages is the sixth cluster as a four-row definition list.</span>
+            <span class="an-note">Never accordions, tabs, bars, percentages or logo walls. List semantics throughout.</span>
+            <span class="an-flag">[TODO: owner to confirm cluster merge] — BI &amp; Visualisation is folded into the modelling cluster so Languages can be the sixth cluster (plan §4).</span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <div class="sec-label"><span class="num" aria-hidden="true">04</span><span class="rule"></span><span>Capabilities</span></div>
+              <h3 class="sec-title">The stack, grouped the way the CV groups it.</h3>
+              <p class="sec-dek">Five skill clusters plus languages, each with a link to the work that proves it.</p>
+
+              <div class="cap-grid">
+                <div class="cap">
+                  <h4>Modelling and analytics</h4>
+                  <ul class="items">
+                    <li>Predictive Modelling</li><li>Anomaly Detection</li><li>A/B Testing</li><li>Explainable AI (SHAP)</li><li>Tableau</li>
+                  </ul>
+                  <p class="also"><b>Also used:</b> Time-Series Forecasting, Feature Engineering, Hypothesis Testing, scikit-learn, XGBoost, PyTorch, TensorFlow, statsmodels, Power BI, Excel, Plotly, Matplotlib, Seaborn</p>
+                  <a class="ev" href="/work/cash-access-germany/">Evidence: thesis case study</a>
+                </div>
+                <div class="cap">
+                  <h4>Generative AI and LLM engineering</h4>
+                  <ul class="items">
+                    <li>LLMs</li><li>RAG</li><li>LangChain</li><li>LangGraph</li><li>Multi-Agent Systems</li>
+                  </ul>
+                  <p class="also"><b>Also used:</b> Tool Calling, Prompt Engineering, Embeddings, Vector Databases (FAISS), Hugging Face, Guardrails, Input/Output Validation, Human-in-the-Loop Workflows, LLM Monitoring &amp; Observability</p>
+                  <a class="ev" href="/work/medbot/">Evidence: MedBot · AI Financial Analyst</a>
+                </div>
+                <div class="cap">
+                  <h4>Cloud and data engineering</h4>
+                  <ul class="items">
+                    <li>Azure Databricks</li><li>Apache Spark</li><li>Delta Lake</li><li>Medallion Architecture</li><li>ETL Pipelines</li>
+                  </ul>
+                  <p class="also"><b>Also used:</b> Azure Storage, Data Modelling, Data Validation, Data Quality</p>
+                  <a class="ev" href="#experience">Evidence: Miles &amp; More · Barkow · credentials</a>
+                </div>
+                <div class="cap">
+                  <h4>MLOps and delivery</h4>
+                  <ul class="items">
+                    <li>Docker</li><li>Jenkins</li><li>CI/CD</li><li>Trivy</li><li>MLflow</li>
+                  </ul>
+                  <p class="also"><b>Also used:</b> Model Deployment, Workflow Automation, Flask, FastAPI, Streamlit, Git</p>
+                  <a class="ev" href="/work/medbot/">Evidence: MedBot</a>
+                </div>
+                <div class="cap">
+                  <h4>Programming and databases</h4>
+                  <ul class="items">
+                    <li>Python (pandas, NumPy)</li><li>SQL</li><li>R</li><li>PostgreSQL</li><li>MySQL</li>
+                  </ul>
+                  <p class="also"><b>Also used:</b> SQL Server, SQLite, MongoDB</p>
+                  <a class="ev" href="#experience">Evidence: experience section</a>
+                </div>
+                <div class="cap">
+                  <h4>Languages</h4>
+                  <dl>
+                    <div><dt>English</dt><dd>Business Fluent</dd></div>
+                    <div><dt>German</dt><dd>Intermediate</dd></div>
+                    <div><dt>Gujarati</dt><dd>Native</dd></div>
+                    <div><dt>Hindi</dt><dd>Native</dd></div>
+                  </dl>
+                  <p class="also">Spoken levels only. No German edition of this site exists.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05 ABOUT -->
+        <div class="wfsec" id="about">
+          <aside class="anno">
+            <span class="an-name">05 About</span>
+            <span class="an-c">AboutBlock</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.about-grid</span> recomposed — prose-left / facts-aside removed</span>
+            <span class="an-note">100–130 words. One paragraph, a three-row “How I work” list, one sentence on working in English and German.</span>
+            <span class="an-note">No photo, no second facts panel, no repeated language list. Closing human note after the proof.</span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <div class="sec-label"><span class="num" aria-hidden="true">05</span><span class="rule"></span><span>About</span></div>
+              <h3 class="sec-title">About</h3>
+              <p class="prose">I’m a data scientist in Frankfurt am Main, finishing an M.Sc. in Data Science at TU Dortmund. I came to it through computer engineering in Ahmedabad, and since 2022 I’ve worked across energy trading, real estate, consulting and airline loyalty: forecasting European fuel prices at Amprion, building dashboards at Vonovia, writing Python ETL pipelines and anomaly-detection frameworks at Barkow Consulting, and doing customer lifecycle and pricing analytics on Azure Databricks at Miles &amp; More.</p>
+              <dl class="how">
+                <div><dt>Modelling</dt><dd>Start from the decision the model has to change, then pick the simplest method that supports it.</dd></div>
+                <div><dt>Delivery</dt><dd>Ship it: containerised, scanned, deployed, monitored. The pipeline is part of the work.</dd></div>
+                <div><dt>Evidence</dt><dd>Every number gets a baseline, a method and a date, or it is labelled not measured.</dd></div>
+              </dl>
+              <p class="lang-sentence">I work in English and German.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 06 CONTACT -->
+        <div class="wfsec" id="contact">
+          <aside class="anno">
+            <span class="an-name">06 Contact</span>
+            <span class="an-c">ContactBand</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.contact</span> radial plane → flat bordered surface, one 48px rule</span>
+            <span class="an-note">50–70 words. Three buttons, three meta chips, no form, no phone number (JSON <span class="mono">phonePublic: false</span>).</span>
+            <span class="an-flag">[TODO: availability date] — never invent a date or a visa claim (plan §11.2).</span>
+            <span class="an-links">Email mailto with subject · LinkedIn · /Nidhi_Patel_CV.pdf</span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <div class="sec-label"><span class="num" aria-hidden="true">06</span><span class="rule"></span><span>Contact</span></div>
+              <div class="contact-band">
+                <div class="accent-rule" aria-hidden="true"></div>
+                <p class="eyebrow">Get in touch</p>
+                <h3>Let’s talk about the role.</h3>
+                <p class="body">I’m looking for Data Scientist, Machine Learning Engineer, AI Engineer or Data Analyst positions, and I’m open to relocation. Tell me the problem the team is trying to solve and I’ll point you at the closest thing I’ve built.</p>
+                <div class="cta-row">
+                  <a class="btn btn--primary" href="mailto:nidhipatel18398@gmail.com?subject=Data%20Scientist%20role%20%E2%80%94%20Nidhi%20Patel">Email me</a>
+                  <a class="btn" href="https://www.linkedin.com/in/nidhi-patel18">Connect on LinkedIn</a>
+                  <a class="btn" href="/Nidhi_Patel_CV.pdf">Download CV</a>
+                </div>
+                <div class="contact-meta">
+                  <span class="chip">Frankfurt am Main · open to relocation</span>
+                  <span class="chip">Available from [TODO: availability date]</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="wfsec">
+          <aside class="anno">
+            <span class="an-name">Footer</span>
+            <span class="an-c">SiteFooter</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.footer</span> / <span class="mono">.footer-compact</span></span>
+            <span class="an-note">30–40 words. Build-time year, not a <span class="mono">#year</span> script. Site links repeat the four anchors; elsewhere links repeat the contact channels in compact form. Datenschutz is the legal line.</span>
+            <span class="an-links">Links → #work · #experience · #about · #contact · mailto · LinkedIn · GitHub · CV · /datenschutz/</span>
+          </aside>
+          <div class="sec-body" style="padding:0;">
+            <footer class="site-footer">
+              <div class="container">
+                <div class="foot-grid">
+                  <div>
+                    <h3>Nidhi Patel</h3>
+                    <p>Data Scientist &amp; AI Engineer<br>Frankfurt am Main, Germany</p>
+                  </div>
+                  <div>
+                    <h3>Site</h3>
+                    <ul>
+                      <li><a href="#work">Work</a></li>
+                      <li><a href="#experience">Experience</a></li>
+                      <li><a href="#about">About</a></li>
+                      <li><a href="#contact">Contact</a></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3>Elsewhere</h3>
+                    <ul>
+                      <li><a href="mailto:nidhipatel18398@gmail.com">Email</a></li>
+                      <li><a href="https://www.linkedin.com/in/nidhi-patel18">LinkedIn</a></li>
+                      <li><a href="https://github.com/patelnidhi1898">GitHub</a></li>
+                      <li><a href="/Nidhi_Patel_CV.pdf">CV (PDF)</a></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3>Legal</h3>
+                    <ul>
+                      <li><a href="/datenschutz/">Datenschutz</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="foot-legal">
+                  <span>© 2026 Nidhi Patel</span>
+                  <span>Built in Frankfurt am Main · English only</span>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+
+      </div><!-- /.page -->
+    </div><!-- /.frame -->
+  </div><!-- /.frame-wrap -->
+
+  <!-- ============================================================
+       HOME PAGE — MOBILE FRAME (real 390 reflow)
+       ============================================================ -->
+  <div class="frame-wrap frame-wrap--mobile">
+    <p class="frame-cap mono">Home · mobile <span>— 390 × 844 viewport, real reflow (not a scaled desktop)</span></p>
+    <div class="frame frame--mobile" role="group" aria-label="Home page wireframe, mobile 390 by 844">
+
+      <div class="m-chrome" aria-hidden="true">
+        <span class="mono">9:41</span>
+        <span class="notch"></span>
+        <span class="mono">▮▮▮</span>
+      </div>
+
+      <div class="m-page">
+        <div class="fold" style="top:870px;"><b class="mono">FOLD · 844px</b></div>
+
+        <!-- mobile header -->
+        <div class="m-header">
+          <a class="brand" href="#top">
+            <span class="mark" aria-hidden="true">NP</span>
+            <span class="name">Nidhi Patel</span>
+          </a>
+          <div class="m-tools">
+            <button class="m-icon" type="button" aria-label="Theme: system. Change theme">◐</button>
+            <span class="m-icon" aria-label="Language: English only, German edition deferred" role="img" style="border-style:dashed;font-size:10px;width:auto;padding:0 6px;">EN</span>
+            <button class="m-menu demo-focus" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span class="bars" aria-hidden="true"></span></button>
+          </div>
+        </div>
+
+        <!-- mobile annotation + hero -->
+        <div class="m-sec" style="padding-top:18px;" id="m-top">
+          <p class="m-anno"><b>Hero · P0 · ref .hero + .hero-meta</b>85–110 words · one h1 · H1 is LCP · rotating slot static (plan §2) · portrait slot none supplied · meta carries Based in / Relocation / Focus / Languages (the evidence panel was dropped at Gate 2) · theme + menu affordances only; language marked deferred.</p>
+          <p class="m-eyebrow">Data Scientist &amp; AI Engineer · Frankfurt am Main</p>
+          <h2 class="m-h1"><span class="name">Nidhi Patel</span> Data Scientist &amp; AI Engineer building <span class="slot">[RAG systems]<sup>1</sup></span> that hold up outside a notebook.</h2>
+          <p class="m-lead">I’m a data scientist with 4+ years across working-student, internship and full-time roles in Germany. I build retrieval-augmented LLM systems, explainable models and Databricks pipelines — and the public repositories and thesis report are linked below.</p>
+          <div class="m-cta">
+            <a class="btn btn--primary" href="#m-work">View selected work</a>
+            <a class="btn" href="/Nidhi_Patel_CV.pdf">Download CV</a>
+          </div>
+          <div class="m-social">
+            <a href="https://www.linkedin.com/in/nidhi-patel18">LinkedIn</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/patelnidhi1898">GitHub</a><span class="sep" aria-hidden="true">·</span>
+            <a href="mailto:nidhipatel18398@gmail.com?subject=Data%20Scientist%20role%20%E2%80%94%20Nidhi%20Patel">Email</a>
+          </div>
+          <dl class="m-meta">
+            <div><dt>Based in</dt><dd>Frankfurt am Main</dd></div>
+            <div><dt>Relocation</dt><dd>Open to relocation</dd></div>
+            <div><dt>Focus</dt><dd>LLM/RAG systems · explainable ML · Azure Databricks</dd></div>
+            <div><dt>Languages</dt><dd>English business fluent · German intermediate</dd></div>
+          </dl>
+          <div class="m-portrait-wrap">
+            <div class="m-portrait" aria-hidden="true">PORTRAIT<br>96 × 115<br>none supplied</div>
+            <p class="portrait-cap" style="margin:0;">Placeholder. No photograph supplied (plan §11.8). Collapses if no headshot arrives; the meta grid above already carries the proof.</p>
+          </div>
+        </div>
+
+        <!-- mobile tech strip -->
+        <div class="m-strip">
+          <span class="label">Core stack</span>
+          <ul><li>Python</li><li>SQL</li><li>Azure Databricks</li><li>LangChain</li><li>PyTorch</li><li>Tableau</li></ul>
+        </div>
+
+        <!-- mobile ledger -->
+        <div class="m-sec" id="m-work">
+          <p class="m-anno"><b>01 Selected work · P0 · ProjectLedger</b>170–210 words · rows stack as definition lists: period, system, decision, evidence, route as the full-width link. Order: public repo → public report → method only.</p>
+          <p class="m-sec-label"><span class="num" aria-hidden="true">01</span> — Selected work</p>
+          <h3 class="m-h2">Three systems, each with a decision behind it.</h3>
+          <p class="m-dek">One is a public repository, one is a public report, and one is method-only until the repository is shareable.</p>
+          <ol class="m-ledger">
+            <li>
+              <a href="/work/ai-financial-analyst/">
+                <dl>
+                  <dt>Period</dt><dd>[TODO: project dates — not recorded in the CV]</dd>
+                  <dt>System</dt><dd class="sys">AI Financial Analyst Agent</dd>
+                  <dt>Decision it encodes</dt><dd>Model routing, tool calling and structured JSON outputs, so the report is assembled from retrieved inputs rather than one free-text answer.</dd>
+                  <dt>Evidence</dt><dd><span class="badge badge--public">● Public</span> GitHub repository</dd>
+                  <dt>Route</dt><dd class="mono" style="font-size:10px;text-decoration:underline;">Case study →</dd>
+                </dl>
+              </a>
+            </li>
+            <li>
+              <a href="/work/cash-access-germany/">
+                <dl>
+                  <dt>Period</dt><dd>[TODO: thesis period — not recorded in the CV]</dd>
+                  <dt>System</dt><dd class="sys">Contextual Anomaly Detection in Cash Withdrawal Distribution Network</dd>
+                  <dt>Decision it encodes</dt><dd>Names Thüringen and Brandenburg as structurally underserved, attributing the gap to regional and socioeconomic drivers rather than a black-box score.</dd>
+                  <dt>Evidence</dt><dd><span class="badge badge--public">● Public</span> Report (PDF) + repo</dd>
+                  <dt>Route</dt><dd class="mono" style="font-size:10px;text-decoration:underline;">Case study →</dd>
+                </dl>
+              </a>
+            </li>
+            <li>
+              <a href="/work/medbot/">
+                <dl>
+                  <dt>Period</dt><dd>[TODO: project dates — not recorded in the CV]</dd>
+                  <dt>System</dt><dd class="sys">MedBot</dd>
+                  <dt>Decision it encodes</dt><dd>Jenkins automates test, container build and deploy, with Trivy scanning the built image.</dd>
+                  <dt>Evidence</dt><dd><span class="badge badge--method">◐ Method only</span> No public repository</dd>
+                  <dt>Route</dt><dd class="mono" style="font-size:10px;text-decoration:underline;">Case study →</dd>
+                </dl>
+              </a>
+            </li>
+          </ol>
+        </div>
+
+        <!-- mobile experience -->
+        <div class="m-sec" id="m-experience">
+          <p class="m-anno"><b>02 Experience · P1 ADDED</b>Dates move above the role; the 5.5rem column is dropped. Facts row adapts .record. Exact titles, badge beside employer.</p>
+          <p class="m-sec-label"><span class="num" aria-hidden="true">02</span> — Experience</p>
+          <h3 class="m-h2">Where the four years went.</h3>
+          <p class="m-dek">Four employers in Germany since 2022, across working-student, internship and full-time contracts.</p>
+          <div class="m-facts">
+            <div><div class="n">4+</div><div class="l">Years across role types</div></div>
+            <div><div class="n">4</div><div class="l">Employers in Germany</div></div>
+            <div><div class="n">3</div><div class="l">Public artefacts</div></div>
+          </div>
+          <div class="m-role">
+            <span class="dates">09/2026 – Present</span>
+            <h4>Data Analytics Intern – Marketing, Strategy &amp; Customer Insights</h4>
+            <p class="emp">Miles &amp; More (Lufthansa Group) · Frankfurt <span class="badge badge--private">Private</span></p>
+            <ul>
+              <li>Customer segmentation, churn, pricing analytics and A/B testing, translated into optimisation opportunities.</li>
+              <li>Data quality and analytical models on Azure Databricks for model-ready data.</li>
+              <li>KPIs, Tableau dashboards and reports for operational and strategic decisions.</li>
+            </ul>
+          </div>
+          <div class="m-role">
+            <span class="dates">02/2024 – 06/2026</span>
+            <h4>Junior Research Analyst / Data Scientist</h4>
+            <p class="emp">Barkow Consulting GmbH · Düsseldorf <span class="badge badge--request">On request</span></p>
+            <ul>
+              <li>Python ETL pipelines over large-scale geospatial and financial data.</li>
+              <li>ML frameworks for regional cash-access anomaly detection.</li>
+              <li>Reusable data models that improved data quality and readiness.</li>
+            </ul>
+          </div>
+          <div class="m-role">
+            <span class="dates">02/2023 – 01/2024</span>
+            <h4>Data Scientist / Data Analyst</h4>
+            <p class="emp">Vonovia SE · Bochum <span class="badge badge--private">Private</span></p>
+            <ul>
+              <li>Customer, market and business analyses in Python and SQL.</li>
+              <li>Tableau, Power BI and Python dashboards for performance monitoring.</li>
+              <li>Large-dataset preparation and transformation.</li>
+            </ul>
+          </div>
+          <div class="m-role">
+            <span class="dates">04/2022 – 09/2022</span>
+            <h4>Data Science / Data Analysis</h4>
+            <p class="emp">Amprion GmbH · Dortmund <span class="badge badge--private">Private</span></p>
+            <ul>
+              <li>Time-series forecasting of European fuel prices for trading applications.</li>
+              <li>Decision-support insights and a custom Power BI map visualisation.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- mobile credentials -->
+        <div class="m-sec" id="m-credentials">
+          <p class="m-anno"><b>03 Credentials · P0 · CredentialRail</b>Date stacks above the title. IDs as text; “No credential ID issued” is never blank. Verify links external with rel=noopener.</p>
+          <p class="m-sec-label"><span class="num" aria-hidden="true">03</span> — Credentials</p>
+          <h3 class="m-h2">Degrees and certifications.</h3>
+          <p class="m-dek">Two degrees, three Databricks credentials, and a verification link for every one of them.</p>
+          <p class="rail-group">Degrees</p>
+          <ol class="m-rail">
+            <li><span class="date">10/2020 – 12/2026 (expected)</span><h4>M.Sc. Data Science — TU Dortmund</h4><p class="meta">Coursework complete; award pending final credit registration.</p></li>
+            <li><span class="date">07/2015 –<br>05/2019</span><h4>B.E. Computer Engineering — GTU, Ahmedabad</h4></li>
+          </ol>
+          <p class="rail-group">Certifications</p>
+          <ol class="m-rail">
+            <li><span class="date">07/2026</span><h4>Academy Accreditation - Azure Databricks Platform Architect</h4><p class="meta">Databricks · Credential ID 189213182</p><a class="verify" href="https://credentials.databricks.com/fddc2f4d-8c62-4032-8c5a-5a3e19a12809#acc.Nygh3Umo">Verify credential ↗</a></li>
+            <li><span class="date">07/2026</span><h4>Get Started with Databricks for Data Engineering</h4><p class="meta">Databricks · No credential ID issued</p><a class="verify" href="https://credentials.databricks.com/8ad6ef4d-f385-428f-8a69-3194ab0b0ca1#acc.pWrvPXFI">Verify credential ↗</a></li>
+            <li><span class="date">05/2026</span><h4>Academy Accreditation - Generative AI Fundamentals</h4><p class="meta">Databricks · Credential ID 183902279</p><a class="verify" href="https://credentials.databricks.com/fdecab02-ef17-4e2f-a271-ae22cdb7edcc#acc.JDL4zTOS">Verify credential ↗</a></li>
+          </ol>
+        </div>
+
+        <!-- mobile capabilities -->
+        <div class="m-sec" id="m-capabilities">
+          <p class="m-anno"><b>04 Capabilities · P1 · CapabilityGrid</b>Single column at 390. Five visible items plus inline also-used. Languages sixth. Never accordions or bars. [TODO: confirm cluster merge]</p>
+          <p class="m-sec-label"><span class="num" aria-hidden="true">04</span> — Capabilities</p>
+          <h3 class="m-h2">The stack, grouped the way the CV groups it.</h3>
+          <p class="m-dek">Five skill clusters plus languages, each with a link to the work that proves it.</p>
+          <div class="m-cap"><h4>Modelling and analytics</h4><p class="items">Predictive Modelling · Anomaly Detection · A/B Testing · Explainable AI (SHAP) · Tableau</p><p class="also">Also used: Time-Series Forecasting, Feature Engineering, Hypothesis Testing, scikit-learn, XGBoost, PyTorch, TensorFlow, statsmodels, Power BI, Excel, Plotly, Matplotlib, Seaborn</p><a class="ev" href="/work/cash-access-germany/">Evidence: thesis case study</a></div>
+          <div class="m-cap"><h4>Generative AI and LLM engineering</h4><p class="items">LLMs · RAG · LangChain · LangGraph · Multi-Agent Systems</p><p class="also">Also used: Tool Calling, Prompt Engineering, Embeddings, Vector Databases (FAISS), Hugging Face, Guardrails, Input/Output Validation, Human-in-the-Loop Workflows, LLM Monitoring &amp; Observability</p><a class="ev" href="/work/medbot/">Evidence: MedBot · AI Financial Analyst</a></div>
+          <div class="m-cap"><h4>Cloud and data engineering</h4><p class="items">Azure Databricks · Apache Spark · Delta Lake · Medallion Architecture · ETL Pipelines</p><p class="also">Also used: Azure Storage, Data Modelling, Data Validation, Data Quality</p><a class="ev" href="#m-experience">Evidence: Miles &amp; More · Barkow · credentials</a></div>
+          <div class="m-cap"><h4>MLOps and delivery</h4><p class="items">Docker · Jenkins · CI/CD · Trivy · MLflow</p><p class="also">Also used: Model Deployment, Workflow Automation, Flask, FastAPI, Streamlit, Git</p><a class="ev" href="/work/medbot/">Evidence: MedBot</a></div>
+          <div class="m-cap"><h4>Programming and databases</h4><p class="items">Python (pandas, NumPy) · SQL · R · PostgreSQL · MySQL</p><p class="also">Also used: SQL Server, SQLite, MongoDB</p><a class="ev" href="#m-experience">Evidence: experience section</a></div>
+          <div class="m-cap"><h4>Languages</h4><p class="items">English — Business Fluent · German — Intermediate · Gujarati — Native · Hindi — Native</p><p class="also">Spoken levels only. No German edition of this site exists.</p></div>
+        </div>
+
+        <!-- mobile about -->
+        <div class="m-sec" id="m-about">
+          <p class="m-anno"><b>05 About · P0 · AboutBlock</b>One paragraph + three-row “How I work” + one language sentence. No photo, no aside, no repeated list.</p>
+          <p class="m-sec-label"><span class="num" aria-hidden="true">05</span> — About</p>
+          <h3 class="m-h2">About</h3>
+          <p class="m-prose">I’m a data scientist in Frankfurt am Main, finishing an M.Sc. in Data Science at TU Dortmund. I came to it through computer engineering in Ahmedabad, and since 2022 I’ve worked across energy trading, real estate, consulting and airline loyalty: forecasting European fuel prices at Amprion, building dashboards at Vonovia, writing Python ETL pipelines and anomaly-detection frameworks at Barkow Consulting, and doing customer lifecycle and pricing analytics on Azure Databricks at Miles &amp; More.</p>
+          <dl class="m-how">
+            <div><dt>Modelling</dt><dd>Start from the decision the model has to change, then pick the simplest method that supports it.</dd></div>
+            <div><dt>Delivery</dt><dd>Ship it: containerised, scanned, deployed, monitored. The pipeline is part of the work.</dd></div>
+            <div><dt>Evidence</dt><dd>Every number gets a baseline, a method and a date, or it is labelled not measured.</dd></div>
+          </dl>
+          <p class="lang-sentence">I work in English and German.</p>
+        </div>
+
+        <!-- mobile contact -->
+        <div class="m-sec" id="m-contact">
+          <p class="m-anno"><b>06 Contact · P0 · ContactBand</b>Buttons stack full-width; three chips wrap. No form, no phone. [TODO: availability date]</p>
+          <p class="m-sec-label"><span class="num" aria-hidden="true">06</span> — Contact</p>
+          <div class="m-contact">
+            <div class="accent-rule" aria-hidden="true"></div>
+            <p class="m-eyebrow">Get in touch</p>
+            <h3>Let’s talk about the role.</h3>
+            <p>I’m looking for Data Scientist, Machine Learning Engineer, AI Engineer or Data Analyst positions, and I’m open to relocation. Tell me the problem the team is trying to solve and I’ll point you at the closest thing I’ve built.</p>
+            <div class="m-cta">
+              <a class="btn btn--primary" href="mailto:nidhipatel18398@gmail.com?subject=Data%20Scientist%20role%20%E2%80%94%20Nidhi%20Patel">Email me</a>
+              <a class="btn" href="https://www.linkedin.com/in/nidhi-patel18">Connect on LinkedIn</a>
+              <a class="btn" href="/Nidhi_Patel_CV.pdf">Download CV</a>
+            </div>
+            <div class="m-chips">
+              <span class="chip">Frankfurt am Main · open to relocation</span>
+              <span class="chip">Available from [TODO: availability date]</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- mobile footer -->
+        <div class="m-footer">
+          <p class="m-anno"><b>Footer · P0 · SiteFooter</b>Build-time year; site links, elsewhere links, Datenschutz. Compact single column.</p>
+          <div class="grp"><h3>Site</h3><ul><li><a href="#m-work">Work</a></li><li><a href="#m-experience">Experience</a></li><li><a href="#m-about">About</a></li><li><a href="#m-contact">Contact</a></li></ul></div>
+          <div class="grp"><h3>Elsewhere</h3><ul><li><a href="mailto:nidhipatel18398@gmail.com">Email</a></li><li><a href="https://www.linkedin.com/in/nidhi-patel18">LinkedIn</a></li><li><a href="https://github.com/patelnidhi1898">GitHub</a></li><li><a href="/Nidhi_Patel_CV.pdf">CV (PDF)</a></li></ul></div>
+          <div class="grp"><h3>Legal</h3><ul><li><a href="/datenschutz/">Datenschutz</a></li></ul></div>
+          <div class="legal"><span>© 2026 Nidhi Patel</span><span>Frankfurt am Main</span></div>
+        </div>
+
+      </div><!-- /.m-page -->
+    </div><!-- /.frame -->
+  </div><!-- /.frame-wrap -->
+
+</section>
+
+<!-- ============================================================
+     CASE STUDY TEMPLATE — DESKTOP FRAME
+     ============================================================ -->
+<section class="frames" id="case-study" aria-label="Case study template wireframe" style="padding-top:0;">
+  <div class="frame-wrap frame-wrap--desktop">
+    <p class="frame-cap mono">Case study template · desktop <span>— 1440 × 900; shown with MedBot, the method-only variant</span></p>
+    <div class="frame frame--desktop" role="group" aria-label="Case study template wireframe, desktop 1440 by 900">
+
+      <div class="frame-chrome" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url mono">patelnidhi1898.github.io/work/medbot/</span>
+        <span class="vp mono">1440 × 900</span>
+      </div>
+
+      <div class="page">
+        <div class="fold" style="top:936px;"><b class="mono">FOLD · 900px</b></div>
+
+        <div class="wfsec">
+          <aside class="anno">
+            <span class="an-name">Site header</span>
+            <span class="an-c">SiteHeader</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.nav</span> — identical to home</span>
+            <span class="an-note">“Work” carries <span class="mono">aria-current="page"</span>. No scroll progress bar. Theme and deferred language are present exactly as on home.</span>
+          </aside>
+          <div class="sec-body" style="padding:0;">
+            <header class="site-header">
+              <div class="container">
+                <div class="bar">
+                  <a class="brand" href="/">
+                    <span class="mark" aria-hidden="true">NP</span>
+                    <span class="name">Nidhi Patel</span>
+                  </a>
+                  <nav class="primary-nav" aria-label="Primary">
+                    <a href="/#work" aria-current="page">Work</a>
+                    <a href="/#experience">Experience</a>
+                    <a href="/#about">About</a>
+                    <a href="/#contact">Contact</a>
+                  </nav>
+                  <div class="nav-tools">
+                    <span class="lang-deferred" aria-disabled="true">EN <em>deferred</em></span>
+                    <button class="icon-btn" type="button" aria-label="Theme: system. Change theme">◐ System</button>
+                    <a class="btn btn--primary btn--small" href="/Nidhi_Patel_CV.pdf">Download CV</a>
+                  </div>
+                </div>
+              </div>
+            </header>
+          </div>
+        </div>
+
+        <div class="wfsec">
+          <aside class="anno">
+            <span class="an-name">Article shell</span>
+            <span class="an-c">CaseStudyLayout + CaseStudyMetaRail + Badge</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.post</span> shell (meta row, narrow measure, sources, prev/next, back pill)</span>
+            <span class="an-note">One <span class="mono">h1</span> in the built page (shown here as <span class="mono">h2</span> because this document already has its own <span class="mono">h1</span>). 800px article, prose capped at 68ch. Static build-time TOC; no scroll-spy. Breadcrumb is the first thing after the header.</span>
+            <span class="an-note">At-a-glance rail is a <span class="mono">dl</span>: role, timeline, stack, artefacts, badge. Team is omitted because the JSON does not state one.</span>
+            <span class="an-flag">METHOD-ONLY VARIANT — badge in the meta row and at-a-glance. The Public variant swaps the badge and adds a repository link; the shell does not change.</span>
+            <span class="an-links">Links → /  ·  /#work  ·  next: /work/ai-financial-analyst/</span>
+          </aside>
+          <div class="sec-body">
+            <div class="container">
+              <p class="cs-crumb"><a href="/">Home</a> / <a href="/#work">Work</a> / MedBot</p>
+              <div class="cs-metarow">
+                <span>RAG · LLM application</span>
+                <span>·</span>
+                <span>Method only</span>
+                <span>·</span>
+                <span>Personal project</span>
+                <span>·</span>
+                <span>~[TODO: reading time]</span>
+              </div>
+              <h2 class="cs-h1">MedBot: a document assistant that deploys itself</h2>
+              <p class="cs-standfirst">A retrieval-augmented question-answering service where the pipeline that ships it is as much of the project as the model.</p>
+
+              <dl class="cs-glance">
+                <div><dt>Role</dt><dd>Personal project</dd></div>
+                <div><dt>Timeline</dt><dd>[TODO: project timeline — not in the JSON]</dd></div>
+                <div><dt>Stack</dt><dd>LangChain, FAISS, Flask, Docker, Jenkins, Trivy</dd></div>
+                <div><dt>Artefacts</dt><dd>[TODO: repository URL] — none public in the CV</dd></div>
+                <div><dt>Publication state</dt><dd><span class="badge badge--method"><span class="glyph" aria-hidden="true">◐</span>Method only</span></dd></div>
+              </dl>
+
+              <div class="cs-layout">
+                <article class="cs-body">
+                  <h3 id="cs-problem">1 · The problem</h3>
+                  <p>Long documents defeat keyword search; a general chatbot answers fluently and invents the passage it did not retrieve. The project asks what “grounded” actually costs to build.</p>
+                  <p><span class="cs-todo">[TODO: body copy — 110–140 words]</span></p>
+
+                  <h3 id="cs-what">2 · What it does</h3>
+                  <p>Index a document set, ask a question, receive an answer plus the retrieved passages it was built from.</p>
+                  <p><span class="cs-todo">[TODO: body copy — 80–110 words]</span></p>
+
+                  <h3 id="cs-how">3 · How it works</h3>
+                  <p>Built with LangChain, FAISS, LLMs and a Flask backend for document-based question answering (CV).</p>
+                  <p><span class="cs-todo">[TODO: body copy — 220–300 words]</span></p>
+
+                  <figure class="figure">
+                    <div class="box">FIGURE SLOT · 16:9<br>ingest → chunk → embed → FAISS → retrieve → prompt → LLM → answer<br>Jenkins pipeline drawn as a parallel band beneath<br><span class="mono">[TODO: hand-authored SVG]</span></div>
+                    <figcaption><span class="concept">Conceptual</span>Architecture redrawn, not a screenshot. Inline SVG; HTML labels so text inherits type and zoom.</figcaption>
+                  </figure>
+
+                  <h3 id="cs-pipeline">4 · The delivery pipeline</h3>
+                  <p>Jenkins automates testing, container builds and deployment; Trivy scans the container image for vulnerabilities (CV).</p>
+                  <p><span class="cs-todo">[TODO: body copy — 120–160 words]</span></p>
+
+                  <h3 id="cs-changed">5 · What changed</h3>
+                  <p>Qualitative only. Retrieval quality, latency and answer accuracy: not measured.</p>
+                  <p><span class="cs-todo">[TODO: body copy — 100–140 words]</span></p>
+
+                  <h3 id="cs-next">6 · What I would do next</h3>
+                  <p>An evaluation set with known answers; retrieval metrics (recall@k) before generation metrics; guardrails and input/output validation; LLM monitoring.</p>
+                  <p><span class="cs-todo">[TODO: body copy — 60–90 words]</span></p>
+
+                  <div class="cs-limits">
+                    <h3 id="cs-limits">Limitations</h3>
+                    <p>No benchmark result is published. Usage numbers do not exist. This is a runnable service with an automated build and scan pipeline, not a production system serving users.</p>
+                  </div>
+
+                  <h3 id="cs-stack">7 · Stack and links</h3>
+                  <p>LangChain · FAISS · Flask · Docker · Jenkins · Trivy.</p>
+                  <p>Repository: [TODO: repository URL — keep “Method only” until supplied].</p>
+
+                  <div class="cs-sources">
+                    <h3>Sources</h3>
+                    <ul>
+                      <li>CV entry: <span class="mono">projects[0]</span> in the source-of-truth JSON.</li>
+                      <li>Architecture figure: redrawn for this page; no screenshot of any internal system.</li>
+                    </ul>
+                  </div>
+
+                  <nav class="cs-postnav" aria-label="More projects">
+                    <a href="/work/cash-access-germany/">
+                      <span class="dir">Previous project</span>
+                      <span class="t">← Where cash access thins</span>
+                    </a>
+                    <a href="/work/ai-financial-analyst/" class="next">
+                      <span class="dir">Next project</span>
+                      <span class="t">An LLM analyst that shows its sources →</span>
+                    </a>
+                  </nav>
+                  <a class="cs-back" href="/#work">← Back to selected work</a>
+                </article>
+
+                <nav class="cs-toc" aria-labelledby="toc-title">
+                  <p id="toc-title">On this page</p>
+                  <ol>
+                    <li><a href="#cs-problem">The problem</a></li>
+                    <li><a href="#cs-what">What it does</a></li>
+                    <li><a href="#cs-how">How it works</a></li>
+                    <li><a href="#cs-pipeline">The delivery pipeline</a></li>
+                    <li><a href="#cs-changed">What changed</a></li>
+                    <li><a href="#cs-next">What I would do next</a></li>
+                    <li><a href="#cs-limits">Limitations</a></li>
+                    <li><a href="#cs-stack">Stack and links</a></li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wfsec">
+          <aside class="anno">
+            <span class="an-name">Compact footer</span>
+            <span class="an-c">SiteFooter (compact)</span>
+            <span class="pri">P0</span>
+            <span class="an-ref">ref: <span class="mono">.footer-compact</span></span>
+            <span class="an-note">Same legal line and year. No repeated primary nav.</span>
+          </aside>
+          <div class="sec-body" style="padding:0;">
+            <footer class="cs-footer">
+              <span>© 2026 Nidhi Patel · Frankfurt am Main</span>
+              <span><a href="/datenschutz/">Datenschutz</a><a href="mailto:nidhipatel18398@gmail.com">Email</a><a href="https://www.linkedin.com/in/nidhi-patel18">LinkedIn</a></span>
+            </footer>
+          </div>
+        </div>
+
+      </div><!-- /.page -->
+    </div><!-- /.frame -->
+  </div><!-- /.frame-wrap -->
+</section>
+
+<!-- ============================================================
+     ACCESSIBILITY ANNOTATION PASS
+     ============================================================ -->
+<section class="doc-sec" id="a11y">
+  <h2>Accessibility annotation pass</h2>
+  <p>These are the wireframe’s commitments, not a conformance claim. Targets are WCAG 2.2 AA, re-tested at Gate 3a with axe, keyboard and one screen-reader pass. The wireframe itself shows the focus ring statically on four controls so the treatment can be reviewed without interaction.</p>
+
+  <h3>1 · Heading outline</h3>
+  <table class="wf-table">
+    <thead><tr><th style="width:34%;">Level</th><th>Home</th><th>Case study</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">h1</td><td>Nidhi Patel — Data Scientist &amp; AI Engineer building RAG systems that hold up outside a notebook. (one h1)</td><td>MedBot: a document assistant that deploys itself</td></tr>
+      <tr><td class="mono">h2</td><td>01 Selected work · 02 Experience · 03 Credentials · 04 Capabilities · 05 About · 06 Contact · footer group labels (visually small, still sequential)</td><td>1 The problem · 2 What it does · 3 How it works · 4 The delivery pipeline · 5 What changed · 6 What I would do next · Limitations · 7 Stack and links · Sources</td></tr>
+      <tr><td class="mono">h3</td><td>Each project row system name · each role title · each degree and credential · each capability cluster</td><td>None required; figure captions are <span class="mono">figcaption</span>, not headings.</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:8px;font-size:12px;color:#444;">Rule: no level is skipped. The table above describes the built page. This wireframe document shows several page frames on one canvas, so the document itself has a single <span class="mono">h1</span> (the wireframe title), frame page titles are <span class="mono">h2</span>, section titles <span class="mono">h3</span> and entry titles <span class="mono">h4</span>. Section numerals are decorative and <span class="mono">aria-hidden</span>; the heading text carries the section name. The footer group labels are headings inside <span class="mono">footer</span> so the outline stays sequential.</p>
+
+  <h3>2 · Landmarks</h3>
+  <table class="wf-table">
+    <thead><tr><th style="width:22%;">Landmark</th><th>Element and label</th><th style="width:24%;">Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Skip link</td><td class="mono">a.skip-link → #main-content</td><td>First focusable; visible on focus; instant, no transition</td></tr>
+      <tr><td>Banner</td><td class="mono">header</td><td>Sticky; contains the wordmark</td></tr>
+      <tr><td>Navigation</td><td class="mono">nav aria-label="Primary"</td><td>Four anchors; <span class="mono">aria-current="page"</span> on Work in the case study</td></tr>
+      <tr><td>Main</td><td class="mono">main#main-content tabindex="-1"</td><td>The skip target; focus lands non-visibly</td></tr>
+      <tr><td>Sectioning</td><td><span class="mono">section</span> with an h2, or <span class="mono">section aria-labelledby</span></td><td>Hero is labelled by its h1; Contact by its h2</td></tr>
+      <tr><td>Content info</td><td class="mono">footer</td><td>Site links labelled; no duplicate primary nav</td></tr>
+      <tr><td>Article</td><td class="mono">article</td><td>Case study only; one article landmark</td></tr>
+      <tr><td>Complementary</td><td class="mono">nav aria-labelledby="toc-title"</td><td>Static TOC, not a scroll-spy</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3 · Focus order (desktop home, top to bottom)</h3>
+  <ol style="font-size:12.5px;line-height:1.8;max-width:100ch;margin:0;padding-left:20px;">
+    <li>Skip link → <span class="mono">#main-content</span></li>
+    <li>Wordmark → <span class="mono">#top</span></li>
+    <li>Work · Experience · About · Contact</li>
+    <li>Language chip — <strong>not focusable</strong> (deferred, <span class="mono">aria-disabled</span>)</li>
+    <li>Theme control (three-state button)</li>
+    <li>Download CV</li>
+    <li>Hero: View selected work → Download CV → LinkedIn → GitHub → Email</li>
+    <li>Selected work: three row links, one per row, in order</li>
+    <li>Experience: no interactive elements inside the timeline</li>
+    <li>Credentials: three verify links (external, labelled new tab)</li>
+    <li>Capabilities: five evidence links</li>
+    <li>About: no interactive elements</li>
+    <li>Contact: Email me → Connect on LinkedIn → Download CV</li>
+    <li>Footer: site links, elsewhere links, Datenschutz</li>
+  </ol>
+  <p style="margin-top:8px;font-size:12px;color:#444;">The mobile frame has one extra stop before the hero: the menu button (44 × 44), which opens a panel and returns focus to itself on Escape. There is no focus trap. The hero menu itself is not shown open in this wireframe; the annotation marks its contract.</p>
+
+  <h3>4 · Target sizes and visible focus</h3>
+  <table class="wf-table">
+    <thead><tr><th style="width:26%;">Control</th><th>Minimum</th><th>Focus treatment</th></tr></thead>
+    <tbody>
+      <tr><td>Primary / secondary buttons</td><td class="mono">48px high; 44px floor at every breakpoint</td><td>2px paper inner ring + 2px accent outer ring, 2px offset (shown here as a 3px ink ring)</td></tr>
+      <tr><td>Nav links, footer links</td><td class="mono">44px (nav) / 28px inline (footer)</td><td>Ring is never clipped by sticky header or overflow</td></tr>
+      <tr><td>Ledger row</td><td class="mono">full row, min-height 44px</td><td>Outline inset by 3px so the hairline does not clip it</td></tr>
+      <tr><td>Icon buttons, menu</td><td class="mono">44 × 44</td><td>Ring on the button, not the icon</td></tr>
+      <tr><td>Inline prose links</td><td class="mono">24 × 24 minimum</td><td>Underlined always; never colour alone</td></tr>
+      <tr><td>Skip link</td><td class="mono">44px high</td><td>Appears on focus at top-left; 2px border</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:8px;font-size:12px;color:#444;"><strong>Shown focused in this artefact:</strong> desktop “Work” nav link, hero “View selected work”, ledger row 1; mobile menu button; case-study at-a-glance is not focusable. Ring colour is rendered as <span class="mono">#111</span> because the wireframe has no accent token; the build uses the 2px + 2px dual-ring recipe.</p>
+</section>
+
+<!-- ============================================================
+     LEGEND
+     ============================================================ -->
+<section class="doc-sec" id="legend">
+  <h2>How to read this wireframe</h2>
+  <div class="legend-grid">
+    <div>
+      <h3>Priority</h3>
+      <ul>
+        <li><strong>P0</strong> — must exist for the page to work.</li>
+        <li><strong>P1</strong> — should exist; adds proof or structure.</li>
+        <li><strong>P2</strong> — only if content justifies it. Not present here.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Type substitutes</h3>
+      <ul>
+        <li>Fraunces → <span class="mono">ui-serif / Georgia</span></li>
+        <li>Geist → <span class="mono">system-ui</span></li>
+        <li>JetBrains Mono → <span class="mono">ui-monospace</span></li>
+        <li>No font file is requested or bundled.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Colour and motion</h3>
+      <ul>
+        <li>Greyscale only: paper white, surface grey, ink near-black, rules grey.</li>
+        <li>The “accent” is rendered as solid ink so structure can be judged without colour.</li>
+        <li>No animation exists in this file; the motion storyboard is text in <span class="mono">notes.md</span>.</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:18px;font-size:12.5px;color:#444;">Annotation rail: 200px on the desktop frames. It is <em>not</em> part of the design — turn it off with the toolbar to see the approved 1440 composition, where the 1200px container sits in a 1440px viewport with 120px margins. At 390 there is no margin, so annotations become inline chips above each section.</p>
+</section>
+
+</main>
+
+<footer class="doc-foot">
+  <span>Nidhi Patel portfolio — Gate 2 wireframe · 21 November 2026</span>
+  <span class="mono">docs/wireframes/index.html · no external requests</span>
+</footer>
+
+<script>
+// Wireframe only: keep every link inert so the artefact cannot navigate away.
+// In-page hash links (skip link, section jumps) are left alone.
+(function () {
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest ? event.target.closest('a[href]') : null;
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (href && href.charAt(0) !== '#') {
+      event.preventDefault();
+    }
+  }, false);
+})();
+</script>
+
+</body>
+</html>

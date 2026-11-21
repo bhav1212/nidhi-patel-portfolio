@@ -1,0 +1,39 @@
+---
+import { contact } from '../data/profile';
+import { copy, type Lang } from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang];
+---
+
+<div class="section">
+  <div class="container">
+    <div class="prose">
+      <p class="label" style="margin-bottom: 0.9rem;">{t.privacy.kicker}</p>
+      <h1 class="serif" style="font-size: clamp(2rem, 1.5rem + 2.4vw, 3rem); margin-bottom: 1.5rem;">{t.privacy.title}</h1>
+
+      {t.privacy.sections.map((section: any, i: number) => (
+        <>
+          <h2>{section.heading}</h2>
+          <p>
+            {section.body}
+            {i === 1 && (
+              <>
+                {' '}
+                <a class="link-accent" href={`mailto:${contact.email}`}>{contact.email}</a>{t.privacy.responsibleSuffix}
+              </>
+            )}
+          </p>
+        </>
+      ))}
+
+      <p style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-faint);">
+        {t.privacy.updated}
+      </p>
+    </div>
+  </div>
+</div>

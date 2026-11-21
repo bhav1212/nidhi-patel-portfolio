@@ -1,0 +1,658 @@
+---
+/**
+ * The home page, rendered once per locale. All copy comes from `copy[lang]`
+ * and every CV-derived field is passed through the `*For(lang)` helpers, so the
+ * two language versions share one set of markup, one script and one animation
+ * timeline.
+ */
+import { contact, links, certifications, stackStrip, cvUrl } from '../data/profile';
+import { elements } from '../data/elements';
+import {
+  copy,
+  experienceFor,
+  educationFor,
+  languagesFor,
+  elementsFor,
+  familiesFor,
+  localePath,
+  studyFor,
+  type Lang,
+} from '../i18n/content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = copy[lang];
+
+const experience = experienceFor(lang);
+const education = educationFor(lang);
+const languages = languagesFor(lang);
+const families = familiesFor(lang);
+const localElements = elementsFor(lang);
+// The card title comes from the same case study the card links to, so a
+// translated project name can never diverge between the two pages.
+const agentStudy = studyFor(lang, 'ai-financial-analyst');
+const agentName = agentStudy?.name ?? 'AI Financial Analyst Agent';
+
+// Two copies so the marquee can loop seamlessly; the second is hidden from
+// screen readers, which would otherwise announce every tool twice.
+const strip = [...stackStrip, ...stackStrip];
+
+const familyCounts = families.map((_: any, i: number) => localElements.filter((el: any) => el.familyIndex === i).length);
+const featuredNumber = (elements.find((el: any) => el.name === 'Python (pandas, NumPy)') ?? elements[0]).number;
+const featured: any = localElements.find((el: any) => el.number === featuredNumber) ?? localElements[0];
+const num2 = (n: number) => String(n).padStart(2, '0');
+
+const countLabel = (n: number) => `${n} ${n === 1 ? t.skills.elementsOne : t.skills.elementsMany}`;
+
+/** `**text**` marks the two employers in the About prose; everything else is plain. */
+const bold = (text: string) => {
+  const segments: { text: string; strong: boolean }[] = [];
+  let rest = text;
+  while (rest.includes('**')) {
+    const open = rest.indexOf('**');
+    const close = rest.indexOf('**', open + 2);
+    if (close === -1) break;
+    if (open > 0) segments.push({ text: rest.slice(0, open), strong: false });
+    segments.push({ text: rest.slice(open + 2, close), strong: true });
+    rest = rest.slice(close + 2);
+  }
+  if (rest) segments.push({ text: rest, strong: false });
+  return segments;
+};
+---
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="hero-eyebrow-row">
+          <p class="hero-eyebrow">
+            <span class="pulse" aria-hidden="true"></span>
+            <span>{t.hero.eyebrow}</span>
+          </p>
+          <!-- WCAG 2.2.2: the headline swaps words on a timer, so it needs a
+               pause control. JS hides it when the rotation is not running. -->
+          <button
+            class="swap-toggle"
+            type="button"
+            aria-label={t.hero.pauseWords}
+            title={t.hero.pauseWords}
+            data-pause={t.hero.pauseWords}
+            data-play={t.hero.playWords}
+          >
+            <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 5v14M15 5v14" />
+            </svg>
+            <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5l11 7-11 7z" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- One block per line, so the closing phrase balances on its own: the
+             German headline runs to four lines at the desktop size, and without
+             this the last line is left as a two-word orphan. -->
+        <h1>
+          <span class="title-line">{t.hero.title1}</span>
+          <span class="title-line"><span class="swap-wrap"><span id="hero-swap" data-words={JSON.stringify(t.hero.words)}>{t.hero.words[0]}</span></span></span>
+          <span class="title-line">{t.hero.title2}</span>
+        </h1>
+
+        <p class="hero-lead">
+          {t.hero.leadBefore}<a class="link-accent" href="https://www.lufthansa.com/" target="_blank" rel="noopener noreferrer">{t.hero.leadLink}</a>{t.hero.leadAfter}
+        </p>
+
+        <div class="btn-row">
+          <a href="#work" class="btn btn-primary">
+            {t.hero.ctaWork}
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+          </a>
+          <a href={cvUrl} download class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></svg>
+            {t.hero.ctaCv}
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span class="label">{t.hero.basedIn}</span>
+            <span class="value">{t.hero.basedInValue}</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="label">{t.hero.currently}</span>
+            <span class="value">{t.hero.fieldCurrentlyValue}</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="label">{t.hero.focus}</span>
+            <span class="value">{t.hero.focusValue}</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="label">{t.hero.languages}</span>
+            <span class="value">{t.hero.languagesValue}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lanyard-zone">
+        <div class="lanyard-swing">
+          <div class="lanyard-strap" aria-hidden="true">
+            <span>{t.hero.strap}</span>
+          </div>
+          <div class="metal-clip" aria-hidden="true"></div>
+          <button
+            class="id-card"
+            type="button"
+            aria-pressed="false"
+            aria-describedby="card-hint"
+            aria-label={t.hero.cardLabel}
+            title={t.hero.cardTitle}
+          >
+            <span class="id-face id-front">
+              <span class="id-top">{t.hero.idTop} <span>NP</span></span>
+              <span class="id-photo">
+                <picture>
+                  <source srcset="/assets/nidhi-id-photo.webp" type="image/webp" />
+                  <img
+                    src="/assets/nidhi-id-photo.jpg"
+                    alt=""
+                    width="480"
+                    height="600"
+                    loading="eager"
+                    decoding="async"
+                    fetchpriority="high"
+                  />
+                </picture>
+              </span>
+              <strong class="id-name">Nidhi Patel</strong>
+              <span class="id-role">{t.hero.idRole}</span>
+              <span class="id-fields">
+                <span><span>{t.hero.fieldBasedIn}</span><strong>{t.hero.fieldBasedInValue}</strong></span>
+                <span><span>{t.hero.fieldCurrently}</span><strong>{t.hero.fieldCurrentlyValue}</strong></span>
+                <span><span>{t.hero.fieldDegree}</span><strong>{t.hero.fieldDegreeValue}</strong></span>
+              </span>
+              <span class="id-bottom">
+                <span class="barcode" aria-hidden="true">
+                  {[3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1].map((w) => <i style={`width:${w}px`} />)}
+                </span>
+                <span class="id-sticker" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+                    <path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z" />
+                  </svg>
+                </span>
+              </span>
+            </span>
+
+            <span class="id-face id-back" aria-hidden="true">
+              <span class="id-top">{t.hero.backTop} <span>NP</span></span>
+              <span class="id-back-lines">
+                {t.hero.backItems.map((item: string, i: number) => (
+                  <span><small>{num2(i + 1)}</small>{item}</span>
+                ))}
+              </span>
+              <span class="id-signature" aria-hidden="true">Nidhi</span>
+              <span class="id-found">{t.hero.found} {contact.email}</span>
+            </span>
+          </button>
+        </div>
+        <p class="card-hint" id="card-hint">
+          {t.hero.cardHint}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- The stack marquee sits below the hero, not inside it: the first screen
+     stays the pitch, and the strip reads as the opening line of the second. -->
+<div class="tech-strip" tabindex="0" aria-label={t.hero.techAria} data-reveal>
+  <span class="tech-strip-label">{t.hero.techLabel}</span>
+  <div class="tech-strip-track">
+    <div class="tech-strip-items">
+      {strip.map((item: string, i: number) => <span aria-hidden={i >= stackStrip.length ? 'true' : undefined}>{item}</span>)}
+    </div>
+  </div>
+</div>
+
+<!-- 01 · Work -->
+<section class="section" id="work">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="section-num"><span class="n">01</span><span class="line"></span><span>{t.work.eyebrow}</span></div>
+      <h2>{t.work.heading}</h2>
+      <p>{t.work.intro}</p>
+    </div>
+
+    <div class="bento">
+      <article class="bento-card b-feature" data-reveal>
+        <span class="b-tag">{t.work.medbotTag}</span>
+        <h3>MedBot</h3>
+        <p>{t.work.medbotBody}</p>
+        <div class="bento-stats">
+          {t.work.medbotStats.map(([value, label]: string[]) => (
+            <div class="stat"><span class="stat-num">{value}</span><span class="stat-label">{label}</span></div>
+          ))}
+        </div>
+        <a class="card-link" href={localePath(lang, '/work/medbot/')}>
+          {t.work.readCase}<span class="sr-only">: MedBot</span>
+        </a>
+      </article>
+
+      <article class="bento-card b-tall" data-reveal>
+        <span class="b-tag">{t.work.agentTag}</span>
+        <h3>{agentName}</h3>
+        <p>{t.work.agentBody}</p>
+        <p class="b-outcome"><strong>{t.work.agentOutcomeLabel}</strong>{t.work.agentOutcome}</p>
+        <a class="card-link" href={localePath(lang, '/work/ai-financial-analyst/')}>
+          {t.work.readCase}<span class="sr-only">: {agentName}</span>
+        </a>
+      </article>
+
+      <article class="bento-card b-third" data-reveal>
+        <span class="b-tag">{t.work.thesisTag}</span>
+        <h3>{t.work.thesisHeading}</h3>
+        <p>{t.work.thesisBody}</p>
+        <p class="b-outcome">{t.work.thesisOutcomeBefore}<strong>{t.work.thesisOutcomeStrong}</strong>{t.work.thesisOutcomeAfter}</p>
+        <a class="card-link" href={localePath(lang, '/work/cash-access-germany/')}>
+          {t.work.readCase}<span class="sr-only">: {t.work.thesisHeading}</span>
+        </a>
+      </article>
+
+      <article class="bento-card b-third" data-reveal>
+        <span class="b-tag">{t.work.credsTag}</span>
+        <h3>{t.work.credsHeading}</h3>
+        <p>{t.work.credsBody}</p>
+        <p class="b-outcome"><a class="link-accent" href="#certifications">{t.work.credsLink}</a></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · The record -->
+<section class="section" id="record">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="section-num"><span class="n">02</span><span class="line"></span><span>{t.record.eyebrow}</span></div>
+      <h2>{t.record.heading}</h2>
+    </div>
+
+    <div class="record">
+      {t.record.stats.map((s: any) => (
+        <div class="record-card" data-reveal>
+          <div class="record-num" data-count={s.num} data-suffix={s.suffix}>{s.num}{s.suffix}</div>
+          <div class="record-label">{s.label}</div>
+          <div class="record-sub">{s.sub}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- 03 · Experience -->
+<section class="section" id="experience">
+  <div class="container experience-layout">
+    <div class="section-head experience-head" data-reveal>
+      <div class="section-num"><span class="n">03</span><span class="line"></span><span>{t.experience.eyebrow}</span></div>
+      <h2>{t.experience.heading}</h2>
+      <p>{t.experience.intro}</p>
+    </div>
+
+    <ol class="timeline" data-timeline>
+      <li class="timeline-spine" aria-hidden="true"><span></span></li>
+      {experience.map((job: any) => (
+        <li class="timeline-item" data-current={String(job.current)} data-reveal>
+          <div class="tl-top">
+            <span class="tl-role">{job.role}</span>
+            <span class="tl-dates">{job.durationDisplay}</span>
+          </div>
+          <div class="tl-company">{job.company} · {job.location}</div>
+          {/* Portfolio copy is written for the page: a scope sentence plus three
+              outcomes, so the summary never restates its own bullets. The full
+              CV wording stays in the JSON for the CV and llms.txt. */}
+          {(job.portfolioSummary ?? job.summaryForPortfolio) && (
+            <p class="tl-summary">{job.portfolioSummary ?? job.summaryForPortfolio}</p>
+          )}
+          <ul class="tl-points">
+            {(job.portfolioHighlights ?? job.highlights.slice(0, 3)).map((h: string) => <li>{h}</li>)}
+          </ul>
+          {job.stack?.length > 0 && (
+            <div class="tl-stack">
+              {job.stack.map((s: string) => <span class="chip">{s}</span>)}
+            </div>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- 04 · Education -->
+<section class="section" id="education">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="section-num"><span class="n">04</span><span class="line"></span><span>{t.education.eyebrow}</span></div>
+      <h2>{t.education.heading}</h2>
+      <p>{t.education.intro}</p>
+    </div>
+
+    <ol class="certs">
+      {education.map((ed: any) => (
+        <li class="cert" data-reveal>
+          <span class="cert-year">{ed.durationDisplay.split(' – ')[1]?.replace(/\(.*\)/, '').trim() || ed.end.slice(0, 4)}</span>
+          <div>
+            <h3 class="cert-title">{ed.degree}</h3>
+            <p class="cert-meta">{ed.institution} · {ed.location}</p>
+            <p class="cert-id">{ed.durationDisplay.replace(/\s*\(.*?\)/, '')}{ed.details?.length ? ` · ${ed.details[0]}` : ''}</p>
+          </div>
+          <span class="cert-status">{ed.current ? t.education.inProgress : t.education.completed}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- 05 · Certifications -->
+<section class="section" id="certifications">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="section-num"><span class="n">05</span><span class="line"></span><span>{t.credentials.eyebrow}</span></div>
+      <h2>{t.credentials.heading}</h2>
+      <p>{t.credentials.intro}</p>
+    </div>
+
+    <ol class="certs">
+      {certifications.map((cert: any) => (
+        <li class="cert" data-reveal>
+          <span class="cert-year">{cert.issued.replace('-', '/')}</span>
+          <div>
+            <h3 class="cert-title">{cert.name}</h3>
+            <p class="cert-meta">{cert.issuer}</p>
+            {cert.credentialId && <p class="cert-id">{t.credentials.credentialId} {cert.credentialId}</p>}
+          </div>
+          <a class="cert-link" href={cert.verificationUrl} target="_blank" rel="noopener noreferrer">
+            {t.credentials.verify}<span class="sr-only">: {cert.name}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- 06 · Skills -->
+<section class="section" id="capabilities">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="section-num"><span class="n">06</span><span class="line"></span><span>{t.skills.eyebrow}</span></div>
+      <h2>{t.skills.heading}</h2>
+      <p>{t.skills.intro}</p>
+    </div>
+
+    <div class="family-filters" data-reveal role="group" aria-label={t.skills.filterAria}>
+      <button type="button" data-filter="all" aria-pressed="true">
+        {t.skills.all}<span>{localElements.length}</span>
+      </button>
+      {families.map((family: any, i: number) => (
+        <button type="button" data-filter={String(i)} aria-pressed="false">
+          {family.short}<span>{familyCounts[i]}</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="skills-layout">
+      <div
+        class="element-grid"
+        data-reveal
+        aria-label={t.skills.gridAria}
+        data-where={t.skills.where}
+        data-elements-one={t.skills.elementsOne}
+        data-elements-many={t.skills.elementsMany}
+      >
+        {localElements.map((el: any, i: number) => (
+          <button
+            class={`element family-${el.familyIndex}${el.number === featured.number ? ' selected' : ''}`}
+            style={`--i:${i}`}
+            type="button"
+            data-number={String(el.number)}
+            data-symbol={el.symbol}
+            data-name={el.name}
+            data-family={families[el.familyIndex].name}
+            data-family-index={String(el.familyIndex)}
+            data-icon={el.icon ?? ''}
+            data-uses={JSON.stringify(el.uses)}
+            aria-pressed={el.number === featured.number ? 'true' : 'false'}
+          >
+            <span class="element-number" aria-hidden="true">{num2(el.number)}</span>
+            <span class="element-symbol" aria-hidden="true">{el.symbol}</span>
+            <span class="element-name">{el.name}</span>
+            <span class="element-family">{families[el.familyIndex].short}</span>
+          </button>
+        ))}
+      </div>
+
+      <aside class="element-inspector">
+        <p class="inspector-label">{t.skills.focusLabel}<span id="inspector-number">{num2(featured.number)}</span></p>
+        <div class="inspector-figure" id="inspector-figure">
+          {featured.icon ? (
+            <i class="inspector-icon" style={`--icon:url('/icons/${featured.icon}.svg')`} aria-hidden="true"></i>
+          ) : (
+            <span class="inspector-symbol" aria-hidden="true">{featured.symbol}</span>
+          )}
+        </div>
+        <h3 id="inspector-name">{featured.name}</h3>
+        <span class="inspector-family" id="inspector-family">
+          {families[featured.familyIndex].name} · {countLabel(familyCounts[featured.familyIndex])}
+        </span>
+        <div class="inspector-use" id="inspector-use">
+          {featured.uses.length > 0 && (
+            <>
+              <p class="mono">{t.skills.where}</p>
+              {featured.uses.map((use: any) => (
+                <a href={use.href}>
+                  {use.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </>
+          )}
+        </div>
+        <p class="inspector-hint">{t.skills.hint}</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · About -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div class="section-num"><span class="n">07</span><span class="line"></span><span>{t.about.eyebrow}</span></div>
+      <h2>{t.about.heading}</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-prose">
+        {t.about.paragraphs.map((paragraph: string) => (
+          <p data-reveal>
+            {bold(paragraph).map((segment) =>
+              segment.strong ? <strong>{segment.text}</strong> : segment.text
+            )}
+          </p>
+        ))}
+      </div>
+
+      <!-- Education and the current role have their own sections now, so the
+           aside carries only what belongs to no other block: the full language
+           list and the outbound links. -->
+      <aside class="about-facts" data-reveal>
+        <div class="about-fact">
+          <span class="label">{t.about.facts.languages}</span>
+          <span class="value">
+            {languages
+              .map((l: any) => `${l.language} (${lang === 'en' ? l.level.toLowerCase() : l.level})`)
+              .join(' · ')}
+          </span>
+        </div>
+        <div class="about-fact">
+          <span class="label">{t.about.facts.elsewhere}</span>
+          <span class="value">
+            <a class="link-accent" href={links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>{' · '}
+            <a class="link-accent" href={links.github} target="_blank" rel="noopener noreferrer">GitHub</a>{' · '}
+            <a class="link-accent" href={cvUrl} download>{t.footer.resume}</a>
+          </span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact" data-reveal>
+      <span class="section-eyebrow label">{t.contact.eyebrow}</span>
+      <h2>{t.contact.heading}</h2>
+      <p>{t.contact.body}</p>
+      <div class="btn-row">
+        <a href={`mailto:${contact.email}?subject=${encodeURIComponent(lang === 'de' ? 'Hallo Nidhi' : 'Hello Nidhi')}`} class="btn btn-primary">
+          {t.contact.email}
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+            <path d="M22 6 12 13 2 6" />
+          </svg>
+        </a>
+        <a href={links.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">{t.contact.linkedin}</a>
+        <a href={cvUrl} download class="btn btn-ghost">{t.contact.cv}</a>
+      </div>
+      <div class="contact-meta">
+        <span>{t.contact.city}</span>
+        <span>{t.contact.relocation}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // The profile card is a single button: click, Enter or Space turns it over,
+  // and the hidden face is removed from the accessibility tree while turned.
+  document.querySelectorAll<HTMLButtonElement>('.id-card').forEach((card) => {
+    const front = card.querySelector('.id-front');
+    const back = card.querySelector('.id-back');
+
+    const turn = (flipped: boolean) => {
+      card.classList.toggle('flipped', flipped);
+      card.setAttribute('aria-pressed', String(flipped));
+      front?.setAttribute('aria-hidden', String(flipped));
+      back?.setAttribute('aria-hidden', String(!flipped));
+    };
+
+    card.addEventListener('click', () => turn(!card.classList.contains('flipped')));
+  });
+
+  // Skills as a periodic table: selecting a tile fills the inspector.
+  const grid = document.querySelector<HTMLElement>('.element-grid');
+  const inspector = document.querySelector<HTMLElement>('.element-inspector');
+
+  if (grid && inspector) {
+    // Labels live on the grid so the script stays language-neutral.
+    const whereLabel = grid.dataset.where ?? '';
+    const elementsLabel = (n: number) =>
+      `${n} ${n === 1 ? grid.dataset.elementsOne ?? '' : grid.dataset.elementsMany ?? ''}`;
+
+    const tiles = Array.from(grid.querySelectorAll<HTMLButtonElement>('.element'));
+    const filters = Array.from(document.querySelectorAll<HTMLButtonElement>('.family-filters [data-filter]'));
+    const numberEl = inspector.querySelector<HTMLElement>('#inspector-number');
+    const nameEl = inspector.querySelector<HTMLElement>('#inspector-name');
+    const familyEl = inspector.querySelector<HTMLElement>('#inspector-family');
+    const figure = inspector.querySelector<HTMLElement>('#inspector-figure');
+    const useEl = inspector.querySelector<HTMLElement>('#inspector-use');
+
+    const counts = new Map<string, number>();
+    tiles.forEach((tile) => {
+      const key = tile.dataset.familyIndex ?? '';
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    });
+
+    const show = (tile: HTMLButtonElement) => {
+      tiles.forEach((t) => {
+        const on = t === tile;
+        t.classList.toggle('selected', on);
+        t.setAttribute('aria-pressed', String(on));
+      });
+
+      if (numberEl) numberEl.textContent = (tile.dataset.number ?? '').padStart(2, '0');
+      if (nameEl) nameEl.textContent = tile.dataset.name ?? '';
+      if (familyEl) {
+        const key = tile.dataset.familyIndex ?? '';
+        familyEl.textContent = `${tile.dataset.family ?? ''} · ${elementsLabel(counts.get(key) ?? 0)}`;
+      }
+
+      if (figure) {
+        figure.replaceChildren();
+        if (tile.dataset.icon) {
+          const mark = document.createElement('i');
+          mark.className = 'inspector-icon';
+          mark.setAttribute('aria-hidden', 'true');
+          mark.style.setProperty('--icon', `url('/icons/${tile.dataset.icon}.svg')`);
+          figure.append(mark);
+        } else {
+          const symbol = document.createElement('span');
+          symbol.className = 'inspector-symbol';
+          symbol.setAttribute('aria-hidden', 'true');
+          symbol.textContent = tile.dataset.symbol ?? '';
+          figure.append(symbol);
+        }
+      }
+
+      if (useEl) {
+        useEl.replaceChildren();
+        const uses = JSON.parse(tile.dataset.uses ?? '[]') as { label: string; href: string }[];
+        if (uses.length > 0) {
+          const label = document.createElement('p');
+          label.className = 'mono';
+          label.textContent = whereLabel;
+          useEl.append(label);
+          uses.forEach((use) => {
+            const link = document.createElement('a');
+            link.href = use.href;
+            link.textContent = use.label;
+            const arrow = document.createElement('span');
+            arrow.setAttribute('aria-hidden', 'true');
+            arrow.textContent = '↗';
+            link.append(arrow);
+            useEl.append(link);
+          });
+        }
+      }
+    };
+
+    tiles.forEach((tile) => {
+      tile.addEventListener('click', () => show(tile));
+      tile.addEventListener('focus', () => show(tile));
+      if (window.matchMedia('(hover: hover)').matches) {
+        tile.addEventListener('mouseenter', () => show(tile));
+      }
+    });
+
+    filters.forEach((filter) => {
+      filter.addEventListener('click', () => {
+        const value = filter.dataset.filter ?? 'all';
+        filters.forEach((f) => f.setAttribute('aria-pressed', String(f === filter)));
+        tiles.forEach((tile) => {
+          const dimmed = value !== 'all' && tile.dataset.familyIndex !== value;
+          tile.classList.toggle('dimmed', dimmed);
+          // A filtered-out tile is out of the interaction set, not merely faint:
+          // inert removes it from the tab order, the a11y tree and click targets.
+          tile.toggleAttribute('inert', dimmed);
+        });
+        if (value !== 'all') {
+          const first = tiles.find((tile) => tile.dataset.familyIndex === value);
+          if (first) show(first);
+        }
+      });
+    });
+  }
+</script>

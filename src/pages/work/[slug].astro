@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CasePage from '../../components/CasePage.astro';
+import { caseStudies } from '../../data/case-studies';
+
+export function getStaticPaths() {
+  return caseStudies.map((study, index) => ({
+    params: { slug: study.slug },
+    props: {
+      study,
+      prev: caseStudies[(index - 1 + caseStudies.length) % caseStudies.length],
+      next: caseStudies[(index + 1) % caseStudies.length],
+    },
+  }));
+}
+
+const { study, prev, next } = Astro.props as any;
+const title = `${study.name} — Nidhi Patel`;
+const description = study.metaDescription;
+---
+
+<BaseLayout title={title} description={description} lang="en">
+  <CasePage lang="en" study={study} prev={prev} next={next} />
+</BaseLayout>

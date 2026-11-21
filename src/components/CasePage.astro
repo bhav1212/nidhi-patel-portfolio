@@ -1,0 +1,79 @@
+---
+/**
+ * A case study page. The study object carries its own localised prose (see
+ * `data/case-studies.de.ts`), so the layout is identical in both languages and
+ * only the surrounding chrome comes from the dictionary.
+ */
+import { copy, localePath, type Lang } from '../i18n/content';
+import type { CaseStudy } from '../data/case-studies';
+
+interface Props {
+  lang: Lang;
+  study: CaseStudy;
+  prev: CaseStudy;
+  next: CaseStudy;
+}
+
+const { lang, study, prev, next } = Astro.props;
+const t = copy[lang];
+---
+
+<article>
+  <header class="case-head">
+    <div class="container">
+      <a class="case-back" href={localePath(lang, '/#work')}>← {t.caseStudy.back}</a>
+      <p class="label" style="margin-bottom: 0.9rem;">{study.subtitle}</p>
+      <h1>{study.name}</h1>
+      <p class="case-dek">{study.dek}</p>
+
+      <div class="case-facts">
+        {study.stack.map((item: string) => <span class="chip">{item}</span>)}
+      </div>
+
+      <div class="case-meta">
+        {study.facts.map((fact: any) => (
+          <div>
+            <span class="label">{fact.label}</span>
+            <span style="font-size: 0.9rem;">{fact.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </header>
+
+  <div class="section" style="padding-top: clamp(1.5rem, 3vw, 2.5rem);">
+    <div class="container">
+      <div class="prose">
+        {study.sections.map((section: any) => (
+          <>
+            <h2>{section.heading}</h2>
+            {section.paragraphs?.map((p: string) => <p>{p}</p>)}
+            {section.bullets?.length > 0 && (
+              <ul>
+                {section.bullets.map((b: string) => <li>{b}</li>)}
+              </ul>
+            )}
+          </>
+        ))}
+
+        {study.links.length > 0 && (
+          <>
+            <h2>{t.caseStudy.linksHeading}</h2>
+            <ul>
+              {study.links.map((link: any) => (
+                <li>
+                  <a class="link-accent" href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+
+      <nav class="case-nav" aria-label={t.caseStudy.moreWork}>
+        <a href={localePath(lang, `/work/${prev.slug}/`)}>← {prev.name}</a>
+        <a href={localePath(lang, `/work/${next.slug}/`)}>{next.name} →</a>
+      </nav>
+    </div>
+  </div>
+</article>

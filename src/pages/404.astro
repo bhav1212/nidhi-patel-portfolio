@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { copy } from '../i18n/content';
+
+const t = copy.en;
+---
+
+<BaseLayout title={t.notFound.metaTitle} description={t.notFound.metaDescription} noindex lang="en">
+  <section class="notfound">
+    <div class="container">
+      <p class="code">404</p>
+      <h1 id="notfound-title">{t.notFound.title}</h1>
+      <p id="notfound-body">{t.notFound.body}</p>
+      <div class="btn-row" style="justify-content: center;">
+        <a id="notfound-home" href="/" class="btn btn-primary">
+          <span id="notfound-home-label">{t.notFound.home}</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" /></svg>
+        </a>
+        <a id="notfound-work" href="/#work" class="btn btn-ghost">{t.notFound.work}</a>
+      </div>
+    </div>
+  </section>
+
+  <script
+    is:inline
+    define:vars={{ de: copy.de.notFound, deNav: copy.de.nav, deFooter: copy.de.footer }}
+  >
+    // GitHub Pages serves this one file for every missing URL but keeps the
+    // path, so a request under /de/ gets the whole German page — body, header,
+    // footer and language pill — rather than German text inside English chrome.
+    (function () {
+      var isDe = /^\/de(\/|$)/.test(location.pathname);
+      var root = document.documentElement;
+      var langSwitch = document.querySelector('.lang-switch');
+
+      // A missing page has no locale of its own, so the switch goes to the
+      // other language's home page instead of linking to another 404.
+      if (langSwitch) {
+        langSwitch.setAttribute('href', isDe ? '/' : '/de/');
+        langSwitch.setAttribute('data-active', isDe ? 'de' : 'en');
+      }
+
+      if (!isDe) return;
+
+      root.lang = 'de';
+      root.dataset.home = '/de/';
+      root.dataset.themeLabelLight = deNav.themeToLight;
+      root.dataset.themeLabelDark = deNav.themeToDark;
+
+      if (langSwitch) {
+        langSwitch.setAttribute('hreflang', 'en');
+        langSwitch.setAttribute('lang', 'en');
+        langSwitch.setAttribute('aria-label', deNav.langSwitch);
+        langSwitch.setAttribute('title', deNav.langSwitch);
+      }
+
+      document.title = de.metaTitle;
+      var description = document.querySelector('meta[name="description"]');
+      if (description) description.setAttribute('content', de.metaDescription);
+
+      var set = function (selector, text) {
+        var el = document.querySelector(selector);
+        if (el) el.textContent = text;
+      };
+      set('.skip-link', deNav.skip);
+
+      var logo = document.querySelector('.nav-logo');
+      if (logo) {
+        logo.setAttribute('href', '/de/');
+        logo.setAttribute('aria-label', deNav.home);
+      }
+
+      var nav = document.getElementById('nav-links');
+      if (nav) {
+        nav.setAttribute('aria-label', deNav.primary);
+        var labels = [deNav.work, deNav.experience, deNav.skills, deNav.about, deNav.contact];
+        var hashes = ['#work', '#experience', '#capabilities', '#about', '#contact'];
+        nav.querySelectorAll('a').forEach(function (a, i) {
+          if (i >= labels.length) return;
+          a.textContent = labels[i];
+          a.setAttribute('href', '/de/' + hashes[i]);
+        });
+      }
+
+      var menuBtn = document.querySelector('.nav-toggle');
+      if (menuBtn) menuBtn.setAttribute('aria-label', deNav.menu);
+
+      var cvLink = document.querySelector('.nav-tools a[download]');
+      if (cvLink) {
+        cvLink.setAttribute('aria-label', deNav.cv);
+        cvLink.setAttribute('title', deNav.cv);
+      }
+
+      // The footer is parsed after this script (it sits below <main>), so its
+      // rewrite waits for the document to finish rather than running now.
+      var localiseFooter = function () {
+        var footerNav = document.querySelector('.footer-links');
+        if (!footerNav) return;
+        footerNav.setAttribute('aria-label', deFooter.label);
+        var footerLabels = [deFooter.resume, deFooter.email, 'LinkedIn', 'GitHub', deFooter.privacy];
+        footerNav.querySelectorAll('a').forEach(function (a, i) {
+          if (i >= footerLabels.length) return;
+          a.textContent = footerLabels[i];
+        });
+        var privacy = footerNav.querySelector('a[href="/datenschutz/"]');
+        if (privacy) privacy.setAttribute('href', '/de/datenschutz/');
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', localiseFooter);
+      } else {
+        localiseFooter();
+      }
+
+      set('#notfound-title', de.title);
+      set('#notfound-body', de.body);
+      set('#notfound-home-label', de.home);
+      set('#notfound-work', de.work);
+      var home = document.getElementById('notfound-home');
+      var work = document.getElementById('notfound-work');
+      if (home) home.setAttribute('href', '/de/');
+      if (work) work.setAttribute('href', '/de/#work');
+    })();
+  </script>
+</BaseLayout>
