@@ -4,11 +4,19 @@ export type CaseSection = {
   bullets?: string[];
 };
 
+/**
+ * How much of a project the visitor can actually see. The badge that carries
+ * this is the site's answer to "no invented outcomes": it makes the boundary
+ * visible instead of burying it in a disclaimer.
+ */
+export type Confidentiality = 'public' | 'method-only' | 'on-request' | 'private';
+
 export type CaseStudy = {
   slug: string;
   projectId: string;
   name: string;
   subtitle: string;
+  confidentiality: Confidentiality;
   /** The page intro; long enough to read, too long for a search snippet. */
   dek: string;
   /** ~150–160 characters for <meta name="description"> and the social cards. */
@@ -31,6 +39,7 @@ export const caseStudies: CaseStudy[] = [
     projectId: 'medbot',
     name: 'MedBot',
     subtitle: 'Containerised RAG application with CI/CD',
+    confidentiality: 'method-only',
     dek: 'A document question-answering service: retrieval over a vector index, a Flask backend, a container image, and a Jenkins pipeline that scans the image before it ships.',
     metaDescription:
       'MedBot: a containerised RAG service over the documents you supply — LangChain, FAISS, Flask, Docker and a Jenkins pipeline that scans the image.',
@@ -81,10 +90,19 @@ export const caseStudies: CaseStudy[] = [
         ],
       },
       {
+        heading: 'Questions a retrieval service leaves open',
+        paragraphs: [
+          'Retrieval design begins with questions that are easy to postpone. Chunking sets the unit of retrieval: a passage has to be large enough to carry a complete idea and small enough that its subject is unambiguous, because the boundary between two chunks decides whether an answer arrives whole or in pieces. The embedding model then fixes what similarity means for the corpus, so its choice is a claim about vocabulary and phrasing rather than a neutral setting.',
+          'Freshness is the next question. An index is a snapshot, and a retrieval service with no refresh policy has no way to notice that a document has changed or been withdrawn. Evaluation closes the loop: without a labelled set and a score for both retrieval and answer quality, a change to chunk size or model cannot be judged.',
+          'That distinction matters operationally. A wrong answer can come from the index, which returned nothing relevant, or from the model, which ignored a passage that was relevant, and an end-to-end score alone cannot separate the two. Scoring retrieval on its own is what makes the difference visible.',
+          'The MedBot pipeline embeds chunks into a FAISS index through LangChain and passes the retrieved passages to the model as grounding context; the boundary between retrieval and generation is fixed by design. The open questions are the ones above — chunking, embedding, freshness and evaluation. The project states them; it does not answer them.',
+        ],
+      },
+      {
         heading: 'Limits and next steps',
         paragraphs: [
-          'This is a personal project, so there is no production traffic to report and no user study to cite. Chunking strategy drives answer quality, the index has no refresh policy, and no evaluation harness scores answers against a labelled set.',
-          'The next build would add a small evaluation set with retrieval and answer-level checks, so a change to chunk size or model can be judged rather than guessed. MedBot has no public repository, so this page is the record of the work rather than a link to it.',
+          'This is a personal project, so there is no production traffic to report and no user study to cite. What remains is the work described above: an evaluation set with retrieval and answer-level checks, so a change to chunk size or model can be judged rather than guessed.',
+          'MedBot has no public repository, so this page is the record of the work rather than a link to it.',
         ],
       },
     ],
@@ -94,6 +112,7 @@ export const caseStudies: CaseStudy[] = [
     projectId: 'ai-financial-analyst-agent',
     name: 'AI Financial Analyst Agent',
     subtitle: 'LLM orchestration, grounding and structured output',
+    confidentiality: 'public',
     dek: 'An agent built around one constraint: the figures should come from a tool call or a retrieved document. It takes a natural-language question, chooses which tools to call and returns a structured investment analysis.',
     metaDescription:
       'An LLM agent that answers investment questions only from tool calls and retrieved documents, returning structured JSON rather than prose.',
@@ -141,6 +160,15 @@ export const caseStudies: CaseStudy[] = [
         ],
       },
       {
+        heading: 'Cutting the problem to fit the context window',
+        paragraphs: [
+          'News, price history and financial statements can exceed what the reasoning model accepts, so the context window is treated as a scarce resource. Raw text is split into chunks of roughly 3,500 characters, and each chunk goes to a model chosen for cost, which extracts key numbers and facts as bullet points. The mini-summaries are then concatenated and trimmed to a character budget before the thesis is generated.',
+          'The strategy reduces the input before the model reasons over it, rather than truncating blindly at a token limit and losing figures that matter. The data layer also writes news, prices and statements to a flat text file before any model sees them, so the raw material can be inspected on its own, independently of the pipeline that reads it.',
+          'The cost of that compression is that the reasoning step sees only what the summariser kept. A figure that looked incidental to the extraction step is not carried forward, and the report cannot recover it. Compression is what makes the run fit inside the model; it is also where information is lost.',
+          'Model routing follows the same logic. A small model extracts the ticker from the question, chunk summarisation runs on a larger one because it repeats once per chunk, and the synthesis step is the one that needs the strongest reasoning.',
+        ],
+      },
+      {
         heading: 'What it demonstrates',
         bullets: [
           'Agent design: deciding when to call a tool, which tool, and what to do with the result.',
@@ -163,6 +191,7 @@ export const caseStudies: CaseStudy[] = [
     projectId: 'contextual-anomaly-detection',
     name: 'Contextual Anomaly Detection in Cash Access',
     subtitle: 'Master’s thesis · TU Dortmund with Barkow Consulting',
+    confidentiality: 'public',
     dek: 'A machine-learning framework that scores each German region against what its own context predicts, then attributes each deviation to the regional factors behind it. It joins geospatial, socioeconomic and financial data and finds gaps a national threshold would miss.',
     metaDescription:
       'Contextual anomaly detection across German regions: a model that scores each region against its own context and names the factors behind every gap.',
@@ -205,6 +234,15 @@ export const caseStudies: CaseStudy[] = [
         paragraphs: [
           'I researched and implemented several contextual anomaly detection frameworks, comparing them on German data and 16 benchmark datasets.',
           'Interpretability was the deciding criterion: the results had to make sense to business stakeholders, so a framework that flagged a region without saying why was not usable.',
+        ],
+      },
+      {
+        heading: 'Four definitions of context',
+        paragraphs: [
+          'The frameworks answer one question but disagree about what context is. QCAD treats it as a local neighbourhood: Gower distance measures similarity, k-nearest neighbours form a reference group, and Quantile Regression Forests supply conditional quantiles. A score is the deviation from the expected conditional range, and the approach thins out where contextual neighbourhoods are sparse.',
+          'DepCAD takes the opposite view, treating context as global dependency. Fast-IAMB selects a Markov blanket of relevant variables, Random Forest regression gives expected values, and value-wise deviations are normalised and aggregated. DepCAD with Isolation Forest keeps that global structure, applies Isolation Forest to the individual deviations before aggregation, and the thesis reports it as the strongest of the frameworks for most contexts.',
+          'ROCOD is the hybrid: cosine similarity defines context, weights adapt to the number of neighbours, and per-target R² weights feed an L2 score.',
+          'With no ground truth for the German data, validation against known outcomes was impossible, so approximate labels were constructed: 20 contextual nearest neighbours, their mean and standard deviation, and observations beyond mean ± 2 standard deviations treated as potential anomalies. Those labels are approximate, so the comparison relies on precision-recall AUC, ROC-AUC, precision and recall — metrics suited to imbalanced data, where positives are rare.',
         ],
       },
       {

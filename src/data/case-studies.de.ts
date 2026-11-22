@@ -11,6 +11,7 @@ export const caseStudiesDe: CaseStudy[] = [
     projectId: 'medbot',
     name: 'MedBot',
     subtitle: 'Containerisierte RAG-Anwendung mit CI/CD',
+    confidentiality: 'method-only',
     dek: 'Ein Frage-Antwort-Service für Dokumente: Retrieval über einen Vektorindex, ein Flask-Backend, ein Container-Image und eine Jenkins-Pipeline, die das Image vor der Auslieferung prüft.',
     metaDescription:
       'MedBot: ein containerisierter RAG-Service über eigene Dokumente — LangChain, FAISS, Flask, Docker und eine Jenkins-Pipeline, die das Image prüft.',
@@ -61,10 +62,19 @@ export const caseStudiesDe: CaseStudy[] = [
         ],
       },
       {
+        heading: 'Offene Fragen eines Retrieval-Dienstes',
+        paragraphs: [
+          'Die Konzeption eines Retrieval-Dienstes beginnt mit Fragen, die sich leicht aufschieben lassen. Die Segmentierung legt die Einheit des Abrufs fest: Ein Textabschnitt muss groß genug sein, um einen vollständigen Gedanken zu tragen, und klein genug, damit sein Thema eindeutig bleibt, denn die Grenze zwischen zwei Segmenten entscheidet darüber, ob eine Antwort vollständig oder in Teilen ankommt. Das Einbettungsmodell legt anschließend fest, was Ähnlichkeit für den Korpus bedeutet; seine Wahl ist deshalb eine Aussage über Wortschatz und Formulierung und keine neutrale Einstellung.',
+          'Die Aktualität ist die nächste Frage. Ein Index ist eine Momentaufnahme, und ein Retrieval-Dienst ohne Aktualisierungsstrategie kann nicht bemerken, dass ein Dokument geändert oder zurückgezogen wurde. Die Bewertung schließt den Kreis: Ohne annotierten Datensatz und ohne Gütewert für die Qualität von Abruf und Antwort lässt sich eine Änderung der Segmentgröße oder des Modells nicht beurteilen.',
+          'Dieser Unterschied ist im Betrieb entscheidend. Eine falsche Antwort kann aus dem Index kommen, der nichts Relevantes zurückgegeben hat, oder aus dem Modell, das eine relevante Passage ignoriert hat; ein Ende-zu-Ende-Gütewert allein trennt die beiden Fälle nicht. Erst eine getrennte Bewertung des Abrufs macht den Unterschied sichtbar.',
+          'Die MedBot-Pipeline bettet Segmente über LangChain in einen FAISS-Vektorindex ein und übergibt die abgerufenen Passagen als Belegkontext an das Modell; die Grenze zwischen Abruf und Generierung ist durch das Design festgelegt. Offen bleiben die oben genannten Fragen — Segmentierung, Einbettung, Aktualität und Bewertung. Das Projekt benennt sie; es beantwortet sie nicht.',
+        ],
+      },
+      {
         heading: 'Grenzen und nächste Schritte',
         paragraphs: [
-          'Das ist ein persönliches Projekt, es gibt also keinen Produktionsverkehr und keine Nutzerstudie. Die Chunking-Strategie bestimmt die Antwortqualität, der Index hat keine Aktualisierungsstrategie, und es gibt keine Evaluationsumgebung, die Antworten gegen einen gelabelten Datensatz prüft.',
-          'Der nächste Ausbau würde ein kleines Evaluationsset mit Prüfungen auf Retrieval- und Antwort-Ebene ergänzen, sodass eine Änderung an Chunk-Größe oder Modell beurteilt statt geraten werden kann. MedBot hat kein öffentliches Repository; diese Seite ist daher die Dokumentation der Arbeit statt eines Links darauf.',
+          'Das ist ein persönliches Projekt, es gibt also keinen Produktionsverkehr und keine Nutzerstudie. Offen bleibt das oben Beschriebene: ein Evaluationsset mit Prüfungen auf Retrieval- und Antwort-Ebene, sodass eine Änderung an Chunk-Größe oder Modell beurteilt statt geraten werden kann.',
+          'MedBot hat kein öffentliches Repository; diese Seite ist daher die Dokumentation der Arbeit statt eines Links darauf.',
         ],
       },
     ],
@@ -74,6 +84,7 @@ export const caseStudiesDe: CaseStudy[] = [
     projectId: 'ai-financial-analyst-agent',
     name: 'KI-Finanzanalyst-Agent',
     subtitle: 'LLM-Orchestrierung, Verankerung und strukturierte Ausgabe',
+    confidentiality: 'public',
     dek: 'Ein Agent, um eine einzige Vorgabe herum gebaut: Die Zahlen sollen aus einem Tool-Aufruf oder einem abgerufenen Dokument stammen. Er nimmt eine Frage in natürlicher Sprache, wählt die nötigen Tools und liefert eine strukturierte Investmentanalyse.',
     metaDescription:
       'Ein LLM-Agent, der Investmentfragen nur aus Tool-Aufrufen und abgerufenen Dokumenten beantwortet und strukturiertes JSON statt Prosa liefert.',
@@ -121,6 +132,15 @@ export const caseStudiesDe: CaseStudy[] = [
         ],
       },
       {
+        heading: 'Zuschnitt des Problems auf das Kontextfenster',
+        paragraphs: [
+          'Nachrichten, Kurshistorie und Finanzberichte können mehr umfassen, als das schlussfolgernde Modell aufnimmt; das Kontextfenster ist deshalb eine knappe Ressource. Rohtext wird in Abschnitte von rund 3.500 Zeichen zerlegt, und jeder Abschnitt geht an ein Modell, das nach Kosten gewählt ist und daraus Kennzahlen und Fakten als Stichpunkte extrahiert. Die Kurzzusammenfassungen werden aneinandergereiht und vor der Erstellung der Anlagethese auf ein Zeichenbudget gekürzt.',
+          'Die Strategie verkleinert die Eingabe, bevor das Modell darüber schlussfolgert, statt blind an einer Token-Grenze abzuschneiden und dabei Zahlen zu verlieren, auf die es ankommt. Die Datenschicht schreibt Nachrichten, Kurse und Berichte außerdem in eine flache Textdatei, bevor ein Modell sie sieht; das Rohmaterial lässt sich damit eigenständig prüfen, unabhängig von der Pipeline, die es liest.',
+          'Der Preis dieser Verdichtung ist, dass der Schlussfolgerungsschritt nur sieht, was die Zusammenfassung behalten hat. Eine Zahl, die der Extraktionsstufe nebensächlich erschien, wird nicht weitergegeben, und der Report kann sie nicht zurückholen. Verdichtung ist das, was den Lauf in das Modell passen lässt; sie ist auch der Ort, an dem Information verloren geht.',
+          'Die Modellzuweisung folgt derselben Logik. Ein kleines Modell extrahiert das Börsenkürzel aus der Frage, die Abschnittszusammenfassung läuft auf einem größeren, weil sie sich je Abschnitt wiederholt, und der Syntheseschritt ist der, der die stärkste Schlussfolgerungsleistung braucht.',
+        ],
+      },
+      {
         heading: 'Was es zeigt',
         bullets: [
           'Agent-Design: entscheiden, wann ein Tool aufgerufen wird, welches, und was mit dem Ergebnis passiert.',
@@ -143,6 +163,7 @@ export const caseStudiesDe: CaseStudy[] = [
     projectId: 'contextual-anomaly-detection',
     name: 'Kontextuelle Anomalieerkennung im Bargeldzugang',
     subtitle: 'Masterarbeit · TU Dortmund mit Barkow Consulting',
+    confidentiality: 'public',
     dek: 'Ein Machine-Learning-Framework, das jede deutsche Region daran misst, was ihr eigener Kontext vorhersagt, und jede Abweichung den regionalen Faktoren dahinter zuordnet. Es verbindet Geodaten, sozioökonomische und finanzielle Daten und findet Lücken, die ein nationaler Schwellenwert übersehen würde.',
     metaDescription:
       'Kontextuelle Anomalieerkennung für deutsche Regionen: ein Modell, das jede Region an ihrem eigenen Kontext misst und die Faktoren hinter jeder Lücke nennt.',
@@ -185,6 +206,15 @@ export const caseStudiesDe: CaseStudy[] = [
         paragraphs: [
           'Ich habe mehrere kontextuelle Anomalieerkennungs-Frameworks recherchiert und umgesetzt und sie auf deutschen Daten sowie auf 16 Benchmark-Datensätzen verglichen.',
           'Interpretierbarkeit war das entscheidende Kriterium: Die Ergebnisse mussten für geschäftliche Stakeholder nachvollziehbar sein; ein Framework, das eine Region markiert, ohne zu sagen warum, war nicht nutzbar.',
+        ],
+      },
+      {
+        heading: 'Vier Definitionen von Kontext',
+        paragraphs: [
+          'Die Verfahren beantworten zwar dieselbe Frage, sind sich aber uneinig darüber, was Kontext ist. QCAD fasst ihn als lokale Nachbarschaft auf: Die Gower-Distanz misst Ähnlichkeit, die k nächsten Nachbarn bilden eine Referenzgruppe, und Quantilregressionswälder liefern bedingte Quantile. Die Bewertung ergibt sich aus der Abweichung vom erwarteten bedingten Bereich; wo kontextuelle Nachbarschaften dünn besetzt sind, verliert der Ansatz an Aussagekraft.',
+          'DepCAD vertritt die Gegenposition und begreift Kontext als globale Abhängigkeit. Fast-IAMB wählt eine Markov-Blanket relevanter Variablen aus, eine Random-Forest-Regression liefert Erwartungswerte, und die Abweichungen je Wert werden normalisiert und aggregiert. DepCAD mit Isolation Forest behält diese globale Struktur bei, wendet Isolation Forest vor der Aggregation auf die einzelnen Abweichungen an und wurde in der Arbeit für die meisten Kontexte als stärkstes der Verfahren ausgewiesen.',
+          'ROCOD ist das Hybridverfahren: Kosinusähnlichkeit definiert den Kontext, die Gewichtung passt sich der Zahl der Nachbarn an, und R²-Gewichte je Zielvariable fließen in eine L2-Bewertung ein.',
+          'Da für die deutschen Daten keine Grundwahrheit vorlag, war eine Validierung gegen bekannte Ergebnisse nicht möglich; deshalb wurden Näherungslabels konstruiert: 20 kontextuell bestimmte nächste Nachbarn, deren Mittelwert und Standardabweichung sowie Beobachtungen, die außerhalb von Mittelwert ± 2 Standardabweichungen liegen und als mögliche Anomalien behandelt wurden. Diese Labels sind Näherungen, weshalb der Vergleich auf Precision-Recall-AUC, ROC-AUC, Precision und Recall beruht — Kennzahlen für unausgeglichene Daten, in denen positive Fälle selten sind.',
         ],
       },
       {

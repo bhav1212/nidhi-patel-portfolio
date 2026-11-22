@@ -1,0 +1,18 @@
+---
+/**
+ * The four-state confidentiality badge from the plan: public, method only,
+ * on request, private. The state is carried by colour and border style, but the
+ * label is always visible text — a tooltip is not an accessible equivalent and
+ * colour alone would fail WCAG 2.2 SC 1.4.1.
+ */
+import type { Confidentiality } from '../data/case-studies';
+
+interface Props {
+  state: Confidentiality;
+  label: string;
+}
+
+const { state, label } = Astro.props;
+---
+
+<span class="badge" data-state={state}>{label}</span>

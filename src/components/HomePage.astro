@@ -5,7 +5,8 @@
  * two language versions share one set of markup, one script and one animation
  * timeline.
  */
-import { contact, links, certifications, stackStrip, cvUrl } from '../data/profile';
+import Badge from './Badge.astro';
+import { contact, links, certifications, stackStrip, cvUrl, confidentialityByJob } from '../data/profile';
 import { elements } from '../data/elements';
 import {
   copy,
@@ -35,6 +36,17 @@ const localElements = elementsFor(lang);
 // translated project name can never diverge between the two pages.
 const agentStudy = studyFor(lang, 'ai-financial-analyst');
 const agentName = agentStudy?.name ?? 'AI Financial Analyst Agent';
+const medbotStudy = studyFor(lang, 'medbot');
+const thesisStudy = studyFor(lang, 'cash-access-germany');
+
+// The badge label is looked up by state, so a new state has one place to be
+// translated and the markup never hard-codes an English word.
+const badgeLabel = {
+  public: t.badge.public,
+  'method-only': t.badge.methodOnly,
+  'on-request': t.badge.onRequest,
+  private: t.badge.private,
+};
 
 // Two copies so the marquee can loop seamlessly; the second is hidden from
 // screen readers, which would otherwise announce every tool twice.
@@ -209,7 +221,13 @@ const bold = (text: string) => {
 
     <div class="bento">
       <article class="bento-card b-feature" data-reveal>
-        <span class="b-tag">{t.work.medbotTag}</span>
+        <div class="b-top">
+          <span class="b-tag">{t.work.medbotTag}</span>
+          <Badge
+            state={medbotStudy?.confidentiality ?? 'method-only'}
+            label={badgeLabel[medbotStudy?.confidentiality ?? 'method-only']}
+          />
+        </div>
         <h3>MedBot</h3>
         <p>{t.work.medbotBody}</p>
         <div class="bento-stats">
@@ -223,7 +241,13 @@ const bold = (text: string) => {
       </article>
 
       <article class="bento-card b-tall" data-reveal>
-        <span class="b-tag">{t.work.agentTag}</span>
+        <div class="b-top">
+          <span class="b-tag">{t.work.agentTag}</span>
+          <Badge
+            state={agentStudy?.confidentiality ?? 'public'}
+            label={badgeLabel[agentStudy?.confidentiality ?? 'public']}
+          />
+        </div>
         <h3>{agentName}</h3>
         <p>{t.work.agentBody}</p>
         <p class="b-outcome"><strong>{t.work.agentOutcomeLabel}</strong>{t.work.agentOutcome}</p>
@@ -233,7 +257,13 @@ const bold = (text: string) => {
       </article>
 
       <article class="bento-card b-third" data-reveal>
-        <span class="b-tag">{t.work.thesisTag}</span>
+        <div class="b-top">
+          <span class="b-tag">{t.work.thesisTag}</span>
+          <Badge
+            state={thesisStudy?.confidentiality ?? 'public'}
+            label={badgeLabel[thesisStudy?.confidentiality ?? 'public']}
+          />
+        </div>
         <h3>{t.work.thesisHeading}</h3>
         <p>{t.work.thesisBody}</p>
         <p class="b-outcome">{t.work.thesisOutcomeBefore}<strong>{t.work.thesisOutcomeStrong}</strong>{t.work.thesisOutcomeAfter}</p>
@@ -279,6 +309,7 @@ const bold = (text: string) => {
       <div class="section-num"><span class="n">03</span><span class="line"></span><span>{t.experience.eyebrow}</span></div>
       <h2>{t.experience.heading}</h2>
       <p>{t.experience.intro}</p>
+      <p class="section-note">{t.experience.badgeHint}</p>
     </div>
 
     <ol class="timeline" data-timeline>
@@ -289,7 +320,13 @@ const bold = (text: string) => {
             <span class="tl-role">{job.role}</span>
             <span class="tl-dates">{job.durationDisplay}</span>
           </div>
-          <div class="tl-company">{job.company} · {job.location}</div>
+          <div class="tl-company">
+            <span>{job.company} · {job.location}</span>
+            <Badge
+              state={confidentialityByJob[job.id] ?? 'private'}
+              label={badgeLabel[confidentialityByJob[job.id] ?? 'private']}
+            />
+          </div>
           {/* Portfolio copy is written for the page: a scope sentence plus three
               outcomes, so the summary never restates its own bullets. The full
               CV wording stays in the JSON for the CV and llms.txt. */}

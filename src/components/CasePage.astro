@@ -4,6 +4,7 @@
  * `data/case-studies.de.ts`), so the layout is identical in both languages and
  * only the surrounding chrome comes from the dictionary.
  */
+import Badge from './Badge.astro';
 import { copy, localePath, type Lang } from '../i18n/content';
 import type { CaseStudy } from '../data/case-studies';
 
@@ -16,13 +17,23 @@ interface Props {
 
 const { lang, study, prev, next } = Astro.props;
 const t = copy[lang];
+
+const badgeLabel = {
+  public: t.badge.public,
+  'method-only': t.badge.methodOnly,
+  'on-request': t.badge.onRequest,
+  private: t.badge.private,
+};
 ---
 
 <article>
   <header class="case-head">
     <div class="container">
       <a class="case-back" href={localePath(lang, '/#work')}>← {t.caseStudy.back}</a>
-      <p class="label" style="margin-bottom: 0.9rem;">{study.subtitle}</p>
+      <div class="case-kicker">
+        <p class="label">{study.subtitle}</p>
+        <Badge state={study.confidentiality} label={badgeLabel[study.confidentiality]} />
+      </div>
       <h1>{study.name}</h1>
       <p class="case-dek">{study.dek}</p>
 

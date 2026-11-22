@@ -36,6 +36,15 @@ export const en = {
     toTop: 'Back to top',
   },
 
+  // How much of a piece of work a visitor can actually open. Visible text on
+  // the badge itself, so the state is never carried by colour alone.
+  badge: {
+    public: 'Public',
+    methodOnly: 'Method only',
+    onRequest: 'On request',
+    private: 'Private',
+  },
+
   hero: {
     eyebrow: 'Frankfurt · open to AI Engineer, ML Engineer and Data Scientist roles',
     title1: 'I build',
@@ -129,6 +138,7 @@ export const en = {
     heading: 'Four roles in analytics and data science.',
     intro:
       'Miles & More for customer analytics, Barkow Consulting for data pipelines and anomaly detection, and earlier roles in housing and energy.',
+    badgeHint: 'Each role carries a badge for how much of it can be discussed: on request, or not at all.',
     present: 'Present',
   },
 

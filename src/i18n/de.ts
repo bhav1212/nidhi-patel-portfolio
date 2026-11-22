@@ -37,6 +37,15 @@ export const de: Copy = {
     toTop: 'Nach oben',
   },
 
+  // Wie viel von einer Arbeit tatsächlich einsehbar ist. Steht als Text im
+  // Badge, damit der Zustand nicht allein an der Farbe hängt.
+  badge: {
+    public: 'Öffentlich',
+    methodOnly: 'Nur Methodik',
+    onRequest: 'Auf Anfrage',
+    private: 'Vertraulich',
+  },
+
   hero: {
     eyebrow: 'Frankfurt · offen für Rollen als AI Engineer, ML Engineer und Data Scientist',
     title1: 'Ich baue',
@@ -132,6 +141,8 @@ export const de: Copy = {
     heading: 'Vier Stationen in Analytics und Data Science.',
     intro:
       'Miles & More für Customer Analytics, Barkow Consulting für Datenpipelines und Anomalieerkennung, davor Stationen in Wohnungswirtschaft und Energie.',
+    badgeHint:
+      'Jede Station trägt ein Badge dafür, wie viel davon besprechbar ist: auf Anfrage oder gar nicht.',
     present: 'Heute',
   },
 
